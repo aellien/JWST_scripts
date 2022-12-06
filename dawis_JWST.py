@@ -3,9 +3,9 @@ import dawis
 import sys
 import shutil
 
-indir = os.path.join( '/n03data/ellien/JWST/data', sys.argv[2] )
+indir = '/n03data/ellien/JWST/data'
 infile = sys.argv[1]
-outdir = os.path.join( '/n03data/ellien/JWST/wavelets/out1/', sys.argv[2], 'run1' )
+outdir = '/n03data/ellien/JWST/wavelets/out1/'
 n_cpus = 1 # Number of CPUs
 tau = 0.1   # Relative Threshold
 gamma = 0.8   # Attenuation (CLEAN) factor
