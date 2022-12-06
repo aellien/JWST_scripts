@@ -6,7 +6,7 @@
 #PSB -S /bin/bash
 
 module load intelpython/3-2020.4
-echo ${ncl}
-python /home/ellien/JWST/JWST_scripts/dawis_JWST.py ${ncl}
+echo ${n}
+python /home/ellien/JWST/JWST_scripts/dawis_JWST.py ${n}
 
 exit 0
