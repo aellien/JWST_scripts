@@ -2,9 +2,10 @@
 #
 #
 
-for file in f277_rot.fits f356_rot.fits f444_rot.fits
+for f in f277w f356w f444w
 do
-      echo "Launch Dawis on file ${file}"
+      file=jw02736001001_${f}_bkg_rot_crop_det_nosky.fits
+      echo "Launch Dawis on file $file"
       qsub qsub_dawis_jwst.sh -v n=${file},ncl=${file:0:-5}
       sleep 2
 done
