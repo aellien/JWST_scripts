@@ -10,7 +10,7 @@ n_cpus = 2 # Number of CPUs
 tau = 0.9   # Relative Threshold
 gamma = 0.2   # Attenuation (CLEAN) factor
 ceps = 1E-4    # Convergence value for epsilon
-n_levels = 10    # Number of wavelet scales
+n_levels = 11    # Number of wavelet scales
 min_span = 1    # Minimum of wavelet scales spanned by an interscale tree (must be >= 1)
 max_span = 2    # Maximum number of wavelet scales spanned by an interscale tree
 lvl_sep_big = 6     # Scale at wich mix_span & max_span are set to 1, and gamma to 1
