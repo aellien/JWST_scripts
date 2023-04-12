@@ -2,7 +2,7 @@
 #
 #
 
-for f in f444w #f277w f356w 
+for f in f444w f277w f356w 
 do
       file=jw02736001001_${f}_bkg_rot_crop_det_nosky.fits
       echo "Launch Dawis on file $file"
