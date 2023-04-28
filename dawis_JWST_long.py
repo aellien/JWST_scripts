@@ -5,11 +5,11 @@ import shutil
 
 indir = '/n03data/ellien/JWST/data'
 infile = sys.argv[1]
-outdir = '/n03data/ellien/JWST/wavelets/out11/'
+outdir = '/n03data/ellien/JWST/wavelets/out12/'
 n_cpus = 2 # Number of CPUs
 tau = 0.8   # Relative Threshold
 gamma = 0.5   # Attenuation (CLEAN) factor
-ceps = 5E-5    # Convergence value for epsilon
+ceps = 1E-4    # Convergence value for epsilon
 n_levels = 10    # Number of wavelet scales
 min_span = 1    # Minimum of wavelet scales spanned by an interscale tree (must be >= 1)
 max_span = 2    # Maximum number of wavelet scales spanned by an interscale tree

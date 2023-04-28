@@ -7,6 +7,6 @@
 
 module load intelpython/3-2020.4
 echo ${n}
-python /home/ellien/JWST/JWST_scripts/dawis_JWST.py ${n}
+python /home/ellien/JWST/JWST_scripts/dawis_JWST_${chan}.py ${n}
 
 exit 0
