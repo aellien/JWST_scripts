@@ -11,7 +11,7 @@
 #      sleep 2
 #done
 
-for f in f150w
+for f in f090w f150w f200w
 do
       #file=jw02736001001_${f}_bkg_rot_crop_det_nosky.fits
       file=jw02736001001_${f}_bkg_rot_crop_input.fits
