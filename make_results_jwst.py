@@ -1374,7 +1374,7 @@ if __name__ == '__main__':
     ray.init(num_cpus = n_cpus)
 
     id_physcale = ray.put(physcale)
-    id_gamma = ray.put(id_gamma)
+    id_gamma = ray.put(gamma)
     id_lvl_sep_big = ray.put(lvl_sep_big)
     id_lvl_sep_bcg = ray.put(lvl_sep_bcg)
     id_rm_gamma_for_big = ray.put(rm_gamma_for_big)
