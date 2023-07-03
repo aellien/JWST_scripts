@@ -10,6 +10,7 @@ import pandas as pd
 import ray
 from astropy.io import fits
 from skimage.morphology import binary_dilation
+from scipy.stats import kurtosis
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 def read_image_atoms( nfp, filter_it = None, verbose = False ):
@@ -1419,7 +1420,7 @@ if __name__ == '__main__':
                     mscoim = rco.get_mask(hdu = hdu[0]) # not python convention
                     mscbcg = rbcg.get_mask(hdu = hdu[0]) # not python convention
 
-                    # Full field
+                    # Full field ------------------------------------------------
                     lvl_sep = np.nan
                     size_sep = np.nan
                     size_sep_pix = np.nan
@@ -1449,7 +1450,7 @@ if __name__ == '__main__':
                                                     plot_vignet = False ))
 
 
-                    # ICL -- WS -----------------------------------------------------------------
+                    # ICL -- WS ------------------------------------------------
                     for lvl_sep in lvl_sepl:
                         ray_refs.append( make_results_cluster.remote(sch = 'WS', \
                                                         oim = id_oim, \
@@ -1476,7 +1477,7 @@ if __name__ == '__main__':
                                                         kurt_filt = True, \
                                                         plot_vignet = False ))
 
-                    # ICL -- WS + SF -----------------------------------------------------------
+                    # ICL -- WS + SF -------------------------------------------
                     for lvl_sep in lvl_sepl:
                         ray_refs.append( make_results_cluster.remote(sch = 'WS+SF', \
                                                         oim = id_oim, \
@@ -1503,7 +1504,7 @@ if __name__ == '__main__':
                                                         kurt_filt = True, \
                                                         plot_vignet = False ))
 
-                    # ICL+BCG -- WS + SF -------------------------------------------------------
+                    # ICL+BCG -- WS + SF ---------------------------------------
                     for lvl_sep in lvl_sepl:
                         ray_refs.append( make_results_cluster.remote(sch = 'WS+BCGSF', \
                                                         oim = oim, \
@@ -1530,7 +1531,7 @@ if __name__ == '__main__':
                                                         kurt_filt = True, \
                                                         plot_vignet = False ))
 
-                    # ICL -- WS + SF + SS ------------------------------------------------------
+                    # ICL -- WS + SF + SS --------------------------------------
                     for lvl_sep in lvl_sepl:
                         for size_sep in size_sepl:
                             size_sep_pix = size_sep / physcale / pix_scale # pixels
@@ -1559,7 +1560,7 @@ if __name__ == '__main__':
                                                             kurt_filt = True, \
                                                             plot_vignet = False ))
 
-                    # ICL+BCG -- WS + SF + SS
+                    # ICL+BCG -- WS + SF + SS ----------------------------------
                     for lvl_sep in lvl_sepl:
 
                         for size_sep in size_sepl:
