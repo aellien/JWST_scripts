@@ -1469,8 +1469,8 @@ if __name__ == '__main__':
                                                     N_err = N_err, \
                                                     per_err = per_err, \
                                                     rm_gamma_for_big = rm_gamma_for_big, \
-                                                    kurt_filt = kurt_filt, \
-                                                    plot_vignet = plot_vignet ))
+                                                    kurt_filt = True, \
+                                                    plot_vignet = False ))
 
                     '''
                         # ICL -- WS -----------------------------------------------------------------
