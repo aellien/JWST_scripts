@@ -1443,7 +1443,7 @@ if __name__ == '__main__':
                     id_mscoim = ray.put(mscoim)
                     id_mscell = ray.put(mscell)
                     id_mscbcg = ray.put(mscbcg)
-                    id_R = ray.put(R_pix)
+                    id_R_pix = ray.put(R_pix)
                     id_cat_gal = ray.put(cat_gal)
                     id_rc_pix = ray.put(rc_pix)
                     id_N_err = ray.put(N_err)
