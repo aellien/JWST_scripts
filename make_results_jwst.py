@@ -1,6 +1,4 @@
 import sys
-sys.path.append('/home/ellien/Bullet/scripts')
-from make_synthesis_images import *
 import dawis as d
 import glob as glob
 import os
@@ -12,6 +10,92 @@ import pandas as pd
 import ray
 from astropy.io import fits
 from skimage.morphology import binary_dilation
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+def read_image_atoms( nfp, filter_it = None, verbose = False ):
+
+    # Object lists
+    if filter_it == None:
+        opath = nfp + '*ol.it*.pkl'
+        itpath = nfp + '*itl.it*.pkl'
+    else:
+        opath = nfp + '*ol.it' + filter_it  + '.pkl'
+        itpath = nfp + '*itl.it' + filter_it + '.pkl'
+
+    opathl = glob.glob(opath)
+    opathl.sort()
+
+    # Interscale tree lists
+
+    itpathl = glob.glob(itpath)
+    itpathl.sort()
+
+    tol = []
+    titl = []
+
+    if verbose:
+        print('Reading %s.'%(opath))
+        print('Reading %s.'%(itpath))
+
+    for i, ( op, itlp ) in enumerate( zip( opathl, itpathl )):
+
+        if verbose :
+            print('Iteration %d' %(i), end ='\r')
+
+        ol = d.read_objects_from_pickle( op )
+        itl = d.read_interscale_trees_from_pickle( itlp )
+
+        for j, o in enumerate(ol):
+
+            tol.append(o)
+            titl.append(itl[j])
+
+    return tol, titl
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+def synthesis_fullfield( oim, nfp, gamma, lvl_sep_big, xs, ys, n_levels, rm_gamma_for_big = True ):
+    '''Synthesis of the full astronomical field (e.g. sum of all atoms)
+    --- Args:
+    oim         # Original astronomical field
+    nfp         # root path of *.pkl
+    gamma       # attenuation factor
+    lvl_sep_big # wavelet scale at which gamma set to 1
+    lvl_sep     # wavelet scale threshold for the separation
+    xs, ys      # image size
+    n_levels    # number of wavelet scales
+    plot_vignet # plot pdf vignet of output
+    --- Output:
+    rec         # synthesis image with all atoms
+    res         # residuals (original - rec)
+    '''
+    # path, list & variables
+    res = np.zeros( (xs, ys) )
+    rec = np.zeros( (xs, ys) )
+    xc = xs / 2.
+    yc = ys / 2.
+
+    # Read atoms
+    ol, itl = read_image_atoms( nfp, verbose = False )
+
+    for j, o in enumerate(ol):
+
+        lvlo = o.level
+        x_min, y_min, x_max, y_max = o.bbox
+
+        if (o.level >= lvl_sep_big) & (rm_gamma_for_big == True):
+            rec[ x_min : x_max, y_min : y_max ] += o.image
+        else:
+            rec[ x_min : x_max, y_min : y_max ] += o.image * gamma
+
+    res = oim - rec
+
+    hduo = fits.PrimaryHDU(rec)
+    hduo.writeto( nfp + 'synth.restored.fits', overwrite = True )
+
+    hduo = fits.PrimaryHDU(res)
+    hduo.writeto( nfp + 'synth.residuals.fits', overwrite = True )
+
+    return rec, res
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 def selection_error(atom_in_list, atom_out_list, M, percent, lvl_sep_big, gamma):
@@ -1417,7 +1501,7 @@ if __name__ == '__main__':
                             for size_sep in size_sepl:
 
                                 size_sep_pix = size_sep / physcale / pix_scale # pixels
-
+make_results.out
                                 output = synthesis_bcgwavsizesep_with_masks( nfp = nfp, gamma = gamma, size_sep = size_sep, size_sep_pix = size_sep_pix,\
                                         lvl_sep_big = lvl_sep_big, lvl_sep = lvl_sep, lvl_sep_max = lvl_sep_max, lvl_sep_bcg = lvl_sep_bcg, xs = xs, ys = ys, \
                                         n_levels = n_levels, mscoim = mscoim, mscell = mscell, mscbcg = mscbcg, R = R_pix, cat_gal = cat_gal, rc_pix = rc_pix,\
