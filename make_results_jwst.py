@@ -738,7 +738,7 @@ def synthesis_bcgwavsizesep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_se
         if (mscoim[xco, yco] != 1) & (mscell[xco, yco] == 1):
 
             # BCG
-            xbcg, ybcg = [ 985, 1051, ]
+            xbcg, ybcg = [ 985, 1051 ]
             if mscbcg[xco, yco] == 1:
 
                 dr = np.sqrt( (xbcg - xco)**2 + (ybcg - yco)**2 )
@@ -900,10 +900,10 @@ def synthesis_bcgwavsizesep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_se
 
     # write to fits
     hduo = fits.PrimaryHDU(icl)
-    hduo.writeto( nfp + 'synth.icl.bcgwavsizesepmask_%03d_%03d_testspur.fits'%(lvl_sep, size_sep), overwrite = True )
+    hduo.writeto( nfp + 'synth.icl.bcgwavsizesepmask_%03d_%03d.fits'%(lvl_sep, size_sep), overwrite = True )
 
     hduo = fits.PrimaryHDU(gal)
-    hduo.writeto( nfp + 'synth.gal.bcgwavsizesepmask_%03d_%03d_testspur.fits'%(lvl_sep, size_sep), overwrite = True )
+    hduo.writeto( nfp + 'synth.gal.bcgwavsizesepmask_%03d_%03d.fits'%(lvl_sep, size_sep), overwrite = True )
 
     # plot to debug --> masks & interscale maximum positions
     if plot_vignet == True:
@@ -1469,7 +1469,7 @@ if __name__ == '__main__':
     rm_gamma_for_big = True
 
     rc = 10 # kpc, distance to center to be classified as gal
-    N_err = 1
+    N_err = 1000
     per_err = 0.1
 
     results = []
