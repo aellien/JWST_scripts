@@ -1373,16 +1373,6 @@ if __name__ == '__main__':
     n_cpus = 2
     ray.init(num_cpus = n_cpus)
 
-    id_physcale = ray.put(physcale)
-    id_gamma = ray.put(gamma)
-    id_lvl_sep_big = ray.put(lvl_sep_big)
-    id_lvl_sep_bcg = ray.put(lvl_sep_bcg)
-    id_rm_gamma_for_big = ray.put(rm_gamma_for_big)
-    id_rc = ray.put(rc)
-    id_N_err = ray.put(N_err)
-    id_per_err = ray.put(per_err)
-
-
     for chan in [ 'long' ]:
 
         for R_kpc in R_kpcl:
@@ -1453,8 +1443,7 @@ if __name__ == '__main__':
                     id_plot_vignet = ray.put(True)
 
                     # Full field
-                    ray_refs.append( make_results_cluster.remote(
-                                                    sch = id_sch, \
+                    ray_refs.append( make_results_cluster.remote(sch = id_sch, \
                                                     oim = id_oim, \
                                                     nfp = id_nfp, \
                                                     gamma = id_gamma, \
