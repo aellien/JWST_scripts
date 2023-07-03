@@ -1432,7 +1432,7 @@ if __name__ == '__main__':
                     id_nfp = ray.put(nfp)
                     id_gamma = ray.put(gamma)
                     id_lvl_sep_big = ray.put(lvl_sep_big)
-                    id_lvl_sep = ray.put(0).
+                    id_lvl_sep = ray.put(0.)
                     id_lvl_sep_max = ray.put(0.)
                     id_lvl_sep_bcg = ray.put(0.)
                     id_size_sep = ray.put(0.)
