@@ -1393,7 +1393,7 @@ def make_results_cluster( sch, oim, nfp, gamma, size_sep, size_sep_pix, lvl_sep_
 
     # ICL -- WS -----------------------------------------------------------------
     if sch == 'WS':
-        output = synthesis_wavsep( oim, nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gamma_for_big, kurt_filt = True, plot_vignet = True )
+        output = synthesis_wavsep( nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gamma_for_big, kurt_filt = True, plot_vignet = plot_vignet )
         return None
 
     # ICL -- WS + SF -----------------------------------------------------------
@@ -1401,7 +1401,7 @@ def make_results_cluster( sch, oim, nfp, gamma, size_sep, size_sep_pix, lvl_sep_
         output = synthesis_wavsep_with_masks( nfp = nfp, gamma = gamma, \
                 lvl_sep_big = lvl_sep_big, lvl_sep = lvl_sep, lvl_sep_max = lvl_sep_max, lvl_sep_bcg = lvl_sep_bcg, xs = xs, ys = ys, \
                 n_levels = n_levels, mscoim = mscoim, mscell = mscell, mscbcg = mscbcg, R = R_pix, cat_gal = cat_gal, rc_pix = rc_pix,\
-                N_err = N_err, per_err = per_err, rm_gamma_for_big = rm_gamma_for_big, kurt_filt = True, plot_vignet = True )
+                N_err = N_err, per_err = per_err, rm_gamma_for_big = rm_gamma_for_big, kurt_filt = kurt_filt, plot_vignet = plot_vignet )
         F_ICL_m, F_ICL_low, F_ICL_up, F_gal_m, F_gal_low, F_gal_up, f_ICL_m, f_ICL_low, f_ICL_up, PR_1_m, PR_1_up, PR_1_low, PR_2_m, PR_2_up, PR_2_low, PR_3_m, PR_3_up, PR_3_low, PR_4_m, PR_4_up, PR_4_low = output[2:]
         output_df = pd.DataFrame( [[ nf, chan, filt, sch, R_kpc, lvl_sep, np.nan, F_ICL_m, F_ICL_low, F_ICL_up, F_gal_m, F_gal_low, F_gal_up, f_ICL_m, f_ICL_low, f_ICL_up, PR_1_m, PR_1_up, PR_1_low, PR_2_m, PR_2_up, PR_2_low, PR_3_m, PR_3_up, PR_3_low, PR_4_m, PR_4_up, PR_4_low ]], \
                         columns = [ 'nf', 'chan', 'filter', 'Atom selection scheme', 'R_kpc', 'lvl_sep', 'size_sep', 'F_ICL_m', 'F_ICL_low', 'F_ICL_up', 'F_gal_m', 'F_gal_low', 'F_gal_up', 'f_ICL_m', 'f_ICL_low', 'f_ICL_up', 'PR_1_m', 'PR_1_up', 'PR_1_low', 'PR_2_m', 'PR_2_up', 'PR_2_low', 'PR_3_m', 'PR_3_up', 'PR_3_low', 'PR_4_m', 'PR_4_up', 'PR_4_low'  ])
@@ -1411,7 +1411,7 @@ def make_results_cluster( sch, oim, nfp, gamma, size_sep, size_sep_pix, lvl_sep_
         output = synthesis_bcgwavsep_with_masks( nfp = nfp, gamma = gamma, \
                 lvl_sep_big = lvl_sep_big, lvl_sep = lvl_sep, lvl_sep_max = lvl_sep_max, lvl_sep_bcg = lvl_sep_bcg, xs = xs, ys = ys, \
                 n_levels = n_levels, mscoim = mscoim, mscell = mscell, mscbcg = mscbcg, R = R_pix, cat_gal = cat_gal, rc_pix = rc_pix,\
-                N_err = N_err, per_err = per_err, rm_gamma_for_big = rm_gamma_for_big, kurt_filt = True, plot_vignet = True )
+                N_err = N_err, per_err = per_err, rm_gamma_for_big = rm_gamma_for_big, kurt_filt = kurt_filt, plot_vignet = plot_vignet )
 
         F_ICL_m, F_ICL_low, F_ICL_up, F_gal_m, F_gal_low, F_gal_up, f_ICL_m, f_ICL_low, f_ICL_up, PR_1_m, PR_1_up, PR_1_low, PR_2_m, PR_2_up, PR_2_low, PR_3_m, PR_3_up, PR_3_low, PR_4_m, PR_4_up, PR_4_low = output[2:]
         output_df = pd.DataFrame( [[ nf, chan, filt, sch, R_kpc, lvl_sep, np.nan, F_ICL_m, F_ICL_low, F_ICL_up, F_gal_m, F_gal_low, F_gal_up, f_ICL_m, f_ICL_low, f_ICL_up, PR_1_m, PR_1_up, PR_1_low, PR_2_m, PR_2_up, PR_2_low, PR_3_m, PR_3_up, PR_3_low, PR_4_m, PR_4_up, PR_4_low ]], \
@@ -1424,7 +1424,7 @@ def make_results_cluster( sch, oim, nfp, gamma, size_sep, size_sep_pix, lvl_sep_
         output = synthesis_wavsizesep_with_masks( nfp = nfp, gamma = gamma, \
                 lvl_sep_big = lvl_sep_big, lvl_sep = lvl_sep, lvl_sep_max = lvl_sep_max, lvl_sep_bcg = lvl_sep_bcg, size_sep = size_sep, size_sep_pix =  size_sep_pix, xs = xs, ys = ys, \
                 n_levels = n_levels, mscoim = mscoim, mscell = mscell, mscbcg = mscbcg, R = R_pix, cat_gal = cat_gal, rc_pix = rc_pix,\
-                N_err = N_err, per_err = per_err, rm_gamma_for_big = rm_gamma_for_big, kurt_filt = True, plot_vignet = True )
+                N_err = N_err, per_err = per_err, rm_gamma_for_big = rm_gamma_for_big, kurt_filt = kurt_filt, plot_vignet = plot_vignet )
         F_ICL_m, F_ICL_low, F_ICL_up, F_gal_m, F_gal_low, F_gal_up, f_ICL_m, f_ICL_low, f_ICL_up, PR_1_m, PR_1_up, PR_1_low, PR_2_m, PR_2_up, PR_2_low, PR_3_m, PR_3_up, PR_3_low, PR_4_m, PR_4_up, PR_4_low = output[2:]
         output_df = pd.DataFrame( [[ nf, chan, filt, sch, R_kpc, lvl_sep, size_sep, F_ICL_m, F_ICL_low, F_ICL_up, F_gal_m, F_gal_low, F_gal_up, f_ICL_m, f_ICL_low, f_ICL_up, PR_1_m, PR_1_up, PR_1_low, PR_2_m, PR_2_up, PR_2_low, PR_3_m, PR_3_up, PR_3_low, PR_4_m, PR_4_up, PR_4_low ]], \
                         columns = [ 'nf', 'chan', 'filter', 'Atom selection scheme', 'R_kpc', 'lvl_sep', 'size_sep','F_ICL_m', 'F_ICL_low', 'F_ICL_up', 'F_gal_m', 'F_gal_low', 'F_gal_up', 'f_ICL_m', 'f_ICL_low', 'f_ICL_up', 'PR_1_m', 'PR_1_up', 'PR_1_low', 'PR_2_m', 'PR_2_up', 'PR_2_low', 'PR_3_m', 'PR_3_up', 'PR_3_low', 'PR_4_m', 'PR_4_up', 'PR_4_low'  ])
@@ -1436,7 +1436,7 @@ def make_results_cluster( sch, oim, nfp, gamma, size_sep, size_sep_pix, lvl_sep_
         output = synthesis_bcgwavsizesep_with_masks( nfp = nfp, gamma = gamma, size_sep = size_sep, size_sep_pix = size_sep_pix,\
                 lvl_sep_big = lvl_sep_big, lvl_sep = lvl_sep, lvl_sep_max = lvl_sep_max, lvl_sep_bcg = lvl_sep_bcg, xs = xs, ys = ys, \
                 n_levels = n_levels, mscoim = mscoim, mscell = mscell, mscbcg = mscbcg, R = R_pix, cat_gal = cat_gal, rc_pix = rc_pix,\
-                N_err = N_err, per_err = per_err, rm_gamma_for_big = rm_gamma_for_big, kurt_filt = True, plot_vignet = True )
+                N_err = N_err, per_err = per_err, rm_gamma_for_big = rm_gamma_for_big, kurt_filt = kurt_filt, plot_vignet = plot_vignet )
         F_ICL_m, F_ICL_low, F_ICL_up, F_gal_m, F_gal_low, F_gal_up, f_ICL_m, f_ICL_low, f_ICL_up, PR_1_m, PR_1_up, PR_1_low, PR_2_m, PR_2_up, PR_2_low, PR_3_m, PR_3_up, PR_3_low, PR_4_m, PR_4_up, PR_4_low = output[2:]
         output_df = pd.DataFrame( [[ nf, chan, filt, sch, R_kpc, lvl_sep, size_sep, F_ICL_m, F_ICL_low, F_ICL_up, F_gal_m, F_gal_low, F_gal_up, f_ICL_m, f_ICL_low, f_ICL_up, PR_1_m, PR_1_up, PR_1_low, PR_2_m, PR_2_up, PR_2_low, PR_3_m, PR_3_up, PR_3_low, PR_4_m, PR_4_up, PR_4_low ]], \
                         columns = [ 'nf', 'chan', 'filter', 'Atom selection scheme', 'R_kpc', 'lvl_sep', 'size_sep', 'F_ICL_m', 'F_ICL_low', 'F_ICL_up', 'F_gal_m', 'F_gal_low', 'F_gal_up', 'f_ICL_m', 'f_ICL_low', 'f_ICL_up', 'PR_1_m', 'PR_1_up', 'PR_1_low', 'PR_2_m', 'PR_2_up', 'PR_2_low', 'PR_3_m', 'PR_3_up', 'PR_3_low', 'PR_4_m', 'PR_4_up', 'PR_4_low'  ])
