@@ -1280,8 +1280,7 @@ def make_results_cluster( sch, oim, nfp, gamma, size_sep, size_sep_pix, lvl_sep_
     '''
     Runs all classification schemes for a single cluster. Performed by a single ray worker.
     '''
-    print('coucou')
-    print(sch)
+
     # Full field ---------------------------------------------------------------
     if sch == 'fullfield':
         synthesis_fullfield( oim, nfp, gamma, lvl_sep_big, xs, ys, n_levels, rm_gamma_for_big = True )
@@ -1368,7 +1367,7 @@ if __name__ == '__main__':
 
     results = []
     ray_refs = []
-    rat_outputs = []
+    ray_outputs = []
 
     # ray hyperparameters
     n_cpus = 2
