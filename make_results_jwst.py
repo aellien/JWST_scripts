@@ -1703,7 +1703,7 @@ if __name__ == '__main__':
 
     print(ray_outputs)
 
-    results_df = ray.outputs[0]
+    results_df = ray_outputs[0]
     for output_df in results[1:]:
         results_df = pd.concat( [ results_df, output_df], ignore_index = True )
 
