@@ -1365,7 +1365,7 @@ if __name__ == '__main__':
                                                       kurt_filt = True, \
                                                       plot_vignet = True ))
 
-                        '''
+                    '''
                         # ICL -- WS -----------------------------------------------------------------
                         for lvl_sep in lvl_sepl:
                             synthesis_wavsep( nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gamma_for_big, kurt_filt = True, plot_vignet = True )
@@ -1427,7 +1427,7 @@ if __name__ == '__main__':
                                 output_df = pd.DataFrame( [[ nf, chan, filt, 'WS+BCGSF+SS', R_kpc, lvl_sep, size_sep, F_ICL_m, F_ICL_low, F_ICL_up, F_gal_m, F_gal_low, F_gal_up, f_ICL_m, f_ICL_low, f_ICL_up, PR_1_m, PR_1_up, PR_1_low, PR_2_m, PR_2_up, PR_2_low, PR_3_m, PR_3_up, PR_3_low, PR_4_m, PR_4_up, PR_4_low ]], \
                                                 columns = [ 'nf', 'chan', 'filter', 'Atom selection scheme', 'R_kpc', 'lvl_sep', 'size_sep', 'F_ICL_m', 'F_ICL_low', 'F_ICL_up', 'F_gal_m', 'F_gal_low', 'F_gal_up', 'f_ICL_m', 'f_ICL_low', 'f_ICL_up', 'PR_1_m', 'PR_1_up', 'PR_1_low', 'PR_2_m', 'PR_2_up', 'PR_2_low', 'PR_3_m', 'PR_3_up', 'PR_3_low', 'PR_4_m', 'PR_4_up', 'PR_4_low'  ])
                                 results.append(output_df)
-                        '''
+                    '''
     '''
     results_df = results[0]
     for output_df in results[1:]:
