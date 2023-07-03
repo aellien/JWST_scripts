@@ -1447,7 +1447,7 @@ if __name__ == '__main__':
                     lvl_sep = np.nan
                     size_sep = np.nan
                     size_sep_pix = np.nan
-                    ray_refs.append( make_results_cluster.remote(sch = sch, \
+                    ray_refs.append( make_results_cluster.remote(sch = 'fullfield', \
                                                     oim = oim, \
                                                     nfp = nfp, \
                                                     gamma = gamma, \
