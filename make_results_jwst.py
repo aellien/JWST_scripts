@@ -1426,31 +1426,56 @@ if __name__ == '__main__':
                     mscoim = rco.get_mask(hdu = hdu[0]) # not python convention
                     mscbcg = rbcg.get_mask(hdu = hdu[0]) # not python convention
 
+                    # ray parameters
+                    id_sch = ray.put('fullfield')
+                    id_oim = ray.put(oim)
+                    id_nfp = ray.put(nfp)
+                    id_gamma = ray.put(gamma)
+                    id_lvl_sep_big = ray.put(lvl_sep_big)
+                    id_lvl_sep = ray.put(0).
+                    id_lvl_sep_max = ray.put(0.)
+                    id_lvl_sep_bcg = ray.put(0.)
+                    id_size_sep = ray.put(0.)
+                    id_size_sep_pix = ray.put(0.)
+                    id_xs = ray.put(xs), id_ys = ray.put(ys)
+                    id_n_levels = ray.put(n_levels)
+                    id_mscoim = ray.put(mscoim)
+                    id_mscell = ray.put(mscell)
+                    id_mscbcg = ray.put(mscbcg)
+                    id_R = ray.put(R_pix)
+                    id_cat_gal = ray.put(cat_gal)
+                    id_rc_pix = ray.put(rc_pix)
+                    id_N_err = ray.put(N_err)
+                    id_per_err = ray.put(per_err)
+                    id_rm_gamma_for_big = ray.put(rm_gamma_for_big)
+                    id_kurt_filt = ray.put(True)
+                    id_plot_vignet = ray.put(True)
+
                     # Full field
                     ray_refs.append( make_results_cluster.remote(
-                                                    sch ='fullfield', \
-                                                    oim = oim, \
-                                                    nfp = nfp, \
-                                                    gamma = gamma, \
-                                                    lvl_sep_big = lvl_sep_big, \
-                                                    lvl_sep = 0., \
-                                                    lvl_sep_max = 0., \
-                                                    lvl_sep_bcg = 0., \
-                                                    size_sep = 0., \
-                                                    size_sep_pix = 0., \
-                                                    xs = xs, ys = ys, \
-                                                    n_levels = n_levels, \
-                                                    mscoim = mscoim, \
-                                                    mscell = mscell, \
-                                                    mscbcg = mscbcg, \
-                                                    R = R_pix, \
-                                                    cat_gal = cat_gal, \
-                                                    rc_pix = rc_pix,\
-                                                    N_err = N_err, \
-                                                    per_err = per_err, \
-                                                    rm_gamma_for_big = rm_gamma_for_big, \
-                                                    kurt_filt = True, \
-                                                    plot_vignet = True ))
+                                                    sch = id_sch, \
+                                                    oim = id_oim, \
+                                                    nfp = id_nfp, \
+                                                    gamma = id_gamma, \
+                                                    lvl_sep_big = id_lvl_sep_big, \
+                                                    lvl_sep = id_lvl_sep, \
+                                                    lvl_sep_max = id_lvl_sep_max, \
+                                                    lvl_sep_bcg = id_lvl_sep_bcg, \
+                                                    size_sep = id_size_sep, \
+                                                    size_sep_pix = id_size_sep_pix, \
+                                                    xs = xs, ys = id_ys, \
+                                                    n_levels = id_n_levels, \
+                                                    mscoim = id_mscoim, \
+                                                    mscell = id_mscell, \
+                                                    mscbcg = id_mscbcg, \
+                                                    R = id_R_pix, \
+                                                    cat_gal = id_cat_gal, \
+                                                    rc_pix = id_rc_pix,\
+                                                    N_err = id_N_err, \
+                                                    per_err = id_per_err, \
+                                                    rm_gamma_for_big = id_rm_gamma_for_big, \
+                                                    kurt_filt = id_kurt_filt, \
+                                                    plot_vignet = id_plot_vignet ))
 
                     '''
                         # ICL -- WS -----------------------------------------------------------------
@@ -1504,7 +1529,6 @@ if __name__ == '__main__':
                             for size_sep in size_sepl:
 
                                 size_sep_pix = size_sep / physcale / pix_scale # pixels
-make_results.out
                                 output = synthesis_bcgwavsizesep_with_masks( nfp = nfp, gamma = gamma, size_sep = size_sep, size_sep_pix = size_sep_pix,\
                                         lvl_sep_big = lvl_sep_big, lvl_sep = lvl_sep, lvl_sep_max = lvl_sep_max, lvl_sep_bcg = lvl_sep_bcg, xs = xs, ys = ys, \
                                         n_levels = n_levels, mscoim = mscoim, mscell = mscell, mscbcg = mscbcg, R = R_pix, cat_gal = cat_gal, rc_pix = rc_pix,\
