@@ -1453,7 +1453,8 @@ if __name__ == '__main__':
                                                     lvl_sep_bcg = id_lvl_sep_bcg, \
                                                     size_sep = id_size_sep, \
                                                     size_sep_pix = id_size_sep_pix, \
-                                                    xs = xs, ys = id_ys, \
+                                                    xs = id_xs, \
+                                                    ys = id_ys, \
                                                     n_levels = id_n_levels, \
                                                     mscoim = id_mscoim, \
                                                     mscell = id_mscell, \
