@@ -1276,7 +1276,7 @@ def synthesis_wavsizesep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_m
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @ray.remote
-def make_results_cluster( sch, nfp, gamma, size_sep, size_sep_pix,lvl_sep_big, lvl_sep, lvl_sep_max, lvl_sep_bcg, x, ys, n_levels, mscoim, mscell, mscbcg, R, cat_gal, rc_pix,N_err, per_err, rm_gamma_for_big = True, kurt_filt = True, plot_vignet = True):
+def make_results_cluster( sch, oim, nfp, gamma, size_sep, size_sep_pix,lvl_sep_big, lvl_sep, lvl_sep_max, lvl_sep_bcg, x, ys, n_levels, mscoim, mscell, mscbcg, R, cat_gal, rc_pix,N_err, per_err, rm_gamma_for_big = True, kurt_filt = True, plot_vignet = True):
     '''
     Runs all classification schemes for a single cluster. Performed by a single ray worker.
     '''
@@ -1287,7 +1287,7 @@ def make_results_cluster( sch, nfp, gamma, size_sep, size_sep_pix,lvl_sep_big, l
 
     # ICL -- WS -----------------------------------------------------------------
     if sch == 'WS':
-        output = synthesis_wavsep( nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gamma_for_big, kurt_filt = True, plot_vignet = True )
+        output = synthesis_wavsep( oim, nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gamma_for_big, kurt_filt = True, plot_vignet = True )
 
     # ICL -- WS + SF -----------------------------------------------------------
     if sch == 'WS+SF':
@@ -1427,27 +1427,30 @@ if __name__ == '__main__':
                     mscbcg = rbcg.get_mask(hdu = hdu[0]) # not python convention
 
                     # Full field
-                    ray_refs.append( make_results_cluster.remote( 'fullfield', nfp = nfp, \
-                                                      gamma = gamma, \
-                                                      lvl_sep_big = lvl_sep_big, \
-                                                      lvl_sep = np.nan, \
-                                                      lvl_sep_max = np.nan, \
-                                                      lvl_sep_bcg = np.nan, \
-                                                      size_sep = np.nan, \
-                                                      size_sep_pix =  np.nan, \
-                                                      xs = xs, ys = ys, \
-                                                      n_levels = n_levels, \
-                                                      mscoim = mscoim, \
-                                                      mscell = mscell, \
-                                                      mscbcg = mscbcg, \
-                                                      R = R_pix, \
-                                                      cat_gal = cat_gal, \
-                                                      rc_pix = rc_pix,\
-                                                      N_err = N_err, \
-                                                      per_err = per_err, \
-                                                      rm_gamma_for_big = rm_gamma_for_big, \
-                                                      kurt_filt = True, \
-                                                      plot_vignet = True ))
+                    ray_refs.append( make_results_cluster.remote(
+                                                    sch ='fullfield', \
+                                                    oim = oim, \
+                                                    nfp = nfp, \
+                                                    gamma = gamma, \
+                                                    lvl_sep_big = lvl_sep_big, \
+                                                    lvl_sep = 0., \
+                                                    lvl_sep_max = 0., \
+                                                    lvl_sep_bcg = 0., \
+                                                    size_sep = 0., \
+                                                    size_sep_pix = 0., \
+                                                    xs = xs, ys = ys, \
+                                                    n_levels = n_levels, \
+                                                    mscoim = mscoim, \
+                                                    mscell = mscell, \
+                                                    mscbcg = mscbcg, \
+                                                    R = R_pix, \
+                                                    cat_gal = cat_gal, \
+                                                    rc_pix = rc_pix,\
+                                                    N_err = N_err, \
+                                                    per_err = per_err, \
+                                                    rm_gamma_for_big = rm_gamma_for_big, \
+                                                    kurt_filt = True, \
+                                                    plot_vignet = True ))
 
                     '''
                         # ICL -- WS -----------------------------------------------------------------
