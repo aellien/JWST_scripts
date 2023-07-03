@@ -1430,11 +1430,11 @@ if __name__ == '__main__':
                     ray_refs.append( make_results_cluster.remote( 'fullfield', nfp = nfp, \
                                                       gamma = gamma, \
                                                       lvl_sep_big = lvl_sep_big, \
-                                                      lvl_sep = lvl_sep, \
-                                                      lvl_sep_max = lvl_sep_max, \
-                                                      lvl_sep_bcg = lvl_sep_bcg, \
-                                                      size_sep = size_sep, \
-                                                      size_sep_pix =  size_sep_pix, \
+                                                      lvl_sep = np.nan, \
+                                                      lvl_sep_max = np.nan, \
+                                                      lvl_sep_bcg = np.nan, \
+                                                      size_sep = np.nan, \
+                                                      size_sep_pix =  np.nan, \
                                                       xs = xs, ys = ys, \
                                                       n_levels = n_levels, \
                                                       mscoim = mscoim, \
