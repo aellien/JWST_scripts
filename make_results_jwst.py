@@ -221,6 +221,110 @@ def PR_with_selection_error(atom_in_list, atom_out_list, M, percent, lvl_sep_big
     return PR_results
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+def synthesis_wavsep( nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gamma_for_big = True, kurt_filt = False, plot_vignet = False ):
+    '''Simple separation based on wavelet scale, given by parameter 'lvl_sep'.
+    --- Args:
+    nfp         # root path of *.pkl
+    gamma       # attenuation factor
+    lvl_sep_big # wavelet scale at which gamma set to 1
+    lvl_sep     # wavelet scale threshold for the separation
+    xs, ys      # image size
+    n_levels    # number of wavelet scales
+    plot_vignet # plot pdf vignet of output
+    --- Output:
+    icl         # synthesis image with atoms at wavelet scale >= lvl_sep
+    gal         # synthesis image with atoms at wavelet scale < lvl_sep
+    '''
+    # path, list & variables
+    icl = np.zeros( (xs, ys) )
+    gal = np.zeros( (xs, ys) )
+    im_art = np.zeros((xs, ys))
+
+    xc = xs / 2.
+    yc = ys / 2.
+
+    # Read atoms
+    ol, itl = read_image_atoms( nfp, verbose = False )
+
+    onb = len(ol)
+    filtered_onb = 0
+
+    for j, o in enumerate(ol):
+
+        x_min, y_min, x_max, y_max = o.bbox
+
+        if kurt_filt == True:
+            k = kurtosis(o.image.flatten(), fisher=True)
+            if k < 0:
+                filtered_onb += 1
+                if (o.level >= lvl_sep_big) & (rm_gamma_for_big == True):
+                    im_art[ x_min : x_max, y_min : y_max ] += o.image
+                else:
+                    im_art[ x_min : x_max, y_min : y_max ] += o.image * gamma
+                continue
+
+        lvlo = o.level
+
+        if (o.level >= lvl_sep_big) & (rm_gamma_for_big == True):
+
+            if o.level >= lvl_sep:
+                icl[ x_min : x_max, y_min : y_max ] += o.image
+            else:
+                gal[ x_min : x_max, y_min : y_max ] += o.image
+
+        else:
+
+            if o.level >= lvl_sep:
+                icl[ x_min : x_max, y_min : y_max ] += o.image * gamma
+            else:
+                gal[ x_min : x_max, y_min : y_max ] += o.image * gamma
+
+    print('Kurtosis filtered: %d/%d'%(filtered_onb,onb))
+
+    hduo = fits.PrimaryHDU(icl)
+    hduo.writeto( nfp + 'synth.icl.wavsep_%03d.fits'%lvl_sep, overwrite = True )
+
+    hduo = fits.PrimaryHDU(gal)
+    hduo.writeto( nfp + 'synth.gal.wavsep_%03d.fits'%lvl_sep, overwrite = True )
+
+    if plot_vignet == True:
+        interval = AsymmetricPercentileInterval(5, 99.5) # meilleur rendu que MinMax or ZScale pour images reconstruites
+
+        if kurt_filt == True:
+            fig, ax = plt.subplots(1, 3)
+        else:
+            fig, ax = plt.subplots(1, 2)
+
+        poim = ax[0].imshow(gal, norm = ImageNormalize( gal, interval = interval, stretch = LogStretch()), cmap = 'binary')
+        divider = make_axes_locatable(ax[0])
+        cax = divider.append_axes("top", size="5%", pad=0.05)
+        caxre = fig.colorbar( poim, cax = cax, \
+                                    orientation = 'horizontal', \
+                                    format = '%2.1f',\
+                                    pad = 0,\
+                                    shrink = 1.0,\
+                                    ticklocation = 'top' )
+        poim = ax[1].imshow(icl, norm = ImageNormalize( icl, interval = interval, stretch = LogStretch()), cmap = 'binary')
+        divider = make_axes_locatable(ax[1])
+        cax = divider.append_axes("top", size="5%", pad=0.05)
+        caxre = fig.colorbar( poim, cax = cax, \
+                                    orientation = 'horizontal', \
+                                    format = '%2.1f',\
+                                    pad = 0,\
+                                    shrink = 1.0,\
+                                    ticklocation = 'top' )
+
+        if kurt_filt == True:
+            ax[2].imshow(im_art, norm = ImageNormalize(im_art, interval = interval, stretch = LogStretch() ), cmap = 'binary')
+
+        plt.tight_layout()
+        plt.savefig( nfp + 'results.wavsep_%03d.png'%lvl_sep, format = 'png' )
+        print('Write vignet to' + nfp + 'results.wavsep_%03d.png'%(lvl_sep))
+        plt.close('all')
+
+    return icl, gal
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 def synthesis_mbrgal_wavsizesep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, size_sep, size_sep_pix, xs, ys, n_levels, mscoim, cat_gal, rc_pix, rm_gamma_for_big = True, kurt_filt = True, plot_vignet = False ):
     '''Synthesis of galaxies from a catalog using separation on wavelet scale and spatial filtering.
     '''
