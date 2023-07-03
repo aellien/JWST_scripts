@@ -1202,7 +1202,7 @@ def make_results_cluster( sch, nfp, gamma, size_sep, size_sep_pix,lvl_sep_big, l
         synthesis_fullfield( oim, nfp, gamma, lvl_sep_big, xs, ys, n_levels, rm_gamma_for_big = True )
 
     # ICL -- WS -----------------------------------------------------------------
-    if sch == 'WS'
+    if sch == 'WS':
         output = synthesis_wavsep( nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gamma_for_big, kurt_filt = True, plot_vignet = True )
 
     # ICL -- WS + SF -----------------------------------------------------------
