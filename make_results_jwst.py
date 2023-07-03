@@ -1284,11 +1284,13 @@ def make_results_cluster( sch, oim, nfp, gamma, size_sep, size_sep_pix, lvl_sep_
     # Full field ---------------------------------------------------------------
     if sch == 'fullfield':
         synthesis_fullfield( oim, nfp, gamma, lvl_sep_big, xs, ys, n_levels, rm_gamma_for_big = True )
+        return None
 
     # ICL -- WS -----------------------------------------------------------------
     if sch == 'WS':
         output = synthesis_wavsep( oim, nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gamma_for_big, kurt_filt = True, plot_vignet = True )
-
+        return None
+        
     # ICL -- WS + SF -----------------------------------------------------------
     if sch == 'WS+SF':
         output = synthesis_wavsep_with_masks( nfp = nfp, gamma = gamma, \
