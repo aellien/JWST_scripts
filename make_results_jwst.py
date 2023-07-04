@@ -1381,7 +1381,7 @@ def synthesis_wavsizesep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_m
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @ray.remote
-def make_results_cluster( sch, oim, nfp, gamma, size_sep, size_sep_pix, lvl_sep_big, lvl_sep, lvl_sep_max, lvl_sep_bcg, xs, ys, n_levels, mscoim, mscell, mscbcg, R, cat_gal, rc_pix,N_err, per_err, rm_gamma_for_big, kurt_filt, plot_vignet):
+def make_results_cluster( sch, oim, nfp, chan, filt, gamma, size_sep, size_sep_pix, lvl_sep_big, lvl_sep, lvl_sep_max, lvl_sep_bcg, xs, ys, n_levels, mscoim, mscell, mscbcg, R, cat_gal, rc_pix,N_err, per_err, rm_gamma_for_big, kurt_filt, plot_vignet):
     '''
     Runs all classification schemes for a single cluster. Performed by a single ray worker.
     '''
@@ -1528,9 +1528,12 @@ if __name__ == '__main__':
                     lvl_sep = np.nan
                     size_sep = np.nan
                     size_sep_pix = np.nan
+
                     # ray_refs.append( make_results_cluster.remote(sch = 'fullfield', \
                     #                                 oim = id_oim, \
                     #                                 nfp = nfp, \
+                    #                                 chan = chan, \
+                    #                                 filt = filt, \
                     #                                 gamma = gamma, \
                     #                                 lvl_sep_big = lvl_sep_big, \
                     #                                 lvl_sep = lvl_sep, \
@@ -1545,6 +1548,7 @@ if __name__ == '__main__':
                     #                                 mscell = mscell, \
                     #                                 mscbcg = mscbcg, \
                     #                                 R = R_pix, \
+                    #                                 R_kpc = R_kpc,\
                     #                                 cat_gal = cat_gal, \
                     #                                 rc_pix = rc_pix,\
                     #                                 N_err = N_err, \
@@ -1559,6 +1563,8 @@ if __name__ == '__main__':
                     #    ray_refs.append( make_results_cluster.remote(sch = 'WS', \
                     #                                    oim = id_oim, \
                     #                                    nfp = nfp, \
+                    #                                    chan = chan, \
+                    #                                    filt = filt, \
                     #                                    gamma = gamma, \
                     #                                    lvl_sep_big = lvl_sep_big, \
                     #                                    lvl_sep = lvl_sep, \
@@ -1573,6 +1579,7 @@ if __name__ == '__main__':
                     #                                    mscell = mscell, \
                     #                                    mscbcg = mscbcg, \
                     #                                    R = R_pix, \
+                    #                                    R_kpc = R_kpc,\
                     #                                    cat_gal = cat_gal, \
                     #                                    rc_pix = rc_pix,\
                     #                                    N_err = N_err, \
@@ -1586,6 +1593,8 @@ if __name__ == '__main__':
                         ray_refs.append( make_results_cluster.remote(sch = 'WS+SF', \
                                                         oim = id_oim, \
                                                         nfp = nfp, \
+                                                        chan = chan, \
+                                                        filt = filt, \
                                                         gamma = gamma, \
                                                         lvl_sep_big = lvl_sep_big, \
                                                         lvl_sep = lvl_sep, \
@@ -1599,6 +1608,7 @@ if __name__ == '__main__':
                                                         mscoim = mscoim, \
                                                         mscell = mscell, \
                                                         mscbcg = mscbcg, \
+                                                        R_kpc = R_kpc,\
                                                         R = R_pix, \
                                                         cat_gal = cat_gal, \
                                                         rc_pix = rc_pix,\
@@ -1613,6 +1623,8 @@ if __name__ == '__main__':
                         ray_refs.append( make_results_cluster.remote(sch = 'WS+BCGSF', \
                                                         oim = oim, \
                                                         nfp = nfp, \
+                                                        chan = chan, \
+                                                        filt = filt, \
                                                         gamma = gamma, \
                                                         lvl_sep_big = lvl_sep_big, \
                                                         lvl_sep = lvl_sep, \
@@ -1626,6 +1638,7 @@ if __name__ == '__main__':
                                                         mscoim = mscoim, \
                                                         mscell = mscell, \
                                                         mscbcg = mscbcg, \
+                                                        R_kpc = R_kpc,\
                                                         R = R_pix, \
                                                         cat_gal = cat_gal, \
                                                         rc_pix = rc_pix,\
@@ -1642,6 +1655,8 @@ if __name__ == '__main__':
                             ray_refs.append( make_results_cluster.remote(sch = 'WS+SF+SS', \
                                                             oim = oim, \
                                                             nfp = nfp, \
+                                                            chan = chan, \
+                                                            filt = filt, \
                                                             gamma = gamma, \
                                                             lvl_sep_big = lvl_sep_big, \
                                                             lvl_sep = lvl_sep, \
@@ -1655,6 +1670,7 @@ if __name__ == '__main__':
                                                             mscoim = mscoim, \
                                                             mscell = mscell, \
                                                             mscbcg = mscbcg, \
+                                                            R_kpc = R_kpc,\
                                                             R = R_pix, \
                                                             cat_gal = cat_gal, \
                                                             rc_pix = rc_pix,\
@@ -1673,6 +1689,8 @@ if __name__ == '__main__':
                             ray_refs.append( make_results_cluster.remote(sch = 'WS+BCGSF+SS', \
                                                             oim = oim, \
                                                             nfp = nfp, \
+                                                            chan = chan, \
+                                                            filt = filt, \
                                                             gamma = gamma, \
                                                             lvl_sep_big = lvl_sep_big, \
                                                             lvl_sep = lvl_sep, \
@@ -1686,6 +1704,7 @@ if __name__ == '__main__':
                                                             mscoim = mscoim, \
                                                             mscell = mscell, \
                                                             mscbcg = mscbcg, \
+                                                            R_kpc = R_kpc, \
                                                             R = R_pix, \
                                                             cat_gal = cat_gal, \
                                                             rc_pix = rc_pix,\
