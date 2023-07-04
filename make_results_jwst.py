@@ -1525,9 +1525,9 @@ if __name__ == '__main__':
                     mscbcg = rbcg.get_mask(hdu = hdu[0]) # not python convention
 
                     # Full field ------------------------------------------------
-                    # lvl_sep = np.nan
-                    # size_sep = np.nan
-                    # size_sep_pix = np.nan
+                    lvl_sep = np.nan
+                    size_sep = np.nan
+                    size_sep_pix = np.nan
                     # ray_refs.append( make_results_cluster.remote(sch = 'fullfield', \
                     #                                 oim = id_oim, \
                     #                                 nfp = nfp, \
