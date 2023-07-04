@@ -1469,7 +1469,7 @@ if __name__ == '__main__':
     rm_gamma_for_big = True
 
     rc = 10 # kpc, distance to center to be classified as gal
-    N_err = 1000
+    N_err = 100
     per_err = 0.1
 
     results = []
@@ -1555,31 +1555,31 @@ if __name__ == '__main__':
 
 
                     # ICL -- WS ------------------------------------------------
-                    for lvl_sep in lvl_sepl:
-                        ray_refs.append( make_results_cluster.remote(sch = 'WS', \
-                                                        oim = id_oim, \
-                                                        nfp = nfp, \
-                                                        gamma = gamma, \
-                                                        lvl_sep_big = lvl_sep_big, \
-                                                        lvl_sep = lvl_sep, \
-                                                        lvl_sep_max = lvl_sep_max, \
-                                                        lvl_sep_bcg = lvl_sep_bcg, \
-                                                        size_sep = size_sep, \
-                                                        size_sep_pix = size_sep_pix, \
-                                                        xs = xs, \
-                                                        ys = ys, \
-                                                        n_levels = n_levels, \
-                                                        mscoim = mscoim, \
-                                                        mscell = mscell, \
-                                                        mscbcg = mscbcg, \
-                                                        R = R_pix, \
-                                                        cat_gal = cat_gal, \
-                                                        rc_pix = rc_pix,\
-                                                        N_err = N_err, \
-                                                        per_err = per_err, \
-                                                        rm_gamma_for_big = rm_gamma_for_big, \
-                                                        kurt_filt = True, \
-                                                        plot_vignet = False ))
+                    #for lvl_sep in lvl_sepl:
+                    #    ray_refs.append( make_results_cluster.remote(sch = 'WS', \
+                    #                                    oim = id_oim, \
+                    #                                    nfp = nfp, \
+                    #                                    gamma = gamma, \
+                    #                                    lvl_sep_big = lvl_sep_big, \
+                    #                                    lvl_sep = lvl_sep, \
+                    #                                    lvl_sep_max = lvl_sep_max, \
+                    #                                    lvl_sep_bcg = lvl_sep_bcg, \
+                    #                                    size_sep = size_sep, \
+                    #                                    size_sep_pix = size_sep_pix, \
+                    #                                    xs = xs, \
+                    #                                    ys = ys, \
+                    #                                    n_levels = n_levels, \
+                    #                                    mscoim = mscoim, \
+                    #                                    mscell = mscell, \
+                    #                                    mscbcg = mscbcg, \
+                    #                                    R = R_pix, \
+                    #                                    cat_gal = cat_gal, \
+                    #                                    rc_pix = rc_pix,\
+                    #                                    N_err = N_err, \
+                    #                                    per_err = per_err, \
+                    #                                    rm_gamma_for_big = rm_gamma_for_big, \
+                    #                                    kurt_filt = True, \
+                    #                                    plot_vignet = False ))
 
                     # ICL -- WS + SF -------------------------------------------
                     for lvl_sep in lvl_sepl:
@@ -1609,91 +1609,91 @@ if __name__ == '__main__':
                                                         plot_vignet = False ))
 
                     # ICL+BCG -- WS + SF ---------------------------------------
-                    for lvl_sep in lvl_sepl:
-                        ray_refs.append( make_results_cluster.remote(sch = 'WS+BCGSF', \
-                                                        oim = oim, \
-                                                        nfp = nfp, \
-                                                        gamma = gamma, \
-                                                        lvl_sep_big = lvl_sep_big, \
-                                                        lvl_sep = lvl_sep, \
-                                                        lvl_sep_max = lvl_sep_max, \
-                                                        lvl_sep_bcg = lvl_sep_bcg, \
-                                                        size_sep = size_sep, \
-                                                        size_sep_pix = size_sep_pix, \
-                                                        xs = xs, \
-                                                        ys = ys, \
-                                                        n_levels = n_levels, \
-                                                        mscoim = mscoim, \
-                                                        mscell = mscell, \
-                                                        mscbcg = mscbcg, \
-                                                        R = R_pix, \
-                                                        cat_gal = cat_gal, \
-                                                        rc_pix = rc_pix,\
-                                                        N_err = N_err, \
-                                                        per_err = per_err, \
-                                                        rm_gamma_for_big = rm_gamma_for_big, \
-                                                        kurt_filt = True, \
-                                                        plot_vignet = False ))
+                    #for lvl_sep in lvl_sepl:
+                    #    ray_refs.append( make_results_cluster.remote(sch = 'WS+BCGSF', \
+                    #                                    oim = oim, \
+                    #                                    nfp = nfp, \
+                    #                                    gamma = gamma, \
+                    #                                    lvl_sep_big = lvl_sep_big, \
+                    #                                    lvl_sep = lvl_sep, \
+                    #                                    lvl_sep_max = lvl_sep_max, \
+                    #                                    lvl_sep_bcg = lvl_sep_bcg, \
+                    #                                    size_sep = size_sep, \
+                    #                                    size_sep_pix = size_sep_pix, \
+                    #                                    xs = xs, \
+                    #                                    ys = ys, \
+                    #                                    n_levels = n_levels, \
+                    #                                    mscoim = mscoim, \
+                    #                                    mscell = mscell, \
+                    #                                    mscbcg = mscbcg, \
+                    #                                    R = R_pix, \
+                    #                                    cat_gal = cat_gal, \
+                    #                                    rc_pix = rc_pix,\
+                    #                                    N_err = N_err, \
+                    #                                    per_err = per_err, \
+                    #                                    rm_gamma_for_big = rm_gamma_for_big, \
+                    #                                    kurt_filt = True, \
+                    #                                    plot_vignet = False ))
 
-                    # ICL -- WS + SF + SS --------------------------------------
-                    for lvl_sep in lvl_sepl:
-                        for size_sep in size_sepl:
-                            size_sep_pix = size_sep / physcale / pix_scale # pixels
-                            ray_refs.append( make_results_cluster.remote(sch = 'WS+SF+SS', \
-                                                            oim = oim, \
-                                                            nfp = nfp, \
-                                                            gamma = gamma, \
-                                                            lvl_sep_big = lvl_sep_big, \
-                                                            lvl_sep = lvl_sep, \
-                                                            lvl_sep_max = lvl_sep_max, \
-                                                            lvl_sep_bcg = lvl_sep_bcg, \
-                                                            size_sep = size_sep, \
-                                                            size_sep_pix = size_sep_pix, \
-                                                            xs = xs, \
-                                                            ys = ys, \
-                                                            n_levels = n_levels, \
-                                                            mscoim = mscoim, \
-                                                            mscell = mscell, \
-                                                            mscbcg = mscbcg, \
-                                                            R = R_pix, \
-                                                            cat_gal = cat_gal, \
-                                                            rc_pix = rc_pix,\
-                                                            N_err = N_err, \
-                                                            per_err = per_err, \
-                                                            rm_gamma_for_big = rm_gamma_for_big, \
-                                                            kurt_filt = True, \
-                                                            plot_vignet = False ))
+                    ## ICL -- WS + SF + SS --------------------------------------
+                    #for lvl_sep in lvl_sepl:
+                    #    for size_sep in size_sepl:
+                    #        size_sep_pix = size_sep / physcale / pix_scale # pixels
+                    #        ray_refs.append( make_results_cluster.remote(sch = 'WS+SF+SS', \
+                    #                                        oim = oim, \
+                    #                                        nfp = nfp, \
+                    #                                        gamma = gamma, \
+                    #                                        lvl_sep_big = lvl_sep_big, \
+                    #                                        lvl_sep = lvl_sep, \
+                    #                                        lvl_sep_max = lvl_sep_max, \
+                    #                                        lvl_sep_bcg = lvl_sep_bcg, \
+                    #                                        size_sep = size_sep, \
+                    #                                        size_sep_pix = size_sep_pix, \
+                    #                                        xs = xs, \
+                    #                                        ys = ys, \
+                    #                                        n_levels = n_levels, \
+                    #                                        mscoim = mscoim, \
+                    #                                        mscell = mscell, \
+                    #                                        mscbcg = mscbcg, \
+                    #                                        R = R_pix, \
+                    #                                        cat_gal = cat_gal, \
+                    #                                        rc_pix = rc_pix,\
+                    #                                        N_err = N_err, \
+                    #                                        per_err = per_err, \
+                    #                                        rm_gamma_for_big = rm_gamma_for_big, \
+                    #                                        kurt_filt = True, \
+                    #                                        plot_vignet = False ))
 
-                    # ICL+BCG -- WS + SF + SS ----------------------------------
-                    for lvl_sep in lvl_sepl:
+                    ## ICL+BCG -- WS + SF + SS ----------------------------------
+                    #for lvl_sep in lvl_sepl:
 
-                        for size_sep in size_sepl:
+                    #    for size_sep in size_sepl:
 
-                            size_sep_pix = size_sep / physcale / pix_scale # pixels
-                            ray_refs.append( make_results_cluster.remote(sch = 'WS+BCGSF+SS', \
-                                                            oim = oim, \
-                                                            nfp = nfp, \
-                                                            gamma = gamma, \
-                                                            lvl_sep_big = lvl_sep_big, \
-                                                            lvl_sep = lvl_sep, \
-                                                            lvl_sep_max = lvl_sep_max, \
-                                                            lvl_sep_bcg = lvl_sep_bcg, \
-                                                            size_sep = size_sep, \
-                                                            size_sep_pix = size_sep_pix, \
-                                                            xs = xs, \
-                                                            ys = ys, \
-                                                            n_levels = n_levels, \
-                                                            mscoim = mscoim, \
-                                                            mscell = mscell, \
-                                                            mscbcg = mscbcg, \
-                                                            R = R_pix, \
-                                                            cat_gal = cat_gal, \
-                                                            rc_pix = rc_pix,\
-                                                            N_err = N_err, \
-                                                            per_err = per_err, \
-                                                            rm_gamma_for_big = rm_gamma_for_big, \
-                                                            kurt_filt = True, \
-                                                            plot_vignet = False ))
+                    #        size_sep_pix = size_sep / physcale / pix_scale # pixels
+                    #        ray_refs.append( make_results_cluster.remote(sch = 'WS+BCGSF+SS', \
+                    #                                        oim = oim, \
+                    #                                        nfp = nfp, \
+                    #                                        gamma = gamma, \
+                    #                                        lvl_sep_big = lvl_sep_big, \
+                    #                                        lvl_sep = lvl_sep, \
+                    #                                        lvl_sep_max = lvl_sep_max, \
+                    #                                        lvl_sep_bcg = lvl_sep_bcg, \
+                    #                                        size_sep = size_sep, \
+                    #                                        size_sep_pix = size_sep_pix, \
+                    #                                        xs = xs, \
+                    #                                        ys = ys, \
+                    #                                        n_levels = n_levels, \
+                    #                                        mscoim = mscoim, \
+                    #                                        mscell = mscell, \
+                    #                                        mscbcg = mscbcg, \
+                    #                                        R = R_pix, \
+                    #                                        cat_gal = cat_gal, \
+                    #                                        rc_pix = rc_pix,\
+                    #                                        N_err = N_err, \
+                    #                                        per_err = per_err, \
+                    #                                        rm_gamma_for_big = rm_gamma_for_big, \
+                    #                                        kurt_filt = True, \
+                    #                                        plot_vignet = False ))
 
 
     for ref in ray_refs:
