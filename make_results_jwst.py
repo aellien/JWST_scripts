@@ -1472,7 +1472,7 @@ if __name__ == '__main__':
     ray_outputs = []
 
     # ray hyperparameters
-    n_cpus = 48
+    n_cpus = 24
     ray.init(num_cpus = n_cpus)
 
     for chan in [ 'long' ]:
