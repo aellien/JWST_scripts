@@ -1439,10 +1439,10 @@ def make_results_cluster( sch, oim, nfp, chan, filt, gamma, size_sep, size_sep_p
 if __name__ == '__main__':
 
     # Paths, lists & variables
-    path_data = '/home/ellien/JWST/data/'
-    path_scripts = '/home/ellien/JWST/JWST_scripts'
-    path_wavelets = '/home/ellien/JWST/wavelets/out12/'
-    path_plots = '/home/ellien/JWST/plots'
+    path_data = '/n03data/ellien/JWST/data/'
+    path_scripts = '/n03data/ellien/JWST/JWST_scripts'
+    path_wavelets = '/n03data/ellien/JWST/wavelets/out12/'
+    path_plots = '/n03data/ellien/JWST/plots'
 
     nfl = [ {'nf':'jw02736001001_f356w_bkg_rot_crop_input.fits', 'chan':'long', 'pix_scale':0.063, 'n_levels':10, 'lvl_sep_max':999 }, \
             {'nf':'jw02736001001_f444w_bkg_rot_crop_input.fits', 'chan':'long', 'pix_scale':0.063, 'n_levels':10, 'lvl_sep_max':999 }, \
