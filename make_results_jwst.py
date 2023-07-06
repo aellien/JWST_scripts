@@ -1461,7 +1461,7 @@ if __name__ == '__main__':
     rm_gamma_for_big = True
 
     rc = 10 # kpc, distance to center to be classified as gal
-    N_err = 5
+    N_err = 100
     per_err = 0.1
 
     results = []
