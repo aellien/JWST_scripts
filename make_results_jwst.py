@@ -675,7 +675,7 @@ def synthesis_bcgwavsep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_ma
     return icl, gal, F_ICL_m, F_ICL_low, F_ICL_up, F_gal_m, F_gal_low, F_gal_up, f_ICL_m, f_ICL_low, f_ICL_up, PR_1_m, PR_1_up, PR_1_low, PR_2_m, PR_2_up, PR_2_low, PR_3_m, PR_3_up, PR_3_low, PR_4_m, PR_4_up, PR_4_low
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-def synthesis_bcgwavsizesep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_max, lvl_sep_bcg, size_sep, size_sep_pix, xs, ys, n_levels, mscoim, mscell, mscbcg, R, cat_gal, rc_pix, N_err, per_err, rm_gamma_for_big = True, kurt_filt = True, plot_vignet = False ):
+def synthesis_bcgwavsizesep_with_masks( nfp, chan, gamma, lvl_sep_big, lvl_sep, lvl_sep_max, lvl_sep_bcg, size_sep, size_sep_pix, xs, ys, n_levels, mscoim, mscell, mscbcg, R, cat_gal, rc_pix, N_err, per_err, rm_gamma_for_big = True, kurt_filt = True, plot_vignet = False ):
     '''Wavelet Separation + Spatial filtering.
     ICL --> Atoms with z > lvl_sep, with maximum coordinates within ellipse mask 'mscell' and with size > size_sep_pix.
     Galaxies --> Satellites + BCG, so a bit complicated:
@@ -738,7 +738,8 @@ def synthesis_bcgwavsizesep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_se
         if (mscoim[xco, yco] != 1) & (mscell[xco, yco] == 1):
 
             # BCG
-            xbcg, ybcg = [ 985, 1051 ]
+            if chan == 'long':xbcg, ybcg = [ 1050, 980 ] # pix long, ds9 convention
+            if chan == 'short':xbcg, ybcg = [ 2130, 2000 ] # pix short, ds9 convention
             if mscbcg[xco, yco] == 1:
 
                 dr = np.sqrt( (xbcg - xco)**2 + (ybcg - yco)**2 )
@@ -766,7 +767,8 @@ def synthesis_bcgwavsizesep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_se
                     if (o.level >= lvl_sep) & (sx >= size_sep_pix) & (sy >= size_sep_pix):
 
                         #%%%%%
-                        coo_spur_halo = [ [1613, 1664], [1684, 1480], [535, 261] ] # pix long
+                        if chan == 'long':coo_spur_halo = [ [1615, 1665], [1685, 1480], [530, 260] ] # pix long, ds9 convention
+                        if chan == 'short':coo_spur_halo = [ [3300, 3375], [3345, 3000], [1100, 550] ] # pix short, ds9 convention
                         flag = False
                         for ygal, xgal in coo_spur_halo:
 
@@ -788,7 +790,8 @@ def synthesis_bcgwavsizesep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_se
                     if (o.level >= lvl_sep) & (sx >= size_sep_pix) & (sy >= size_sep_pix):
 
                         #%%%%%
-                        coo_spur_halo = [ [1613, 1664], [1684, 1480], [535, 261] ] # pix long
+                        if chan == 'long':coo_spur_halo = [ [1615, 1665], [1685, 1480], [530, 260] ] # pix long, ds9 convention
+                        if chan == 'short':coo_spur_halo = [ [3300, 3375], [3345, 3000], [1100, 550] ] # pix short, ds9 convention
                         flag = False
                         for ygal, xgal in coo_spur_halo:
 
@@ -1425,7 +1428,7 @@ def make_results_cluster( sch, oim, nfp, chan, filt, gamma, size_sep, size_sep_p
 
     # ICL+BCG -- WS + SF + SS --------------------------------------------------
     if sch == 'WS+BCGSF+SS':
-        output = synthesis_bcgwavsizesep_with_masks( nfp = nfp, gamma = gamma, size_sep = size_sep, size_sep_pix = size_sep_pix,\
+        output = synthesis_bcgwavsizesep_with_masks( nfp = nfp, chan = chan, gamma = gamma, size_sep = size_sep, size_sep_pix = size_sep_pix,\
                 lvl_sep_big = lvl_sep_big, lvl_sep = lvl_sep, lvl_sep_max = lvl_sep_max, lvl_sep_bcg = lvl_sep_bcg, xs = xs, ys = ys, \
                 n_levels = n_levels, mscoim = mscoim, mscell = mscell, mscbcg = mscbcg, R = R_pix, cat_gal = cat_gal, rc_pix = rc_pix,\
                 N_err = N_err, per_err = per_err, rm_gamma_for_big = rm_gamma_for_big, kurt_filt = kurt_filt, plot_vignet = plot_vignet )
@@ -1461,7 +1464,7 @@ if __name__ == '__main__':
     rm_gamma_for_big = True
 
     rc = 10 # kpc, distance to center to be classified as gal
-    N_err = 100
+    N_err = 1
     per_err = 0.1
 
     results = []
