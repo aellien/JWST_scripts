@@ -1475,7 +1475,7 @@ if __name__ == '__main__':
     n_cpus = 48
     ray.init(num_cpus = n_cpus)
 
-    for chan in [ 'long' ]:
+    for chan in [ 'short', 'long' ]:
 
         for R_kpc in R_kpcl:
 
