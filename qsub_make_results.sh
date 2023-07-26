@@ -2,7 +2,7 @@
 #PBS -o /home/ellien/JWST/logs/make_results.out
 #PBS -j oe
 #PBS -N maker
-#PBS -l nodes=n18:ppn=48,walltime=47:00:00
+#PBS -l nodes=n19:ppn=48,walltime=47:00:00
 #PSB -S /bin/bash
 
 module load intelpython/3-2020.4
