@@ -1468,7 +1468,7 @@ if __name__ == '__main__':
 
     lvl_sepl = [ 3, 4, 5, 6, 7 ] # wavelet scale separation
     size_sepl = [ 60, 80, 100, 140, 200 ] # size separation [kpc]
-    R_kpcl = [ 400 ] # radius in which quantities are measured [kpc]
+    R_kpcl = [ 128, 200, 400 ] # radius in which quantities are measured [kpc]
     physcale = 5.3 # kpc/"
     gamma = 0.5
     lvl_sep_big = 5
@@ -1476,7 +1476,7 @@ if __name__ == '__main__':
     rm_gamma_for_big = True
 
     rc = 10 # kpc, distance to center to be classified as gal
-    N_err = 1
+    N_err = 50
     per_err = 0.1
 
     results = []
@@ -1484,7 +1484,7 @@ if __name__ == '__main__':
     ray_outputs = []
 
     # ray hyperparameters
-    n_cpus = 24
+    n_cpus = 42
     ray.init(num_cpus = n_cpus)
 
     for chan in [ 'long' ]:
@@ -1726,8 +1726,8 @@ if __name__ == '__main__':
 
     ray.shutdown()
 
-    #results_df = ray_outputs[0]
-    #for output_df in ray_outputs[1:]:
-    #    results_df = pd.concat( [ results_df, output_df], ignore_index = True )
+    results_df = ray_outputs[0]
+    for output_df in ray_outputs[1:]:
+        results_df = pd.concat( [ results_df, output_df], ignore_index = True )
 
-    #results_df.to_excel('/home/ellien/JWST/analysis/results_out2.xlsx')
+    results_df.to_excel('/home/ellien/JWST/analysis/results_out13.xlsx')
