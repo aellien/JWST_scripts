@@ -1452,19 +1452,23 @@ if __name__ == '__main__':
     # Paths, lists & variables
     path_data = '/n03data/ellien/JWST/data/'
     path_scripts = '/n03data/ellien/JWST/JWST_scripts'
-    path_wavelets = '/n03data/ellien/JWST/wavelets/out12/'
+    path_wavelets = '/n03data/ellien/JWST/wavelets/out13/'
     path_plots = '/n03data/ellien/JWST/plots'
 
     nfl = [ {'nf':'jw02736001001_f356w_bkg_rot_crop_input.fits', 'chan':'long', 'pix_scale':0.063, 'n_levels':10, 'lvl_sep_max':999 }, \
             {'nf':'jw02736001001_f444w_bkg_rot_crop_input.fits', 'chan':'long', 'pix_scale':0.063, 'n_levels':10, 'lvl_sep_max':999 }, \
             {'nf':'jw02736001001_f277w_bkg_rot_crop_input.fits', 'chan':'long', 'pix_scale':0.063, 'n_levels':10, 'lvl_sep_max':999 }, \
-            {'nf':'jw02736001001_f090w_bkg_rot_crop_input.fits', 'chan':'short', 'pix_scale':0.031, 'n_levels':11, 'lvl_sep_max':8 }, \
-            {'nf':'jw02736001001_f150w_bkg_rot_crop_input.fits', 'chan':'short', 'pix_scale':0.031, 'n_levels':11, 'lvl_sep_max':8 }, \
-            {'nf':'jw02736001001_f200w_bkg_rot_crop_input.fits', 'chan':'short', 'pix_scale':0.031, 'n_levels':11, 'lvl_sep_max':8 } ]
+            {'nf':'jw02736001001_f090w_bkg_rot_crop_warp_det_nosky_input.fits', 'chan':'long', 'pix_scale':0.063, 'n_levels':10, 'lvl_sep_max':999 }, \
+            {'nf':'jw02736001001_f150w_bkg_rot_crop_warp_det_nosky_input.fits', 'chan':'long', 'pix_scale':0.063, 'n_levels':10, 'lvl_sep_max':999 }, \
+            {'nf':'jw02736001001_f200w_bkg_rot_crop_warp_det_nosky_input.fits', 'chan':'long', 'pix_scale':0.063, 'n_levels':10, 'lvl_sep_max':999 } ]
+
+            #{'nf':'jw02736001001_f090w_bkg_rot_crop_input.fits', 'chan':'short', 'pix_scale':0.031, 'n_levels':11, 'lvl_sep_max':8 }, \
+            #{'nf':'jw02736001001_f150w_bkg_rot_crop_input.fits', 'chan':'short', 'pix_scale':0.031, 'n_levels':11, 'lvl_sep_max':8 }, \
+            #{'nf':'jw02736001001_f200w_bkg_rot_crop_input.fits', 'chan':'short', 'pix_scale':0.031, 'n_levels':11, 'lvl_sep_max':8 }
 
     lvl_sepl = [ 3, 4, 5, 6, 7 ] # wavelet scale separation
     size_sepl = [ 60, 80, 100, 140, 200 ] # size separation [kpc]
-    R_kpcl = [ 128, 200, 400 ] # radius in which quantities are measured [kpc]
+    R_kpcl = [ 400 ] # radius in which quantities are measured [kpc]
     physcale = 5.3 # kpc/"
     gamma = 0.5
     lvl_sep_big = 5
@@ -1472,7 +1476,7 @@ if __name__ == '__main__':
     rm_gamma_for_big = True
 
     rc = 10 # kpc, distance to center to be classified as gal
-    N_err = 50
+    N_err = 1
     per_err = 0.1
 
     results = []
@@ -1480,10 +1484,10 @@ if __name__ == '__main__':
     ray_outputs = []
 
     # ray hyperparameters
-    n_cpus = 48
+    n_cpus = 24
     ray.init(num_cpus = n_cpus)
 
-    for chan in [ 'short', 'long' ]:
+    for chan in [ 'long' ]:
 
         for R_kpc in R_kpcl:
 
@@ -1722,8 +1726,8 @@ if __name__ == '__main__':
 
     ray.shutdown()
 
-    results_df = ray_outputs[0]
-    for output_df in ray_outputs[1:]:
-        results_df = pd.concat( [ results_df, output_df], ignore_index = True )
+    #results_df = ray_outputs[0]
+    #for output_df in ray_outputs[1:]:
+    #    results_df = pd.concat( [ results_df, output_df], ignore_index = True )
 
-    results_df.to_excel('/home/ellien/JWST/analysis/results_out2.xlsx')
+    #results_df.to_excel('/home/ellien/JWST/analysis/results_out2.xlsx')
