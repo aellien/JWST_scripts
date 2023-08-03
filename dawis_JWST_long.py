@@ -5,7 +5,7 @@ import shutil
 
 indir = '/n03data/ellien/JWST/data'
 infile = sys.argv[1]
-outdir = '/n03data/ellien/JWST/wavelets/out13/'
+outdir = '/n03data/ellien/JWST/wavelets/out14/'
 n_cpus = 4 # Number of CPUs
 tau = 0.8   # Relative Threshold
 gamma = 0.5   # Attenuation (CLEAN) factor
