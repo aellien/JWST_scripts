@@ -1452,16 +1452,20 @@ if __name__ == '__main__':
     # Paths, lists & variables
     path_data = '/n03data/ellien/JWST/data/'
     path_scripts = '/n03data/ellien/JWST/JWST_scripts'
-    path_wavelets = '/n03data/ellien/JWST/wavelets/out13/'
+    path_wavelets = '/n03data/ellien/JWST/wavelets/out14/'
     path_plots = '/n03data/ellien/JWST/plots'
 
-    nfl = [ {'nf':'jw02736001001_f356w_bkg_rot_crop_input.fits', 'chan':'long', 'pix_scale':0.063, 'n_levels':10, 'lvl_sep_max':999 }, \
-            {'nf':'jw02736001001_f444w_bkg_rot_crop_input.fits', 'chan':'long', 'pix_scale':0.063, 'n_levels':10, 'lvl_sep_max':999 }, \
-            {'nf':'jw02736001001_f277w_bkg_rot_crop_input.fits', 'chan':'long', 'pix_scale':0.063, 'n_levels':10, 'lvl_sep_max':999 }, \
-            {'nf':'jw02736001001_f090w_bkg_rot_crop_warp_det_nosky_input.fits', 'chan':'long', 'pix_scale':0.063, 'n_levels':10, 'lvl_sep_max':999 }, \
-            {'nf':'jw02736001001_f150w_bkg_rot_crop_warp_det_nosky_input.fits', 'chan':'long', 'pix_scale':0.063, 'n_levels':10, 'lvl_sep_max':999 }, \
-            {'nf':'jw02736001001_f200w_bkg_rot_crop_warp_det_nosky_input.fits', 'chan':'long', 'pix_scale':0.063, 'n_levels':10, 'lvl_sep_max':999 } ]
+    nfl = [ {'nf':'jw02736001001_f090w_bkg_rot_crop_test_clean_det_nosky_input.fits', 'chan':'long', 'pix_scale':0.063, 'n_levels':10, 'lvl_sep_max':999 } ]
 
+            # out13
+            #{'nf':'jw02736001001_f356w_bkg_rot_crop_input.fits', 'chan':'long', 'pix_scale':0.063, 'n_levels':10, 'lvl_sep_max':999 }, \
+            #{'nf':'jw02736001001_f444w_bkg_rot_crop_input.fits', 'chan':'long', 'pix_scale':0.063, 'n_levels':10, 'lvl_sep_max':999 }, \
+            #{'nf':'jw02736001001_f277w_bkg_rot_crop_input.fits', 'chan':'long', 'pix_scale':0.063, 'n_levels':10, 'lvl_sep_max':999 }, \
+            #{'nf':'jw02736001001_f090w_bkg_rot_crop_warp_det_nosky_input.fits', 'chan':'long', 'pix_scale':0.063, 'n_levels':10, 'lvl_sep_max':999 }, \
+            #{'nf':'jw02736001001_f150w_bkg_rot_crop_warp_det_nosky_input.fits', 'chan':'long', 'pix_scale':0.063, 'n_levels':10, 'lvl_sep_max':999 }, \
+            #{'nf':'jw02736001001_f200w_bkg_rot_crop_warp_det_nosky_input.fits', 'chan':'long', 'pix_scale':0.063, 'n_levels':10, 'lvl_sep_max':999 } ]
+
+            # out12
             #{'nf':'jw02736001001_f090w_bkg_rot_crop_input.fits', 'chan':'short', 'pix_scale':0.031, 'n_levels':11, 'lvl_sep_max':8 }, \
             #{'nf':'jw02736001001_f150w_bkg_rot_crop_input.fits', 'chan':'short', 'pix_scale':0.031, 'n_levels':11, 'lvl_sep_max':8 }, \
             #{'nf':'jw02736001001_f200w_bkg_rot_crop_input.fits', 'chan':'short', 'pix_scale':0.031, 'n_levels':11, 'lvl_sep_max':8 }
@@ -1484,7 +1488,7 @@ if __name__ == '__main__':
     ray_outputs = []
 
     # ray hyperparameters
-    n_cpus = 32
+    n_cpus = 12
     ray.init(num_cpus = n_cpus)
 
     for chan in [ 'long' ]:
