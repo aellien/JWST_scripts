@@ -1452,7 +1452,7 @@ if __name__ == '__main__':
 
     lvl_sepl = [ 3, 4, 5, 6, 7 ] # wavelet scale separation
     size_sepl = [ 60, 80, 100, 140, 200 ] # size separation [kpc]
-    R_kpcl = [ 400 ] # radius in which quantities are measured [kpc]
+    R_kpcl = [ 128, 200, 400 ] # radius in which quantities are measured [kpc]
     physcale = 5.3 # kpc/"
     gamma = 0.5
     lvl_sep_big = 5
@@ -1460,14 +1460,14 @@ if __name__ == '__main__':
     rm_gamma_for_big = True
 
     rc = 10 # kpc, distance to center to be classified as gal
-    N_err = 3
+    N_err = 20
     per_err = 0.1
 
     kurt_filt = True
     plot_vignet = False
-    write_fits = True
-    measure_PR = False
-    write_dataframe = False
+    write_fits = False
+    measure_PR = True
+    write_dataframe = True
 
     results = []
     ray_refs = []
@@ -1718,8 +1718,8 @@ if __name__ == '__main__':
                                                             N_err = N_err, \
                                                             per_err = per_err, \
                                                             rm_gamma_for_big = rm_gamma_for_big, \
-                                                            kurt_filt = True, \
-                                                            plot_vignet = False, \
+                                                            kurt_filt = kurt_filt, \
+                                                            plot_vignet = plot_vignet, \
                                                             write_fits = write_fits, \
                                                             measure_PR = measure_PR ))
 
