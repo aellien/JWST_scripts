@@ -11,13 +11,17 @@
 #      sleep 2
 #done
 
-for f in f090w f150w f200w
+for f in jw02736001001_f090w_bkg_rot_crop_warp_nobkg1_det_nosky_input.fits \
+         jw02736001001_f150w_bkg_rot_crop_warp_nobkg1_det_nosky_input.fits \
+         jw02736001001_f200w_bkg_rot_crop_warp_nobkg1_det_nosky_input.fits \
+         jw02736001001_f277w_bkg_rot_crop_input.fits \
+         jw02736001001_f356w_bkg_rot_crop_input.fits \
+         jw02736001001_f444w_bkg_rot_crop_input.fits
 do
       #file=jw02736001001_${f}_bkg_rot_crop_det_nosky.fits # out12
       #file=jw02736001001_${f}_bkg_rot_crop_warp_det_nosky_input.fits # out13 - rebinned
-      file=jw02736001001_${f}_bkg_rot_crop_warp_nobkg1_det_nosky_input.fits # out14 rm scattered light
-      echo "Launch Dawis on file $file"
+      #file=jw02736001001_${f}_bkg_rot_crop_warp_nobkg1_det_nosky_input.fits # out14 rm scattered light
+      # out15 - slightly deeper run, DAWIS ran on every filter again
       echo "Launch Dawis on file $file"
       qsub qsub_dawis_jwst.sh -v n=${file},ncl=${file:0:-5},chan=long # Long here is just for dawis input file (rebinned short images)
-      sleep 2
 done
