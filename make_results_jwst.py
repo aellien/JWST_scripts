@@ -1438,7 +1438,7 @@ if __name__ == '__main__':
     # Paths, lists & variables
     path_data = '/n03data/ellien/JWST/data/'
     path_scripts = '/n03data/ellien/JWST/JWST_scripts'
-    path_wavelets = '/n03data/ellien/JWST/wavelets/out14/'
+    path_wavelets = '/n03data/ellien/JWST/wavelets/out15/'
     path_plots = '/n03data/ellien/JWST/plots'
 
     nfl = [ {'nf':'jw02736001001_f090w_bkg_rot_crop_warp_nobkg2.fi30', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':30. }, \
