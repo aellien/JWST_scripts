@@ -708,8 +708,7 @@ def synthesis_bcgwavsizesep_with_masks( nfp, chan, gamma, lvl_sep_big, lvl_sep, 
         if (mscoim[xco, yco] != 1) & (mscell[xco, yco] == 1):
 
             # BCG
-            if chan == 'long':xbcg, ybcg = [ 1050, 980 ] # pix long, ds9 convention
-            if chan == 'short':xbcg, ybcg = [ 2130, 2000 ] # pix short, ds9 convention
+            xbcg, ybcg = [ 1050, 980 ] # pix long, ds9 convention
             if mscbcg[xco, yco] == 1:
 
                 dr = np.sqrt( (xbcg - xco)**2 + (ybcg - yco)**2 )
@@ -737,8 +736,8 @@ def synthesis_bcgwavsizesep_with_masks( nfp, chan, gamma, lvl_sep_big, lvl_sep, 
                     if (o.level >= lvl_sep) & (sx >= size_sep_pix) & (sy >= size_sep_pix):
 
                         #%%%%%
-                        if chan == 'long':coo_spur_halo = [ [1615, 1665], [1685, 1480], [530, 260] ] # pix long, ds9 convention
-                        if chan == 'short':coo_spur_halo = [ [3300, 3375], [3345, 3000], [1100, 550] ] # pix short, ds9 convention
+                        coo_spur_halo = [ [1615, 1665], [1685, 1480], [530, 260] ] # pix long, ds9 convention
+
                         flag = False
                         for ygal, xgal in coo_spur_halo:
 
@@ -760,8 +759,7 @@ def synthesis_bcgwavsizesep_with_masks( nfp, chan, gamma, lvl_sep_big, lvl_sep, 
                     if (o.level >= lvl_sep) & (sx >= size_sep_pix) & (sy >= size_sep_pix):
 
                         #%%%%%
-                        if chan == 'long':coo_spur_halo = [ [1615, 1665], [1685, 1480], [530, 260] ] # pix long, ds9 convention
-                        if chan == 'short':coo_spur_halo = [ [3300, 3375], [3345, 3000], [1100, 550] ] # pix short, ds9 convention
+                        coo_spur_halo = [ [1615, 1665], [1685, 1480], [530, 260] ] # pix long, ds9 convention
                         flag = False
                         for ygal, xgal in coo_spur_halo:
 
@@ -1464,9 +1462,9 @@ if __name__ == '__main__':
     path_plots = '/n03data/ellien/JWST/plots'
     path_analysis = '/n03data/ellien/JWST/analysis/'
 
-    nfl = [ {'nf':'jw02736001001_f090w_bkg_rot_crop_warp_nobkg2.fits', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':30. }, \
-            {'nf':'jw02736001001_f150w_bkg_rot_crop_warp_nobkg2.fits', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':30. }, \
-            {'nf':'jw02736001001_f200w_bkg_rot_crop_warp_nobkg2.fits', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':30. }, \
+    nfl = [ {'nf':'jw02736001001_f090w_bkg_rot_crop_warp_nobkg2.fits', 'chan':'short', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':30. }, \
+            {'nf':'jw02736001001_f150w_bkg_rot_crop_warp_nobkg2.fits', 'chan':'short', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':30. }, \
+            {'nf':'jw02736001001_f200w_bkg_rot_crop_warp_nobkg2.fits', 'chan':'short', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':30. }, \
             {'nf':'jw02736001001_f356w_bkg_rot_crop_input.fits', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':30. }, \
             {'nf':'jw02736001001_f444w_bkg_rot_crop_input.fits', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':30. }, \
             {'nf':'jw02736001001_f277w_bkg_rot_crop_input.fits', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':30. } ]
@@ -1491,7 +1489,7 @@ if __name__ == '__main__':
     rm_gamma_for_big = True
 
     rc = 10 # kpc, distance to center to be classified as gal
-    N_err = 50
+    N_err = 100
     per_err = 0.1
 
     sed_n_ann = 10 # number of annuli regions, SED
@@ -1511,29 +1509,47 @@ if __name__ == '__main__':
     n_cpus = 18
     ray.init(num_cpus = n_cpus)
 
-    for chan in [ 'long' ]:
+    # Read galaxy catalog
+    rgal = pyr.open(os.path.join(path_data, 'mahler_noirot_merged_member_gal_ra_dec_pix_long.reg'))
+    cat_gal = []
+    for gal in rgal:
+        cat_gal.append(gal.coord_list)
+    cat_gal = np.array(cat_gal)
+
+    # Read star region files
+    rco = pyr.open(os.path.join(path_data, 'star_flags_polygon_pix_long.reg'))
+    rell = pyr.open(os.path.join(path_data, 'icl_flags_ellipse_pix_long.reg'))
+    rbcg = pyr.open(os.path.join(path_data, 'bcg_flags_ellipse_pix_long.reg'))
+
+    # Read SED extraction regions
+    rsedl = []
+    for i in range(1, sed_n_ann + 1):
+        rsedl.append(pyr.open(os.path.join(path_data, 'ellipse_annuli_pix_long_%d.reg'%i)))
+    for i in range(1, sed_n_str + 1):
+        rsedl.append(pyr.open(os.path.join(path_data, 'streams_flags_pix_long_%d.reg'%i)))
+    rsedl.append(rell)
+
+    for chan in [ 'short', 'long' ]:
+
+        # Masks
+        if chan == 'long':
+            hdu = fits.open(os.path.join(path_data, 'jw02736001001_f277w_bkg_rot_crop_input.fits')) # Arbitrary
+        else:
+            hdu = fits.open(os.path.join(path_data, 'jw02736001001_f200w_bkg_rot_crop_warp_nobkg2.fits')) # Arbitrary
+
+        mscell = rell.get_mask(hdu = hdu[0]) # not python convention
+        mscoim = rco.get_mask(hdu = hdu[0]) # not python convention
+        mscbcg = rbcg.get_mask(hdu = hdu[0]) # not python convention
+        mscsedl = [] # SED
+        for rsed in rsedl:
+            msc = rsed.get_mask(hdu = hdu[0])
+            mscsedl.append(msc)
+        id_mscsedl = ray.put(mscsedl)
+        id_mscell = ray.put(mscell)
+        id_mscoim = ray.put(mscoim)
+        id_mscbcg = ray.put(mscbcg)
 
         for R_kpc in R_kpcl:
-
-            # Read galaxy catalog
-            rgal = pyr.open(os.path.join(path_data, 'mahler_noirot_merged_member_gal_ra_dec_pix_%s.reg'%chan))
-            cat_gal = []
-            for gal in rgal:
-                cat_gal.append(gal.coord_list)
-            cat_gal = np.array(cat_gal)
-
-            # Read star region files
-            rco = pyr.open(os.path.join(path_data, 'star_flags_polygon_pix_%s.reg'%chan))
-            rell = pyr.open(os.path.join(path_data, 'icl_flags_ellipse_pix_%s.reg'%chan))
-            rbcg = pyr.open(os.path.join(path_data, 'bcg_flags_ellipse_pix_%s.reg'%chan))
-
-            # Read SED extraction regions
-            rsedl = []
-            for i in range(1, sed_n_ann + 1):
-                rsedl.append(pyr.open(os.path.join(path_data, 'ellipse_annuli_pix_long_%d.reg'%i)))
-            for i in range(1, sed_n_str + 1):
-                rsedl.append(pyr.open(os.path.join(path_data, 'streams_flags_pix_long_%d.reg'%i)))
-            rsedl.append(rell)
 
             # Iterate over dictionary list
             for nfd in nfl:
@@ -1565,16 +1581,6 @@ if __name__ == '__main__':
                     id_oim = ray.put(oim)
                     xs, ys = oim.shape
 
-                    # mask images
-                    mscell = rell.get_mask(hdu = hdu[0]) # not python convention
-                    mscoim = rco.get_mask(hdu = hdu[0]) # not python convention
-                    mscbcg = rbcg.get_mask(hdu = hdu[0]) # not python convention
-                    mscsedl = [] # SED
-                    for rsed in rsedl:
-                        msc = rsed.get_mask(hdu = hdu[0])
-                        mscsedl.append(msc)
-                    #id_mscsedl = ray.put(mscsedl) # in case memory issue? 17 images...
-
                     # Full field ------------------------------------------------
                     lvl_sep = np.nan
                     size_sep = np.nan
@@ -1595,10 +1601,10 @@ if __name__ == '__main__':
                                                  xs = xs, \
                                                  ys = ys, \
                                                  n_levels = n_levels, \
-                                                 mscoim = mscoim, \
-                                                 mscell = mscell, \
-                                                 mscbcg = mscbcg, \
-                                                 mscsedl = mscsedl, \
+                                                 mscoim = id_mscoim, \
+                                                 mscell = id_mscell, \
+                                                 mscbcg = id_mscbcg, \
+                                                 mscsedl = id_mscsedl, \
                                                  R_pix = id_R_pix, \
                                                  R_kpc = R_kpc,\
                                                  cat_gal = cat_gal, \
@@ -1630,10 +1636,10 @@ if __name__ == '__main__':
                                                         xs = xs, \
                                                         ys = ys, \
                                                         n_levels = n_levels, \
-                                                        mscoim = mscoim, \
-                                                        mscell = mscell, \
-                                                        mscbcg = mscbcg, \
-                                                        mscsedl = mscsedl, \
+                                                        mscoim = id_mscoim, \
+                                                        mscell = id_mscell, \
+                                                        mscbcg = id_mscbcg, \
+                                                        mscsedl = id_mscsedl, \
                                                         R_pix = id_R_pix, \
                                                         R_kpc = R_kpc,\
                                                         cat_gal = cat_gal, \
@@ -1664,10 +1670,10 @@ if __name__ == '__main__':
                                                         xs = xs, \
                                                         ys = ys, \
                                                         n_levels = n_levels, \
-                                                        mscoim = mscoim, \
-                                                        mscell = mscell, \
-                                                        mscbcg = mscbcg, \
-                                                        mscsedl = mscsedl, \
+                                                        mscoim = id_mscoim, \
+                                                        mscell = id_mscell, \
+                                                        mscbcg = id_mscbcg, \
+                                                        mscsedl = id_mscsedl, \
                                                         R_kpc = R_kpc,\
                                                         R_pix = id_R_pix, \
                                                         cat_gal = cat_gal, \
@@ -1698,10 +1704,10 @@ if __name__ == '__main__':
                                                         xs = xs, \
                                                         ys = ys, \
                                                         n_levels = n_levels, \
-                                                        mscoim = mscoim, \
-                                                        mscell = mscell, \
-                                                        mscbcg = mscbcg, \
-                                                        mscsedl = mscsedl, \
+                                                        mscoim = id_mscoim, \
+                                                        mscell = id_mscell, \
+                                                        mscbcg = id_mscbcg, \
+                                                        mscsedl = id_mscsedl, \
                                                         R_kpc = R_kpc,\
                                                         R_pix = id_R_pix, \
                                                         cat_gal = cat_gal, \
@@ -1734,10 +1740,10 @@ if __name__ == '__main__':
                                                             xs = xs, \
                                                             ys = ys, \
                                                             n_levels = n_levels, \
-                                                            mscoim = mscoim, \
-                                                            mscell = mscell, \
-                                                            mscbcg = mscbcg, \
-                                                            mscsedl = mscsedl, \
+                                                            mscoim = id_mscoim, \
+                                                            mscell = id_mscell, \
+                                                            mscbcg = id_mscbcg, \
+                                                            mscsedl = id_mscsedl, \
                                                             R_kpc = R_kpc,\
                                                             R_pix = id_R_pix, \
                                                             cat_gal = cat_gal, \
@@ -1772,10 +1778,10 @@ if __name__ == '__main__':
                                                             xs = xs, \
                                                             ys = ys, \
                                                             n_levels = n_levels, \
-                                                            mscoim = mscoim, \
-                                                            mscell = mscell, \
-                                                            mscbcg = mscbcg, \
-                                                            mscsedl = mscsedl, \
+                                                            mscoim = id_mscoim, \
+                                                            mscell = id_mscell, \
+                                                            mscbcg = id_mscbcg, \
+                                                            mscsedl = id_mscsedl, \
                                                             R_kpc = R_kpc, \
                                                             R_pix = id_R_pix, \
                                                             cat_gal = cat_gal, \
