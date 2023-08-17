@@ -1462,6 +1462,7 @@ if __name__ == '__main__':
     path_scripts = '/n03data/ellien/JWST/JWST_scripts'
     path_wavelets = '/n03data/ellien/JWST/wavelets/out15/'
     path_plots = '/n03data/ellien/JWST/plots'
+    path_analysis = '/n03data/ellien/JWST/analysis/'
 
     nfl = [ {'nf':'jw02736001001_f090w_bkg_rot_crop_warp_nobkg2.fits', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':30. }, \
             {'nf':'jw02736001001_f150w_bkg_rot_crop_warp_nobkg2.fits', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':30. }, \
@@ -1572,7 +1573,7 @@ if __name__ == '__main__':
                     for rsed in rsedl:
                         msc = rsed.get_mask(hdu = hdu[0])
                         mscsedl.append(msc)
-                    id_mscsedl = ray.put(mscsedl) # in case memory issue? 17 images...
+                    #id_mscsedl = ray.put(mscsedl) # in case memory issue? 17 images...
 
                     # Full field ------------------------------------------------
                     lvl_sep = np.nan
@@ -1597,7 +1598,7 @@ if __name__ == '__main__':
                                                  mscoim = mscoim, \
                                                  mscell = mscell, \
                                                  mscbcg = mscbcg, \
-                                                 mscsedl = id_mscsedl, \
+                                                 mscsedl = mscsedl, \
                                                  R_pix = id_R_pix, \
                                                  R_kpc = R_kpc,\
                                                  cat_gal = cat_gal, \
@@ -1632,7 +1633,7 @@ if __name__ == '__main__':
                                                         mscoim = mscoim, \
                                                         mscell = mscell, \
                                                         mscbcg = mscbcg, \
-                                                        mscsedl = id_mscsedl, \
+                                                        mscsedl = mscsedl, \
                                                         R_pix = id_R_pix, \
                                                         R_kpc = R_kpc,\
                                                         cat_gal = cat_gal, \
@@ -1666,7 +1667,7 @@ if __name__ == '__main__':
                                                         mscoim = mscoim, \
                                                         mscell = mscell, \
                                                         mscbcg = mscbcg, \
-                                                        mscsedl = id_mscsedl, \
+                                                        mscsedl = mscsedl, \
                                                         R_kpc = R_kpc,\
                                                         R_pix = id_R_pix, \
                                                         cat_gal = cat_gal, \
@@ -1700,7 +1701,7 @@ if __name__ == '__main__':
                                                         mscoim = mscoim, \
                                                         mscell = mscell, \
                                                         mscbcg = mscbcg, \
-                                                        mscsedl = id_mscsedl, \
+                                                        mscsedl = mscsedl, \
                                                         R_kpc = R_kpc,\
                                                         R_pix = id_R_pix, \
                                                         cat_gal = cat_gal, \
@@ -1736,7 +1737,7 @@ if __name__ == '__main__':
                                                             mscoim = mscoim, \
                                                             mscell = mscell, \
                                                             mscbcg = mscbcg, \
-                                                            mscsedl = id_mscsedl, \
+                                                            mscsedl = mscsedl, \
                                                             R_kpc = R_kpc,\
                                                             R_pix = id_R_pix, \
                                                             cat_gal = cat_gal, \
@@ -1774,7 +1775,7 @@ if __name__ == '__main__':
                                                             mscoim = mscoim, \
                                                             mscell = mscell, \
                                                             mscbcg = mscbcg, \
-                                                            mscsedl = id_mscsedl, \
+                                                            mscsedl = mscsedl, \
                                                             R_kpc = R_kpc, \
                                                             R_pix = id_R_pix, \
                                                             cat_gal = cat_gal, \
@@ -1799,4 +1800,8 @@ if __name__ == '__main__':
         results_df = pd.concat( [ results_df, output_df], ignore_index = True )
 
     if write_dataframe == True:
-        results_df.to_excel('/home/ellien/JWST/analysis/results_tests.xlsx')
+        ofp = os.path.join(path_analysis, 'results_out5.xlsx')
+        print('Write results to %s'%ofp)
+        results_df.to_excel(ofp)
+
+    print('Done')
