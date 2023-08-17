@@ -1441,12 +1441,12 @@ if __name__ == '__main__':
     path_wavelets = '/n03data/ellien/JWST/wavelets/out14/'
     path_plots = '/n03data/ellien/JWST/plots'
 
-    nfl = [ {'nf':'jw02736001001_f090w_bkg_rot_crop_warp_nobkg1_det_nosky_input.fits', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':28. }, \
-            {'nf':'jw02736001001_f150w_bkg_rot_crop_warp_nobkg1_det_nosky_input.fits', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':28. }, \
-            {'nf':'jw02736001001_f200w_bkg_rot_crop_warp_nobkg1_det_nosky_input.fits', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':28. }, \
-            {'nf':'jw02736001001_f356w_bkg_rot_crop_input.fits', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':28. }, \
-            {'nf':'jw02736001001_f444w_bkg_rot_crop_input.fits', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':28. }, \
-            {'nf':'jw02736001001_f277w_bkg_rot_crop_input.fits', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':28. } ]
+    nfl = [ {'nf':'jw02736001001_f090w_bkg_rot_crop_warp_nobkg2.fi30', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':30. }, \
+            {'nf':'jw02736001001_f150w_bkg_rot_crop_warp_nobkg2.fi30', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':30. }, \
+            {'nf':'jw02736001001_f200w_bkg_rot_crop_warp_nobkg2.fi30', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':30. }, \
+            {'nf':'jw02736001001_f356w_bkg_rot_crop_input.fits', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':30. }, \
+            {'nf':'jw02736001001_f444w_bkg_rot_crop_input.fits', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':30. }, \
+            {'nf':'jw02736001001_f277w_bkg_rot_crop_input.fits', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':30. } ]
 
             # out13
             #{'nf':'jw02736001001_f090w_bkg_rot_crop_warp_det_nosky_input.fits', 'chan':'long', 'pix_scale':0.063, 'n_levels':10, 'lvl_sep_max':999 }, \
@@ -1460,7 +1460,7 @@ if __name__ == '__main__':
 
     lvl_sepl = [ 3, 4, 5, 6, 7 ] # wavelet scale separation
     size_sepl = [ 60, 80, 100, 140, 200 ] # size separation [kpc]
-    R_kpcl = [ 128, 200, 400 ] # radius in which quantities are measured [kpc]
+    R_kpcl = [ 400 ] # radius in which quantities are measured [kpc]
     physcale = 5.3 # kpc/"
     gamma = 0.5
     lvl_sep_big = 5
@@ -1468,21 +1468,21 @@ if __name__ == '__main__':
     rm_gamma_for_big = True
 
     rc = 10 # kpc, distance to center to be classified as gal
-    N_err = 20
+    N_err = 1
     per_err = 0.1
 
     kurt_filt = True
     plot_vignet = False
-    write_fits = False
-    measure_PR = True
-    write_dataframe = True
+    write_fits = True
+    measure_PR = False
+    write_dataframe = False
 
     results = []
     ray_refs = []
     ray_outputs = []
 
     # ray hyperparameters
-    n_cpus = 12
+    n_cpus = 48
     ray.init(num_cpus = n_cpus)
 
     for chan in [ 'long' ]:
