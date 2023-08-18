@@ -1460,7 +1460,7 @@ if __name__ == '__main__':
     path_scripts = '/n03data/ellien/JWST/JWST_scripts'
     path_wavelets = '/n03data/ellien/JWST/wavelets/out15/'
     path_plots = '/n03data/ellien/JWST/plots'
-    path_analysis = '/n03data/ellien/JWST/analysis/'
+    path_analysis = '/home/ellien/JWST/analysis/'
 
     nfl = [ {'nf':'jw02736001001_f090w_bkg_rot_crop_warp_nobkg2.fits', 'chan':'short', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':30. }, \
             {'nf':'jw02736001001_f150w_bkg_rot_crop_warp_nobkg2.fits', 'chan':'short', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999, 'mu_lim':30. }, \
@@ -1506,7 +1506,7 @@ if __name__ == '__main__':
     ray_outputs = []
 
     # ray hyperparameters
-    n_cpus = 18
+    n_cpus = 48
     ray.init(num_cpus = n_cpus)
 
     # Read galaxy catalog
