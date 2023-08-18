@@ -7,9 +7,9 @@ indir = '/n03data/ellien/JWST/data'
 infile = sys.argv[1]
 outdir = '/n03data/ellien/JWST/wavelets/out15/'
 n_cpus = 4 # Number of CPUs
-tau = 0.8   # Relative Threshold
+tau = 0.7   # Relative Threshold
 gamma = 0.5   # Attenuation (CLEAN) factor
-ceps = 5E-5    # Convergence value for epsilon
+ceps = 1E-5    # Convergence value for epsilon
 n_levels = 11    # Number of wavelet scales
 min_span = 1    # Minimum of wavelet scales spanned by an interscale tree (must be >= 1)
 max_span = 2    # Maximum number of wavelet scales spanned by an interscale tree
