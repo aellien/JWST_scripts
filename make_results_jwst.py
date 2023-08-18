@@ -54,7 +54,7 @@ def read_image_atoms( nfp, filter_it = None, verbose = False ):
     return tol, titl
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-def synthesis_fullfield( oim, nfp, gamma, lvl_sep_big, xs, ys, n_levels, rm_gamma_for_big = True ):
+def synthesis_fullfield( oim, nfp, gamma, lvl_sep_big, xs, ys, n_levels, rm_gamma_for_big = True, write_fits = True ):
     '''Synthesis of the full astronomical field (e.g. sum of all atoms)
     --- Args:
     oim         # Original astronomical field
@@ -94,9 +94,9 @@ def synthesis_fullfield( oim, nfp, gamma, lvl_sep_big, xs, ys, n_levels, rm_gamm
         wei[ x_min : x_max, y_min : y_max ] += o.image
 
     res = oim - rec
-
-    hduo = fits.PrimaryHDU(rec)
-    hduo.writeto( nfp + 'synth.restored.fits', overwrite = True )
+    if write_fits == True:
+        hduo = fits.PrimaryHDU(rec)
+        hduo.writeto( nfp + 'synth.restored.fits', overwrite = True )
 
     hduo = fits.PrimaryHDU(res)
     hduo.writeto( nfp + 'synth.residuals.fits', overwrite = True )
@@ -244,7 +244,7 @@ def PR_with_selection_error(atom_in_list, atom_out_list, M, percent, lvl_sep_big
     return PR_results
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-def synthesis_wavsep( nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gamma_for_big = True, kurt_filt = False, plot_vignet = False ):
+def synthesis_wavsep( nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gamma_for_big = True, kurt_filt = False, plot_vignet = False, write_fits = True ):
     '''Simple separation based on wavelet scale, given by parameter 'lvl_sep'.
     --- Args:
     nfp         # root path of *.pkl
@@ -304,11 +304,12 @@ def synthesis_wavsep( nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gam
 
     print('Kurtosis filtered: %d/%d'%(filtered_onb,onb))
 
-    hduo = fits.PrimaryHDU(icl)
-    hduo.writeto( nfp + 'synth.icl.wavsep_%03d.fits'%lvl_sep, overwrite = True )
+    if write_fits == True:
+        hduo = fits.PrimaryHDU(icl)
+        hduo.writeto( nfp + 'synth.icl.wavsep_%03d.fits'%lvl_sep, overwrite = True )
 
-    hduo = fits.PrimaryHDU(gal)
-    hduo.writeto( nfp + 'synth.gal.wavsep_%03d.fits'%lvl_sep, overwrite = True )
+        hduo = fits.PrimaryHDU(gal)
+        hduo.writeto( nfp + 'synth.gal.wavsep_%03d.fits'%lvl_sep, overwrite = True )
 
     if plot_vignet == True:
         interval = AsymmetricPercentileInterval(5, 99.5) # meilleur rendu que MinMax or ZScale pour images reconstruites
@@ -1383,7 +1384,7 @@ def make_results_cluster( sch, oim, nfp, chan, filt, gamma, size_sep, size_sep_p
 
     # Full field ---------------------------------------------------------------
     if sch == 'fullfield':
-        output = synthesis_fullfield( oim, nfp, gamma, lvl_sep_big, xs, ys, n_levels, rm_gamma_for_big = True )
+        output = synthesis_fullfield( oim, nfp, gamma, lvl_sep_big, xs, ys, n_levels, rm_gamma_for_big = rm_gamma_for_big, write_fits = write_fits )
         filler_sed = np.empty( 3 * len(mscsedl)) # fill SED data
         filler_sed[:] = np.nan
         out_sed_df = pd.DataFrame([filler_sed], columns = [ 'reg_%d_%s'%(i/3, hkw[i%3]) for i in range(3 * len(mscsedl))])# create df with all SED flux for all regions with correctly numbered column names
@@ -1393,7 +1394,7 @@ def make_results_cluster( sch, oim, nfp, chan, filt, gamma, size_sep, size_sep_p
 
     # ICL -- WS -----------------------------------------------------------------
     if sch == 'WS':
-        output = synthesis_wavsep( nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gamma_for_big, kurt_filt = kurt_filt, plot_vignet = plot_vignet )
+        output = synthesis_wavsep( nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gamma_for_big, kurt_filt = kurt_filt, plot_vignet = plot_vignet, write_fits = write_fits )
         filler_sed = np.empty( 3 * len(mscsedl)) # fill SED data
         filler_sed[:] = np.nan
         out_sed_df = pd.DataFrame([filler_sed], columns = [ 'reg_%d_%s'%(i/3, hkw[i%3]) for i in range(3 * len(mscsedl))])# create df with all SED flux for all regions with correctly numbered column names
