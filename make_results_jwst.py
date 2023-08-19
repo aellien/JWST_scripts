@@ -1461,7 +1461,7 @@ if __name__ == '__main__':
     # Paths, lists & variables
     path_data = '/n03data/ellien/JWST/data/'
     path_scripts = '/n03data/ellien/JWST/JWST_scripts'
-    path_wavelets = '/n03data/ellien/JWST/wavelets/out12/'
+    path_wavelets = '/n03data/ellien/JWST/wavelets/out15/'
     path_plots = '/n03data/ellien/JWST/plots'
     path_analysis = '/home/ellien/JWST/analysis/'
 
