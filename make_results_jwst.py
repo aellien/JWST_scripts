@@ -97,14 +97,17 @@ def synthesis_fullfield( oim, nfp, gamma, lvl_sep_big, xs, ys, n_levels, rm_gamm
 
     res = oim - rec
     if write_fits == True:
+
+        print('\nFULLFIELD -- write fits as %s*fits'%(nfp))
+
         hduo = fits.PrimaryHDU(rec)
         hduo.writeto( nfp + 'synth.restored.fits', overwrite = True )
 
-    hduo = fits.PrimaryHDU(res)
-    hduo.writeto( nfp + 'synth.residuals.fits', overwrite = True )
+        hduo = fits.PrimaryHDU(res)
+        hduo.writeto( nfp + 'synth.residuals.fits', overwrite = True )
 
-    hduo = fits.PrimaryHDU(wei)
-    hduo.writeto( nfp + 'synth.weight.fits', overwrite = True )
+        hduo = fits.PrimaryHDU(wei)
+        hduo.writeto( nfp + 'synth.weight.fits', overwrite = True )
 
     return rec, res, wei
 
@@ -307,6 +310,8 @@ def synthesis_wavsep( nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gam
     print('Kurtosis filtered: %d/%d'%(filtered_onb,onb))
 
     if write_fits == True:
+        print('WS -- write fits as %s*'%(nfp))
+
         hduo = fits.PrimaryHDU(icl)
         hduo.writeto( nfp + 'synth.icl.wavsep_%03d.fits'%lvl_sep, overwrite = True )
 
@@ -346,64 +351,6 @@ def synthesis_wavsep( nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gam
         plt.tight_layout()
         plt.savefig( nfp + 'results.wavsep_%03d.png'%lvl_sep, format = 'png' )
         print('Write vignet to' + nfp + 'results.wavsep_%03d.png'%(lvl_sep))
-        plt.close('all')
-
-    return icl, gal
-
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-def synthesis_sizesep_with_masks( nfp, gamma, lvl_sep_big, size_sep, size_sep_pix, xs, ys, n_levels, mscoim, mscell, rm_gamma_for_big = True, kurt_filt = True, plot_vignet = False, write_fits = True, measure_PR = False ):
-
-    # Paths, list & variables
-    icl = np.zeros((xs, ys))
-    gal = np.zeros((xs, ys))
-    im_art = np.zeros((xs, ys))
-
-    # Read atoms and interscale trees
-    ol, itl = read_image_atoms( nfp, verbose = False )
-    for j, o in enumerate(ol):
-
-        x_min, y_min, x_max, y_max = o.bbox
-        itm = itl[j].interscale_maximum
-        xco = itm.x_max
-        yco = itm.y_max
-
-        if kurt_filt == True:
-            k = kurtosis(o.image.flatten(), fisher=True)
-            if k < 0:
-                if (o.level >= lvl_sep_big) & (rm_gamma_for_big == True):
-                    im_art[ x_min : x_max, y_min : y_max ] += o.image
-                else:
-                    im_art[ x_min : x_max, y_min : y_max ] += o.image * gamma
-                continue
-
-        sx = x_max - x_min
-        sy = y_max - y_min
-
-        if (mscoim[xco, yco] != 1) & (mscell[xco, yco] == 1):
-            if o.level >= lvl_sep_big:
-                if (sx >= size_sep_pix) or (sy >= size_sep_pix):
-                    icl[ x_min : x_max, y_min : y_max ] += o.image
-                else:
-                    gal[ x_min : x_max, y_min : y_max ] += o.image
-            else:
-                if (sx >= size_sep_pix) or (sy >= size_sep_pix):
-                    icl[ x_min : x_max, y_min : y_max ] += o.image * gamma
-                else:
-                    gal[ x_min : x_max, y_min : y_max ] += o.image * gamma
-
-    hduo = fits.PrimaryHDU(icl)
-    hduo.writeto( nfp + 'synth.icl.sizesepmask_%03d.fits'%size_sep, overwrite = True )
-
-    hduo = fits.PrimaryHDU(gal)
-    hduo.writeto( nfp + 'synth.gal.sizesepmask_%03d.fits'%size_sep, overwrite = True )
-
-    if plot_vignet == True:
-
-        fig, ax = plt.subplots(1, 2)
-        ax[0].imshow(gal, norm = ImageNormalize(gal, interval = MinMaxInterval(), stretch = LogStretch() ), cmap = 'binary')
-        ax[1].imshow(icl, norm = ImageNormalize(icl, interval = MinMaxInterval(), stretch = LogStretch() ), cmap = 'binary')
-        plt.tight_layout()
-        plt.savefig( nfp + 'synth.sizesepmask_%03d.png'%size_sep, format = 'png' )
         plt.close('all')
 
     return icl, gal
@@ -581,7 +528,7 @@ def synthesis_bcgwavsep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_ma
     #%
 
     if write_fits == True:
-
+        print('\nWS + SF -- ICL+BCG -- write fits as %s*'%(nfp))
         # write to fits
         hduo = fits.PrimaryHDU(icl)
         hduo.writeto( nfp + 'synth.icl.bcgwavsepmask_%03d.fits'%lvl_sep, overwrite = True )
@@ -849,6 +796,7 @@ def synthesis_bcgwavsizesep_with_masks( nfp, chan, gamma, lvl_sep_big, lvl_sep, 
     #%
 
     if write_fits == True:
+        print('\nWS + SF + SS -- ICL+BCG -- write fits as %s*'%(nfp))
 
         # write to fits
         hduo = fits.PrimaryHDU(icl)
@@ -1077,6 +1025,7 @@ def synthesis_wavsep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_max, 
                 im_unclass[ x_min : x_max, y_min : y_max ] += o.image * gamma
 
     if write_fits == True:
+        print('\nWS + SF -- ICL -- write fits as %s*'%(nfp))
 
         # write to fits
         hduo = fits.PrimaryHDU(icl)
@@ -1310,6 +1259,7 @@ def synthesis_wavsizesep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_m
     #%
 
     if write_fits == True:
+        print('\nWS + SF + SS -- ICL -- write fits as %s*'%(nfp))
 
         # write to fits
         hduo = fits.PrimaryHDU(icl)
@@ -1500,9 +1450,9 @@ if __name__ == '__main__':
 
     kurt_filt = True
     plot_vignet = False
-    write_fits = True
-    measure_PR = False
-    write_dataframe = False
+    write_fits = False
+    measure_PR = True
+    write_dataframe = True
 
     results = []
     ray_refs = []
