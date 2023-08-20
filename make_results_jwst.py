@@ -1415,7 +1415,7 @@ if __name__ == '__main__':
     path_plots = '/n03data/ellien/JWST/plots'
     path_analysis = '/home/ellien/JWST/analysis/'
 
-    nfl = [ {'nf':'jw02736001001_f090w_bkg_rot_crop_warp_nobkg2.fits', 'chan':'short', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':11, 'lvl_sep_max':999, 'mu_lim':999 }, \
+    nfl = [ {'nf':'jw02736001001_f090w_bkg_rot_crop_warp_nobkg2.fits', 'chan':'short', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':11, 'lvl_sep_max':8, 'mu_lim':999 }, \
             {'nf':'jw02736001001_f150w_bkg_rot_crop_warp_nobkg2.fits', 'chan':'short', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':11, 'lvl_sep_max':999, 'mu_lim':999 }, \
             {'nf':'jw02736001001_f200w_bkg_rot_crop_warp_nobkg2.fits', 'chan':'short', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':11, 'lvl_sep_max':999, 'mu_lim':999 }, \
             {'nf':'jw02736001001_f356w_bkg_rot_crop_input.fits', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':11, 'lvl_sep_max':999, 'mu_lim':999 }, \
@@ -1759,7 +1759,7 @@ if __name__ == '__main__':
         results_df = pd.concat( [ results_df, output_df], ignore_index = True )
 
     if write_dataframe == True:
-        ofp = os.path.join(path_analysis, 'results_out5_test.xlsx')
+        ofp = os.path.join(path_analysis, 'results_out5.xlsx')
         print('Write results to %s'%ofp)
         results_df.to_excel(ofp)
 
