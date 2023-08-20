@@ -567,7 +567,7 @@ def synthesis_bcgwavsep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_ma
         # Measure Fractions and uncertainties
         F_ICL_m, F_ICL_low, F_ICL_up, out_sed =  selection_error(icl_al, unclass_al, M = N_err, percent = per_err, lvl_sep_big = lvl_sep_big, gamma = gamma, xs = xs, ys = ys, Jy_lim = Jy_lim, mscsedl = mscsedl)
         F_gal_m, F_gal_low, F_gal_up, out_sed =  selection_error(gal_al, unclass_al, M = N_err, percent = per_err, lvl_sep_big = lvl_sep_big, gamma = gamma, xs = xs, ys = ys, Jy_lim = Jy_lim, mscsedl = mscsedl)
-        f_ICL_m = np.sum(icl)/(np.sum(icl + gal))
+        f_ICL_m = F_ICL_m / (F_ICL_m + F_gal_m)
         f_ICL_low = F_ICL_low / (F_ICL_low + F_gal_up)
         f_ICL_up = F_ICL_up / (F_ICL_up + F_gal_low)
 
@@ -1065,7 +1065,7 @@ def synthesis_wavsep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_max, 
         # Measure Fractions and uncertainties
         F_ICL_m, F_ICL_low, F_ICL_up, out_sed = selection_error(icl_al, unclass_al, M = N_err, percent = per_err, lvl_sep_big = lvl_sep_big, gamma = gamma, xs = xs, ys = ys, Jy_lim = Jy_lim, mscsedl = mscsedl)
         F_gal_m, F_gal_low, F_gal_up, out_sed = selection_error(gal_al, unclass_al, M = N_err, percent = per_err, lvl_sep_big = lvl_sep_big, gamma = gamma, xs = xs, ys = ys, Jy_lim = Jy_lim, mscsedl = mscsedl)
-        f_ICL_m = np.sum(icl)/(np.sum(icl + gal))
+        f_ICL_m = F_ICL_m / (F_ICL_m + F_gal_m)
         f_ICL_low = F_ICL_low / (F_ICL_low + F_gal_up)
         f_ICL_up = F_ICL_up / (F_ICL_up + F_gal_low)
 
@@ -1442,7 +1442,7 @@ if __name__ == '__main__':
     rm_gamma_for_big = True
 
     rc = 10 # kpc, distance to center to be classified as gal
-    N_err = 1
+    N_err = 100
     per_err = 0.1
 
     sed_n_ann = 10 # number of annuli regions, SED
@@ -1459,7 +1459,7 @@ if __name__ == '__main__':
     ray_outputs = []
 
     # ray hyperparameters
-    n_cpus = 48
+    n_cpus = 3
     ray.init(num_cpus = n_cpus)
 
     # Read galaxy catalog
@@ -1759,7 +1759,7 @@ if __name__ == '__main__':
         results_df = pd.concat( [ results_df, output_df], ignore_index = True )
 
     if write_dataframe == True:
-        ofp = os.path.join(path_analysis, 'results_out5.xlsx')
+        ofp = os.path.join(path_analysis, 'results_out5_test.xlsx')
         print('Write results to %s'%ofp)
         results_df.to_excel(ofp)
 
