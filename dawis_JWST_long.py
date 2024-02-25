@@ -5,9 +5,9 @@ import shutil
 
 indir = '/n03data/ellien/JWST/data'
 infile = sys.argv[1]
-outdir = '/n03data/ellien/JWST/wavelets/out16/'
+outdir = '/n03data/ellien/JWST/wavelets/out17/'
 n_cpus = 4 # Number of CPUs
-tau = 0.7   # Relative Threshold
+tau = 0.8   # Relative Threshold
 gamma = 0.5   # Attenuation (CLEAN) factor
 ceps = 1E-5    # Convergence value for epsilon
 n_levels = 11    # Number of wavelet scales
@@ -23,13 +23,17 @@ gif = True      # Make gifs of the run (need data_dump = True)
 starting_level = 2 # Starting wavelet scale (this is the third scale - Python convention 0 1 2)
 conditions = 'prolongation'
 monomodality = True
+threshold_rel = 0.15
+size_patch = 100
 resume = True
 rm_gamma_for_big = True
+iptd_sigma = 5
 
 shutil.copyfile( os.path.abspath(__file__), os.path.join( outdir, infile[:-4] + 'input.dawis.py' ) )
 
 dawis.synthesis_by_analysis( indir = indir, infile = infile, outdir = outdir, n_cpus = n_cpus, n_levels = n_levels, \
                                     tau = tau, gamma = gamma, ceps = ceps, conditions = conditions, min_span = min_span, \
-                                    max_span = max_span, lvl_sep_big = lvl_sep_big, monomodality = monomodality, \
-                                    max_iter = max_iter, extent_sep = extent_sep, ecc_sep = ecc_sep, rm_gamma_for_big = rm_gamma_for_big, \
+                                    max_span = max_span, lvl_sep_big = lvl_sep_big, monomodality = monomodality, threshold_rel = threshold_rel, \
+                                    max_iter = max_iter, extent_sep = extent_sep, ecc_sep = ecc_sep, iptd_sigma = iptd_sigma, size_patch = size_patch, rm_gamma_for_big = rm_gamma_for_big, \
                                     data_dump = data_dump, gif = gif, resume = resume )
+
