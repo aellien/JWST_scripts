@@ -17,9 +17,8 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from matplotlib.offsetbox import AnchoredText
 from scipy.ndimage import gaussian_filter
 from MJy_to_mu import *
-from scipy.ndimage.interpolation import zoom
+from scipy.ndimage import zoom
 import pyregion as pyr
-import cmocean
 import cmasher
 import matplotlib as mpl
 import pyregion as pyr
@@ -30,18 +29,18 @@ def SED_tidal_streams():
     plt.ion()
 
     # Paths, lists & variables
-    path_data = '/home/ellien/JWST/data/'
-    path_scripts = '/home/ellien/JWST/JWST_scripts'
-    path_wavelets = '/home/ellien/JWST/wavelets/out13/'
-    path_plots = '/home/ellien/JWST/plots'
-    path_analysis = '/home/ellien/JWST/analysis/sed/'
+    path_data = '/home/aellien/JWST/data/'
+    path_scripts = '/home/aellien/JWST/JWST_scripts'
+    path_wavelets = '/home/aellien/JWST/wavelets/out15/'
+    path_plots = '/home/aellien/JWST/plots'
+    path_analysis = '/home/aellien/JWST/analysis/sed/'
 
-    nfdl = [ {'nf':'jw02736001001_f356w_bkg_rot_crop_input.synth.icl.wavsep_005.fits', 'filt':'f356w', 'path_data':'/home/ellien/JWST/wavelets/out13/', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'phot_corr':0.163, 'n_levels':10 }, \
-            {'nf':'jw02736001001_f444w_bkg_rot_crop_input.synth.icl.wavsep_005.fits', 'filt':'f444w', 'path_data':'/home/ellien/JWST/wavelets/out13/', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'phot_corr':0.162, 'n_levels':10 }, \
-            {'nf':'jw02736001001_f277w_bkg_rot_crop_input.synth.icl.wavsep_005.fits', 'filt':'f277w', 'path_data':'/home/ellien/JWST/wavelets/out13/', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'phot_corr':0.223, 'n_levels':10 }, \
-            {'nf':'jw02736001001_f090w_bkg_rot_crop_warp_nobkg1_det_nosky_input.synth.icl.wavsep_005.fits', 'path_data':'/home/ellien/JWST/wavelets/out14/', 'filt':'f090w', 'chan':'short', 'pix_scale':0.031, 'phot_corr':-0.174, 'pixar_sr':2.29E-14, 'n_levels':10 }, \
-            {'nf':'jw02736001001_f150w_bkg_rot_crop_warp_nobkg1_det_nosky_input.synth.icl.wavsep_005.fits', 'path_data':'/home/ellien/JWST/wavelets/out14/', 'filt':'f150w', 'chan':'short', 'pix_scale':0.031, 'phot_corr':-0.047, 'pixar_sr':2.31E-14, 'n_levels':10 }, \
-            {'nf':'jw02736001001_f200w_bkg_rot_crop_warp_nobkg1_det_nosky_input.synth.icl.wavsep_005.fits', 'path_data':'/home/ellien/JWST/wavelets/out14/', 'filt':'f200w', 'chan':'short', 'pix_scale':0.031, 'phot_corr':-0.114, 'pixar_sr':2.29E-14, 'n_levels':10 } ]
+    nfdl = [ {'nf':'jw02736001001_f356w_bkg_rot_crop_input.synth.icl.wavsep_005.fits', 'filt':'f356w', 'path_data':'/home/ellien/JWST/wavelets/out15/', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'phot_corr':0.163, 'n_levels':10 }, \
+            {'nf':'jw02736001001_f444w_bkg_rot_crop_input.synth.icl.wavsep_005.fits', 'filt':'f444w', 'path_data':'/home/ellien/JWST/wavelets/out15/', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'phot_corr':0.162, 'n_levels':10 }, \
+            {'nf':'jw02736001001_f277w_bkg_rot_crop_input.synth.icl.wavsep_005.fits', 'filt':'f277w', 'path_data':'/home/ellien/JWST/wavelets/out15/', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'phot_corr':0.223, 'n_levels':10 }, \
+            {'nf':'jw02736001001_f090w_bkg_rot_crop_warp_nobkg1_det_nosky_input.synth.icl.wavsep_005.fits', 'path_data':'/home/ellien/JWST/wavelets/out15/', 'filt':'f090w', 'chan':'short', 'pix_scale':0.031, 'phot_corr':-0.174, 'pixar_sr':2.29E-14, 'n_levels':10 }, \
+            {'nf':'jw02736001001_f150w_bkg_rot_crop_warp_nobkg1_det_nosky_input.synth.icl.wavsep_005.fits', 'path_data':'/home/ellien/JWST/wavelets/out15/', 'filt':'f150w', 'chan':'short', 'pix_scale':0.031, 'phot_corr':-0.047, 'pixar_sr':2.31E-14, 'n_levels':10 }, \
+            {'nf':'jw02736001001_f200w_bkg_rot_crop_warp_nobkg1_det_nosky_input.synth.icl.wavsep_005.fits', 'path_data':'/home/ellien/JWST/wavelets/out15/', 'filt':'f200w', 'chan':'short', 'pix_scale':0.031, 'phot_corr':-0.114, 'pixar_sr':2.29E-14, 'n_levels':10 } ]
 
 
     filterl = [ 'f090w', 'f150w', 'f200w', 'f277w', 'f356w', 'f444w']
@@ -73,7 +72,7 @@ def SED_tidal_streams():
                         mscr = r.get_mask(hdu = hdu[0]) # not python convention
                         n = np.sum(mscr)
 
-                        # Measure flux
+                        # Measure flux
                         recim[mscr != True] = 0.
                         ZP_AB = -6.10 - 2.5 * np.log10(nfd['pixar_sr'])
                         flux_err = np.sqrt(n) * np.std(recim[mscr == True])
@@ -113,23 +112,25 @@ def SED_tidal_streams():
 def plot_and_make_sed():
 
     # Paths, lists & variables
-    path_data = '/home/ellien/JWST/data/'
-    path_scripts = '/home/ellien/JWST/JWST_scripts'
-    path_wavelets = '/home/ellien/JWST/wavelets/out15/'
-    path_plots = '/home/ellien/JWST/plots'
-    path_analysis = '/home/ellien/JWST/analysis/'
+    path_data = '/home/aellien/JWST/data/'
+    path_scripts = '/home/aellien/JWST/JWST_scripts'
+    path_wavelets = '/home/aellien/JWST/wavelets/out15/'
+    path_plots = '/home/aellien/JWST/plots'
+    path_analysis = '/home/aellien/JWST/analysis/'
 
     sch = 'WS+BCGSF'
     size_sep = 80
     R_kpc = 400
-    lvl_sep =  5
+    lvl_sep = 5
     pixar_sr = np.array([ 2.29E-14, 2.31E-14, 2.29E-14, 9.31E-14, 9.31E-14, 9.31E-14 ])
     ZP_AB = -6.10 - 2.5 * np.log10(pixar_sr)
     phot_corr = np.array([-0.174, -0.047, -0.114, 0, 0, 0])
+    #phot_corr = np.array([0, 0, 0., 0, 0, 0])
+    #phot_corr = np.array([-0.174, -0.047, -0.114, 0.223, 0.163, 0.162])
 
     colors = [ 'dodgerblue', 'mediumaquamarine', 'paleturquoise' , 'white' ]
 
-    r = pd.read_excel('/home/ellien/JWST/analysis/results_out5b.xlsx')
+    r = pd.read_excel('/home/aellien/JWST/analysis/results_out5b.xlsx')
     r = r.sort_values(by = 'filter') # Sort values so filters goes from low wavelength to high wavelength
 
     sed_n_ann = 10 # number of annuli regions, SED
@@ -1086,7 +1087,7 @@ def plot_array_icl_maps_all_filters():
     n_rebin = 2.02983 # 4150 / 2045
     mu_lim = 30
     lvl_sepl = [ 3, 4, 5, 6, 7 ]
-    size_sepl = [ 60, 80, 100, 140, 200 ] # kpc
+    size_sepl = [ 60, 80, 100, 140, 200 ] # kpc
     sls = sls_cmap()
     sls_r = ListedColormap(sls.colors[::-1])
 
@@ -1219,7 +1220,7 @@ def plot_array_bcgicl_maps_all_filters():
     n_rebin = 2
     mu_lim = 30
     lvl_sepl = [ 3, 4, 5, 6, 7 ]
-    size_sepl = [ 60, 80, 100, 140, 200 ] # kpc
+    size_sepl = [ 60, 80, 100, 140, 200 ] # kpc
     sls = sls_cmap()
     sls_r = ListedColormap(sls.colors[::-1])
 
@@ -1540,7 +1541,7 @@ def plot_recim_rgb_all_filters():
             {'nf':'jw02736001001_f200w_bkg_rot_crop_warp_nobkg1_det_nosky_input.fits', 'filt':'f200w', 'chan':'short', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':8 } ]
 
     paired_filterl = [ ['f090w', 'f150w'], ['f200w', 'f277w'], ['f356w', 'f444w' ] ] # paired for RGB
-    binning_factor = 4151 / 2045 # size short / size long
+    binning_factor = 4151 / 2045 # size short / size long
     combiml = []
     cmap = cmasher.seasons
     std = 5
@@ -1598,7 +1599,7 @@ def plot_scattered_light_maps():
     path_plots = '/home/ellien/JWST/plots'
 
     filterl = [ 'f090w', 'f150w', 'f200w' ]
-    binning_factor = 4151 / 2045 # size short / size long
+    binning_factor = 4151 / 2045 # size short / size long
     cmap = cmasher.seasons
     std = 5
     binf = 2
@@ -1761,7 +1762,7 @@ def plot_example_recim_all_filter_maps():
 
 
     filterl = [ 'f090w', 'f150w', 'f200w', 'f277w', 'f356w', 'f444w' ]
-    binning_factor = 4151 / 2045 # size short / size long
+    binning_factor = 4151 / 2045 # size short / size long
     cmap = cmasher.seasons
     binf = 2
 
@@ -1837,7 +1838,7 @@ def plot_test():
             {'nf':'jw02736001001_f200w_bkg_rot_crop_warp_nobkg2.fits', 'filt':'f200w', 'chan':'short', 'pix_scale':0.031, 'phot_corr':-0.114, 'pixar_sr':2.29E-14, 'n_levels':10 } ]
 
     filterl = [ 'f090w', 'f150w', 'f200w', 'f277w', 'f356w', 'f444w' ]
-    binning_factor = 4151 / 2045 # size short / size long
+    binning_factor = 4151 / 2045 # size short / size long
     binf = 2
 
     sumim = np.zeros((2045, 2045))

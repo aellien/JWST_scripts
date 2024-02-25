@@ -60,16 +60,16 @@ def synthesis_fullfield( oim, nfp, gamma, lvl_sep_big, xs, ys, n_levels, rm_gamm
     '''Synthesis of the full astronomical field (e.g. sum of all atoms)
     --- Args:
     oim         # Original astronomical field
-    nfp         # root path of *.pkl
-    gamma       # attenuation factor
+    nfp         # root path of *.pkl
+    gamma       # attenuation factor
     lvl_sep_big # wavelet scale at which gamma set to 1
-    lvl_sep     # wavelet scale threshold for the separation
-    xs, ys      # image size
-    n_levels    # number of wavelet scales
+    lvl_sep     # wavelet scale threshold for the separation
+    xs, ys      # image size
+    n_levels    # number of wavelet scales
     plot_vignet # plot pdf vignet of output
     --- Output:
-    rec         # synthesis image with all atoms
-    res         # residuals (original - rec)
+    rec         # synthesis image with all atoms
+    res         # residuals (original - rec)
     '''
     # path, list & variables
     res = np.zeros( (xs, ys) )
@@ -252,16 +252,16 @@ def PR_with_selection_error(atom_in_list, atom_out_list, M, percent, lvl_sep_big
 def synthesis_wavsep( nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gamma_for_big = True, kurt_filt = False, plot_vignet = False, write_fits = True ):
     '''Simple separation based on wavelet scale, given by parameter 'lvl_sep'.
     --- Args:
-    nfp         # root path of *.pkl
-    gamma       # attenuation factor
+    nfp         # root path of *.pkl
+    gamma       # attenuation factor
     lvl_sep_big # wavelet scale at which gamma set to 1
-    lvl_sep     # wavelet scale threshold for the separation
-    xs, ys      # image size
-    n_levels    # number of wavelet scales
+    lvl_sep     # wavelet scale threshold for the separation
+    xs, ys      # image size
+    n_levels    # number of wavelet scales
     plot_vignet # plot pdf vignet of output
     --- Output:
-    icl         # synthesis image with atoms at wavelet scale >= lvl_sep
-    gal         # synthesis image with atoms at wavelet scale < lvl_sep
+    icl         # synthesis image with atoms at wavelet scale >= lvl_sep
+    gal         # synthesis image with atoms at wavelet scale < lvl_sep
     '''
     # path, list & variables
     icl = np.zeros( (xs, ys) )
@@ -407,7 +407,7 @@ def synthesis_bcgwavsep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_ma
             #unclass_al.append([o, xco, yco])
             continue
 
-        # Only atoms within analysis radius
+        # Only atoms within analysis radius
         dR = np.sqrt( (xc - xco)**2 + (yc - yco)**2 )
         if dR > R:
             continue
@@ -453,7 +453,7 @@ def synthesis_bcgwavsep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_ma
         else:
             noticl_al.append([ o, xco, yco ])
 
-    # Galaxies
+    # Galaxies
     for j, (o, xco, yco) in enumerate(noticl_al):
 
         x_min, y_min, x_max, y_max = o.bbox
@@ -473,7 +473,7 @@ def synthesis_bcgwavsep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_ma
             if o.level < lvl_sep:
 
                 flag = False
-                for ygal, xgal in cat_gal:
+                for ygal, xgal in _gal:
                     dr = np.sqrt( (xgal - xco)**2 + (ygal - yco)**2 )
                     if dr <= rc_pix:
                         flag = True
@@ -649,7 +649,7 @@ def synthesis_bcgwavsizesep_with_masks( nfp, chan, gamma, lvl_sep_big, lvl_sep, 
         if o.level >= lvl_sep_max:
             continue
 
-        # Only atoms within analysis radius
+        # Only atoms within analysis radius
         dR = np.sqrt( (xc - xco)**2 + (yc - yco)**2 )
         if dR > R:
             continue
@@ -730,7 +730,7 @@ def synthesis_bcgwavsizesep_with_masks( nfp, chan, gamma, lvl_sep_big, lvl_sep, 
         else:
             noticl_al.append([ o, xco, yco ])
 
-    # Galaxies
+    # Galaxies
     for j, (o, xco, yco) in enumerate(noticl_al):
 
         x_min, y_min, x_max, y_max = o.bbox
@@ -920,7 +920,7 @@ def synthesis_wavsep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_max, 
             #unclass_al.append([o, xco, yco])
             continue
 
-        # Only atoms within analysis radius
+        # Only atoms within analysis radius
         dR = np.sqrt( (xc - xco)**2 + (yc - yco)**2 )
         if dR > R:
             continue
@@ -953,7 +953,7 @@ def synthesis_wavsep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_max, 
         else:
             noticl_al.append([ o, xco, yco ])
 
-    # Galaxies
+    # Galaxies
     for j, (o, xco, yco) in enumerate(noticl_al):
 
         x_min, y_min, x_max, y_max = o.bbox
@@ -1151,7 +1151,7 @@ def synthesis_wavsizesep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_m
         if o.level >= lvl_sep_max:
             continue
 
-        # Only atoms within analysis radius
+        # Only atoms within analysis radius
         dR = np.sqrt( (xc - xco)**2 + (yc - yco)**2 )
         if dR > R:
             continue
@@ -1183,7 +1183,7 @@ def synthesis_wavsizesep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_m
         else:
             noticl_al.append([ o, xco, yco ])
 
-    # Galaxies
+    # Galaxies
     for j, (o, xco, yco) in enumerate(noticl_al):
 
         x_min, y_min, x_max, y_max = o.bbox
@@ -1334,7 +1334,7 @@ def make_results_cluster( sch, oim, nfp, chan, filt, gamma, size_sep, size_sep_p
     '''
     hkw = ['m', 'low', 'up'] # To correctly name SED column names
 
-    # Full field ---------------------------------------------------------------
+    # Full field ---------------------------------------------------------------
     if sch == 'fullfield':
         output = synthesis_fullfield( oim, nfp, gamma, lvl_sep_big, xs, ys, n_levels, rm_gamma_for_big = rm_gamma_for_big, write_fits = write_fits )
         filler_sed = np.empty( 3 * len(mscsedl)) # fill SED data
@@ -1344,7 +1344,7 @@ def make_results_cluster( sch, oim, nfp, chan, filt, gamma, size_sep, size_sep_p
                         columns = [ 'nf', 'chan', 'filter', 'Atom selection scheme', 'R_kpc', 'R_pix', 'lvl_sep', 'size_sep', 'F_ICL_m', 'F_ICL_low', 'F_ICL_up', 'F_gal_m', 'F_gal_low', 'F_gal_up', 'f_ICL_m', 'f_ICL_low', 'f_ICL_up', 'PR_1_m', 'PR_1_up', 'PR_1_low', 'PR_2_m', 'PR_2_up', 'PR_2_low', 'PR_3_m', 'PR_3_up', 'PR_3_low', 'PR_4_m', 'PR_4_up', 'PR_4_low'  ])
 
 
-    # ICL -- WS -----------------------------------------------------------------
+    # ICL -- WS -----------------------------------------------------------------
     if sch == 'WS':
         output = synthesis_wavsep( nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gamma_for_big, kurt_filt = kurt_filt, plot_vignet = plot_vignet, write_fits = write_fits )
         filler_sed = np.empty( 3 * len(mscsedl)) # fill SED data
@@ -1366,7 +1366,7 @@ def make_results_cluster( sch, oim, nfp, chan, filt, gamma, size_sep, size_sep_p
                         columns = [ 'nf', 'chan', 'filter', 'Atom selection scheme', 'R_kpc', 'R_pix', 'lvl_sep', 'size_sep', 'F_ICL_m', 'F_ICL_low', 'F_ICL_up', 'F_gal_m', 'F_gal_low', 'F_gal_up', 'f_ICL_m', 'f_ICL_low', 'f_ICL_up', 'PR_1_m', 'PR_1_up', 'PR_1_low', 'PR_2_m', 'PR_2_up', 'PR_2_low', 'PR_3_m', 'PR_3_up', 'PR_3_low', 'PR_4_m', 'PR_4_up', 'PR_4_low'  ])
         output_df = pd.concat( [output_df, out_sed_df], axis = 1)
 
-    # ICL+BCG -- WS + SF -------------------------------------------------------
+    # ICL+BCG -- WS + SF -------------------------------------------------------
     if sch == 'WS+BCGSF':
         output = synthesis_bcgwavsep_with_masks( nfp = nfp, gamma = gamma, \
                 lvl_sep_big = lvl_sep_big, lvl_sep = lvl_sep, lvl_sep_max = lvl_sep_max, lvl_sep_bcg = lvl_sep_bcg, xs = xs, ys = ys, \
@@ -1432,10 +1432,10 @@ if __name__ == '__main__':
             #{'nf':'jw02736001001_f150w_bkg_rot_crop_input.fits', 'chan':'short', 'pix_scale':0.031, 'n_levels':11, 'lvl_sep_max':8 }, \
             #{'nf':'jw02736001001_f200w_bkg_rot_crop_input.fits', 'chan':'short', 'pix_scale':0.031, 'n_levels':11, 'lvl_sep_max':8 }
 
-    lvl_sepl = [ 3, 4, 5, 6, 7 ] # wavelet scale separation
-    size_sepl = [ 60, 80, 100, 140, 200 ] # size separation [kpc]
+    lvl_sepl = [ 3, 4, 5, 6, 7 ] # wavelet scale separation
+    size_sepl = [ 60, 80, 100, 140, 200 ] # size separation [kpc]
     R_kpcl = [ 400 ] # radius in which quantities are measured [kpc]
-    physcale = 5.3 # kpc/"
+    physcale = 5.3 # kpc/"
     gamma = 0.5
     lvl_sep_big = 5
     lvl_sep_bcg = 6
@@ -1458,7 +1458,7 @@ if __name__ == '__main__':
     ray_refs = []
     ray_outputs = []
 
-    # ray hyperparameters
+    # ray hyperparameters
     n_cpus = 42
     ray.init(num_cpus = n_cpus)
 
@@ -1469,7 +1469,7 @@ if __name__ == '__main__':
         cat_gal.append(gal.coord_list)
     cat_gal = np.array(cat_gal)
 
-    # Read star region files
+    # Read star region files
     rco = pyr.open(os.path.join(path_data, 'star_flags_polygon_pix_long.reg'))
     rell = pyr.open(os.path.join(path_data, 'icl_flags_ellipse_pix_long.reg'))
     rbcg = pyr.open(os.path.join(path_data, 'bcg_flags_ellipse_pix_long.reg'))
@@ -1534,7 +1534,7 @@ if __name__ == '__main__':
                     id_oim = ray.put(oim)
                     xs, ys = oim.shape
 
-                    # Full field ------------------------------------------------
+                    # Full field ------------------------------------------------
                     lvl_sep = np.nan
                     size_sep = np.nan
                     size_sep_pix = np.nan
@@ -1572,7 +1572,7 @@ if __name__ == '__main__':
                                                  measure_PR = measure_PR ))
 
 
-                    # ICL -- WS ------------------------------------------------
+                    # ICL -- WS ------------------------------------------------
                     for lvl_sep in lvl_sepl:
                         ray_refs.append( make_results_cluster.remote(sch = 'WS', \
                                                         oim = id_oim, \
@@ -1640,7 +1640,7 @@ if __name__ == '__main__':
                                                         write_fits = write_fits, \
                                                         measure_PR = measure_PR ))
 
-                    # ICL+BCG -- WS + SF ---------------------------------------
+                    # ICL+BCG -- WS + SF ---------------------------------------
                     for lvl_sep in lvl_sepl:
                         ray_refs.append( make_results_cluster.remote(sch = 'WS+BCGSF', \
                                                         oim = oim, \

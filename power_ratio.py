@@ -9,12 +9,12 @@ from astropy.io import fits
 def moments(image, order, radius, display = False):
     '''Compute radial moments of an image.
     - Arguments:
-    image       # image of which the moment is computed
+    image       # image of which the moment is computed
     order       # order of the moments (0, 1, 2,...)
     radius      # radius within which the moments are computed [pixels]
 
     - Output
-    A, B        # Moments
+    A, B        # Moments
 
     Source: Buote & Tsai 1996.
     '''
@@ -31,8 +31,8 @@ def moments(image, order, radius, display = False):
         return A
 
     else:
-        a = image * np.power(rr, order) * np.cos(order * theta) # weighted polar image
-        b = image * np.power(rr, order) * np.sin(order * theta) # weighted polar image
+        a = image * np.power(rr, order) * np.cos(order * theta) # weighted polar image
+        b = image * np.power(rr, order) * np.sin(order * theta) # weighted polar image
         A = np.sum( a[rr <= radius] ) # moment = integration within given radius
         B = np.sum( b[rr <= radius] ) # moment = integration within given radius
 
@@ -48,12 +48,12 @@ def moments(image, order, radius, display = False):
 def power_ratio(image, order, radius):
     '''Compute power ratio of an image.
     - Arguments:
-    image       # image of which the moment is computed
+    image       # image of which the moment is computed
     order       # order of the power ratio (0, 1, 2,...)
     radius      # radius within which the moments are computed [pixels]
 
     - Output
-    P           # Power ratio - P_order / P_0
+    P           # Power ratio - P_order / P_0
 
     Source: Buote & Tsai 1996.
     '''
@@ -82,8 +82,8 @@ def test_PR_gallery():
 
         image = fits.getdata(figure)
 
-        R_l = np.linspace( 50, 500, 20 ) # pix
-        order_l = np.arange(1, 5) # order
+        R_l = np.linspace( 50, 500, 20 ) # pix
+        order_l = np.arange(1, 5) # order
 
         plt.figure()
         for order in order_l:
@@ -119,8 +119,8 @@ def plot_PR_vs_R():
 
         image = fits.getdata(figure)
 
-        R_l = np.linspace( 50, 500, 20 ) # pix
-        order_l = np.arange(1, 5) # order
+        R_l = np.linspace( 50, 500, 20 ) # pix
+        order_l = np.arange(1, 5) # order
 
         plt.figure()
         for order in order_l:
@@ -153,7 +153,7 @@ def plot_PR_vs_fig():
 
     figure_l = glob.glob( os.path.join( path_data, '*.fits' ) )
     R = 500
-    order_l = np.arange(1, 5) # order
+    order_l = np.arange(1, 5) # order
 
     for order in order_l:
 
@@ -183,14 +183,14 @@ def plot_PR_vs_fig():
 if __name__ == '__main__':
 
     # Paths, lists & variables
-    path_data = '/home/ellien/JWST/power_ratio/'
-    path_scripts = '/home/ellien/JWST/JWST_scripts'
-    path_wavelets = '/home/ellien/JWST/wavelets/out12/'
-    path_plots = '/home/ellien/JWST/plots'
+    path_data = '/home/aellien/JWST/power_ratio/'
+    path_scripts = '/home/aellien/JWST/JWST_scripts'
+    path_wavelets = '/home/aellien/JWST/wavelets/out15/'
+    path_plots = '/home/aellien/JWST/plots'
 
     figure_l = glob.glob( os.path.join( path_data, '*.fits' ) )
     R = 500
-    order_l = np.arange(1, 5) # order
+    order_l = np.arange(1, 5) # order
 
     for order in order_l:
 
