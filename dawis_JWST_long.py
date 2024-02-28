@@ -5,12 +5,12 @@ import shutil
 
 indir = '/n03data/ellien/JWST/data'
 infile = sys.argv[1]
-outdir = '/n03data/ellien/JWST/wavelets/out17/'
-n_cpus = 4 # Number of CPUs
+outdir = '/n03data/ellien/JWST/wavelets/out18/'
+n_cpus = 2 # Number of CPUs
 tau = 0.8   # Relative Threshold
 gamma = 0.5   # Attenuation (CLEAN) factor
-ceps = 1E-5    # Convergence value for epsilon
-n_levels = 11    # Number of wavelet scales
+ceps = 1E-4    # Convergence value for epsilon
+n_levels = 10    # Number of wavelet scales
 min_span = 1    # Minimum of wavelet scales spanned by an interscale tree (must be >= 1)
 max_span = 2    # Maximum number of wavelet scales spanned by an interscale tree
 lvl_sep_big = 5     # Scale at wich mix_span, max_span & gamma are set to 1, and monomodality is enforced
@@ -28,6 +28,9 @@ size_patch = 100
 resume = True
 rm_gamma_for_big = True
 iptd_sigma = 5
+
+if os.path.isdir( outdir ) == False:
+    os.makedirs( outdir, exist_ok = True )
 
 shutil.copyfile( os.path.abspath(__file__), os.path.join( outdir, infile[:-4] + 'input.dawis.py' ) )
 
