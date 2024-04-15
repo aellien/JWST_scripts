@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-#SBATCH --job-name=rabit 
-#SBATCH --partition=seq 
-#SBATCH --time=0:1:0 
+#SBATCH --job-name=jwst
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=48:00:00#SBATCH --time=24:0:0 
 #SBATCH --output /n03data/ellien/JWST/logs/%x.%j.out 
 #SBATCH --error  /n03data/ellien/JWST/logs/%x.%j.err
 
