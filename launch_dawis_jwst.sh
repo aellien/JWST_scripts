@@ -13,7 +13,7 @@
 
 for file in jw02736001001_f277w_bkg_rot_crop_input.fits \
             jw02736001001_f356w_bkg_rot_crop_input.fits \
-            jw02736001001_f444w_bkg_rot_crop_input.fits
+            jw02736001001_f444w_bkg_rot_crop_input.fits \
             jw02736001001_f090w_bkg_rot_crop_warp_nobkg2.fits \
             jw02736001001_f150w_bkg_rot_crop_warp_nobkg2.fits \
             jw02736001001_f200w_bkg_rot_crop_warp_nobkg2.fits \
