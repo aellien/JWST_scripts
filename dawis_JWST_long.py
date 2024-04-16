@@ -7,12 +7,12 @@ from datetime import datetime
 
 indir = '/n03data/ellien/JWST/data'
 infile = sys.argv[1]
-outdir = '/n03data/ellien/JWST/wavelets/out19/'
+outdir = '/n03data/ellien/JWST/wavelets/out20/'
 
 if os.path.isdir( outdir ) == False:
     os.makedirs( outdir, exist_ok = True )
     
-tau = 0.8   # Relative Threshold
+tau = 0.1   # Relative Threshold
 gamma = 0.5   # Attenuation (CLEAN) factor
 
 ceps = 1E-4    # Convergence value for epsilon
@@ -23,10 +23,10 @@ starting_level = 2 # Starting wavelet scale (this is the third scale - Python co
 n_levels = 10    # Number of wavelet scales
 min_span = 1    # Minimum of wavelet scales spanned by an interscale tree (must be >= 1)
 max_span = 2    # Maximum number of wavelet scales spanned by an interscale tree
-deblend_contrast = 0.1
-lvl_deblend = 3 # Scale at which the regions of significant wavelet coefficients are deblended
-lvl_sep_big = 5     # Scale at wich mix_span, max_span & gamma are set to 1, and monomodality is enforced
-lvl_sep_op = 4  # Scale at which synthesis operator switch from SUM to ADJOINT
+deblend_contrast = 0.01
+lvl_deblend = 2 # Scale at which the regions of significant wavelet coefficients are deblended
+lvl_sep_big = 5     # Scale at wich mix_span, max_span & gamma are set to 1
+lvl_sep_op = 3  # Scale at which synthesis operator switch from SUM to ADJOINT
 rm_gamma_for_big = True # If set to true, the attenuation factor is not applied for scales higher than lvl_sep_big
 
 extent_sep = 0.15   # Ratio n_pix/vignet under which the Haar wavelet is used for restoration
@@ -41,7 +41,7 @@ data_dump = True    # Write data at each iteration /!\ demands lot of space on h
 gif = True      # Make gifs of the run (need data_dump = True)
 conditions = 'prolongation' # Border conditions for wavelet convolution
 
-n_cpus = 1 # Number of CPUs
+n_cpus = 2 # Number of CPUs
 size_patch = 100 # Number of objects in parallelized patch
 
 resume = True 
