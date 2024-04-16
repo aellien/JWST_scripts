@@ -24,5 +24,7 @@ do
       #file=jw02736001001_${f}_bkg_rot_crop_warp_nobkg1_det_nosky_input.fits # out14 rm scattered light
       #file=jw02736001001_${f}_bkg_rot_crop_warp_nobkg2.fits # out15 - slightly deeper run, new scattered light bkg, DAWIS ran on every filter again
       echo "Launch Dawis on file $file"
-      qsub qsub_dawis_jwst.sh -v n=${file},ncl=${file:0:-5},chan=long # Long here is just for dawis input file (rebinned short images)
+      #qsub qsub_dawis_jwst.sh -v n=${file},ncl=${file:0:-5},chan=long # Long here is just for dawis input file (rebinned short images)
+      bash slurm_dawis.sh $file
+
 done
