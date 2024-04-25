@@ -112,7 +112,7 @@ if __name__ == '__main__':
     
     free_params = [ 0, 1, 2, 3, 4, 9 ]
     sampler = u.ReactiveNestedSampler(['tau_main', 'tau_starburst', 'f_starburst', 'Age_stars', 'Age_starburst', 'sep_age'], 
-                                      likelihood, simple_prior, 
+                                      likelihood, simple_prior,
                                       log_dir = '/home/aellien/JWST/analysis/sed_out5/test4')
     sampler.run()
     sampler.print_results()

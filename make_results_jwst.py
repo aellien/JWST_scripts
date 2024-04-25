@@ -15,7 +15,7 @@ from skimage.morphology import binary_dilation
 from scipy.stats import kurtosis
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-def read_image_atoms( nfp, filter_it = None, verbose = False ):
+def read_image_atoms( nfp, filter_it = None, verbose = True ):
 
     # Object lists
     if filter_it == None:
@@ -1411,7 +1411,7 @@ if __name__ == '__main__':
     # Paths, lists & variables
     path_data = '/n03data/ellien/JWST/data/'
     path_scripts = '/n03data/ellien/JWST/JWST_scripts'
-    path_wavelets = '/n03data/ellien/JWST/wavelets/out15/'
+    path_wavelets = '/n03data/ellien/JWST/wavelets/out20/'
     path_plots = '/n03data/ellien/JWST/plots'
     path_analysis = '/home/ellien/JWST/analysis/'
 
@@ -1434,7 +1434,7 @@ if __name__ == '__main__':
 
     lvl_sepl = [ 3, 4, 5, 6, 7 ] # wavelet scale separation
     size_sepl = [ 60, 80, 100, 140, 200 ] # size separation [kpc]
-    R_kpcl = [ 400 ] # radius in which quantities are measured [kpc]
+    R_kpcl = [ 128, 200, 400 ] # radius in which quantities are measured [kpc]
     physcale = 5.3 # kpc/"
     gamma = 0.5
     lvl_sep_big = 5
@@ -1459,8 +1459,8 @@ if __name__ == '__main__':
     ray_outputs = []
 
     # ray hyperparameters
-    n_cpus = 42
-    ray.init(num_cpus = n_cpus)
+    n_cpus = 48
+    ray.init()
 
     # Read galaxy catalog
     rgal = pyr.open(os.path.join(path_data, 'mahler_noirot_merged_member_gal_ra_dec_pix_long.reg'))

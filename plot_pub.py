@@ -35,12 +35,12 @@ def SED_tidal_streams():
     path_plots = '/home/aellien/JWST/plots'
     path_analysis = '/home/aellien/JWST/analysis/sed/'
 
-    nfdl = [ {'nf':'jw02736001001_f356w_bkg_rot_crop_input.synth.icl.wavsep_005.fits', 'filt':'f356w', 'path_data':'/home/ellien/JWST/wavelets/out15/', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'phot_corr':0.163, 'n_levels':10 }, \
-            {'nf':'jw02736001001_f444w_bkg_rot_crop_input.synth.icl.wavsep_005.fits', 'filt':'f444w', 'path_data':'/home/ellien/JWST/wavelets/out15/', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'phot_corr':0.162, 'n_levels':10 }, \
-            {'nf':'jw02736001001_f277w_bkg_rot_crop_input.synth.icl.wavsep_005.fits', 'filt':'f277w', 'path_data':'/home/ellien/JWST/wavelets/out15/', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'phot_corr':0.223, 'n_levels':10 }, \
-            {'nf':'jw02736001001_f090w_bkg_rot_crop_warp_nobkg1_det_nosky_input.synth.icl.wavsep_005.fits', 'path_data':'/home/ellien/JWST/wavelets/out15/', 'filt':'f090w', 'chan':'short', 'pix_scale':0.031, 'phot_corr':-0.174, 'pixar_sr':2.29E-14, 'n_levels':10 }, \
-            {'nf':'jw02736001001_f150w_bkg_rot_crop_warp_nobkg1_det_nosky_input.synth.icl.wavsep_005.fits', 'path_data':'/home/ellien/JWST/wavelets/out15/', 'filt':'f150w', 'chan':'short', 'pix_scale':0.031, 'phot_corr':-0.047, 'pixar_sr':2.31E-14, 'n_levels':10 }, \
-            {'nf':'jw02736001001_f200w_bkg_rot_crop_warp_nobkg1_det_nosky_input.synth.icl.wavsep_005.fits', 'path_data':'/home/ellien/JWST/wavelets/out15/', 'filt':'f200w', 'chan':'short', 'pix_scale':0.031, 'phot_corr':-0.114, 'pixar_sr':2.29E-14, 'n_levels':10 } ]
+    nfdl = [ {'nf':'jw02736001001_f356w_bkg_rot_crop_input.synth.icl.bcgwavsizesepmask_005_080.fits', 'filt':'f356w', 'path_data':'/home/aellien/JWST/wavelets/out15/', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'phot_corr':0.163, 'n_levels':10 }, \
+            {'nf':'jw02736001001_f444w_bkg_rot_crop_input.synth.icl.bcgwavsizesepmask_005_080.fits', 'filt':'f444w', 'path_data':'/home/aellien/JWST/wavelets/out15/', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'phot_corr':0.162, 'n_levels':10 }, \
+            {'nf':'jw02736001001_f277w_bkg_rot_crop_input.synth.icl.bcgwavsizesepmask_005_080.fits', 'filt':'f277w', 'path_data':'/home/aellien/JWST/wavelets/out15/', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'phot_corr':0.223, 'n_levels':10 }, \
+            {'nf':'jw02736001001_f090w_bkg_rot_crop_warp_nobkg2.synth.icl.bcgwavsizesepmask_005_080.fits', 'path_data':'/home/aellien/JWST/wavelets/out15/', 'filt':'f090w', 'chan':'short', 'pix_scale':0.031, 'phot_corr':-0.174, 'pixar_sr':2.29E-14, 'n_levels':10 }, \
+            {'nf':'jw02736001001_f150w_bkg_rot_crop_warp_nobkg2.synth.icl.bcgwavsizesepmask_005_080.fits', 'path_data':'/home/aellien/JWST/wavelets/out15/', 'filt':'f150w', 'chan':'short', 'pix_scale':0.031, 'phot_corr':-0.047, 'pixar_sr':2.31E-14, 'n_levels':10 }, \
+            {'nf':'jw02736001001_f200w_bkg_rot_crop_warp_nobkg2.synth.icl.bcgwavsizesepmask_005_080.fits', 'path_data':'/home/aellien/JWST/wavelets/out15/', 'filt':'f200w', 'chan':'short', 'pix_scale':0.031, 'phot_corr':-0.114, 'pixar_sr':2.29E-14, 'n_levels':10 } ]
 
 
     filterl = [ 'f090w', 'f150w', 'f200w', 'f277w', 'f356w', 'f444w']
@@ -415,12 +415,16 @@ def plot_PR():
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 def fICL_vs_filters():
+    '''
+    22/04/2024
+    UP TO DATE.
+    '''
 
     # Paths, lists & variables
-    path_data = '/home/ellien/JWST/data/'
-    path_scripts = '/home/ellien/JWST/JWST_scripts'
-    path_wavelets = '/home/ellien/JWST/wavelets/out15/'
-    path_plots = '/home/ellien/JWST/plots'
+    path_data = '/home/aellien/JWST/data/'
+    path_scripts = '/home/aellien/JWST/JWST_scripts'
+    path_wavelets = '/home/aellien/JWST/wavelets/out15/'
+    path_plots = '/home/aellien/JWST/plots'
 
     filterl = [ 'f090w', 'f150w', 'f200w', 'f277w', 'f356w', 'f444w']
     schl = [ ('WS+BCGSF+SS', 'o', 'dodgerblue'), ('WS+SF+SS', '^', 'mediumaquamarine')] #('WS+SF', '--', 'o', 'mediumaquamarine'), ('WS+SF+SS', '--', '*',  'dodgerblue')
@@ -428,7 +432,7 @@ def fICL_vs_filters():
     R_kpcl = [ 400 ]
     colors = [ 'paleturquoise', 'mediumaquamarine', 'dodgerblue', 'white' ]
 
-    r = pd.read_excel('/home/ellien/JWST/analysis/results_out5.xlsx')
+    r = pd.read_excel('/home/aellien/JWST/analysis/results_out5.xlsx')
     r = r.sort_values(by = 'filter') # Sort values so filters goes from low wavelength to high wavelength
 
     plt.figure(figsize=(8,5))
@@ -514,10 +518,10 @@ def fICL_vs_filters():
 def Fgal_vs_filters():
 
     # Paths, lists & variables
-    path_data = '/home/ellien/JWST/data/'
-    path_scripts = '/home/ellien/JWST/JWST_scripts'
-    path_wavelets = '/home/ellien/JWST/wavelets/out15/'
-    path_plots = '/home/ellien/JWST/plots'
+    path_data = '/home/aellien/JWST/data/'
+    path_scripts = '/home/aellien/JWST/JWST_scripts'
+    path_wavelets = '/home/aellien/JWST/wavelets/out15/'
+    path_plots = '/home/aellien/JWST/plots'
 
     filterl = [ 'f090w', 'f150w', 'f200w', 'f277w', 'f356w', 'f444w']
     schl = [ ('WS+BCGSF+SS', '-', 's'), ('WS+SF+SS', '--', 'o')]
@@ -528,7 +532,7 @@ def Fgal_vs_filters():
     ZP_AB = -6.10 - 2.5 * np.log10(pixar_sr)
     phot_corr = np.array([-0.174, -0.047, -0.114, 0, 0, 0])
 
-    r = pd.read_excel('/home/ellien/JWST/analysis/results_out5.xlsx')
+    r = pd.read_excel('/home/aellien/JWST/analysis/results_out5.xlsx')
     r = r.sort_values(by = 'filter') # Sort values so filters goes from low wavelength to high wavelength
 
     plt.figure(figsize=(8,8))
@@ -612,12 +616,14 @@ def Fgal_vs_filters():
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 def FICL_vs_filters():
-
+    '''
+    NO PHOTOMETRIC CORRECTION BTW SHORT & LONG HERE
+    '''
     # Paths, lists & variables
-    path_data = '/home/ellien/JWST/data/'
-    path_scripts = '/home/ellien/JWST/JWST_scripts'
-    path_wavelets = '/home/ellien/JWST/wavelets/out13/'
-    path_plots = '/home/ellien/JWST/plots'
+    path_data = '/home/aellien/JWST/data/'
+    path_scripts = '/home/aellien/JWST/JWST_scripts'
+    path_wavelets = '/home/aellien/JWST/wavelets/out15/'
+    path_plots = '/home/aellien/JWST/plots'
 
     filterl = [ 'f277w', 'f356w', 'f444w']
     schl = [ ('WS+BCGSF+SS', '-', 's'), ('WS+SF+SS', '--', 'o')]
@@ -627,7 +633,7 @@ def FICL_vs_filters():
     pixar_sr = np.array([ 2.29E-14, 2.31E-14, 2.29E-14, 9.31E-14, 9.31E-14, 9.31E-14 ])
     print(pixar_sr)
 
-    r = pd.read_excel('/home/ellien/JWST/analysis/results_out5.xlsx')
+    r = pd.read_excel('/home/aellien/JWST/analysis/results_out5.xlsx')
     r = r.sort_values(by = 'filter') # Sort values so filters goes from low wavelength to high wavelength
 
     plt.figure(figsize=(8,8))
@@ -696,10 +702,10 @@ def FICL_vs_filters():
 def fICL_vs_lvlsep():
 
     # Paths, lists & variables
-    path_data = '/home/ellien/JWST/data/'
-    path_scripts = '/home/ellien/JWST/JWST_scripts'
-    path_wavelets = '/home/ellien/JWST/wavelets/out15/'
-    path_plots = '/home/ellien/JWST/plots'
+    path_data = '/home/aellien/JWST/data/'
+    path_scripts = '/home/aellien/JWST/JWST_scripts'
+    path_wavelets = '/home/aellien/JWST/wavelets/out15/'
+    path_plots = '/home/aellien/JWST/plots'
 
     #filterl = [ 'f090w', 'f150w', 'f200w']
     filterl = [ 'f277w', 'f356w', 'f444w']
@@ -711,7 +717,7 @@ def fICL_vs_lvlsep():
     markerl = ['s', '^', 'o']
     lsl = ['-', '--']
 
-    r = pd.read_excel('/home/ellien/JWST/analysis/results_out5_test.xlsx')
+    r = pd.read_excel('/home/aellien/JWST/analysis/results_out5.xlsx')
     r = r.sort_values(by = 'filter') # Sort values so filters goes from low wavelength to high wavelength
 
     for j, R_kpc in enumerate(R_kpcl):
@@ -801,11 +807,14 @@ def rebin(im, xbin = 2, ybin = 2, type = 'SUM'):
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 def plot_array_recim_long():
+    '''
+    OUTDATED
+    '''
 
     # Paths, lists & variables
-    path_data = '/home/ellien/JWST/data/'
-    path_wavelets = '/home/ellien/JWST/wavelets/out15/'
-    path_plots = '/home/ellien/JWST/plots'
+    path_data = '/home/aellien/JWST/data/'
+    path_wavelets = '/home/aellien/JWST/wavelets/out15/'
+    path_plots = '/home/aellien/JWST/plots'
 
     filterl = [ ('f150w', 'short'), ('f356w', 'long')]
     oiml = []
@@ -917,9 +926,9 @@ def plot_array_recim_long():
 def plot_array_scattered_recim_short():
 
     # Paths, lists & variables
-    path_data = '/home/ellien/JWST/data/'
-    path_wavelets = '/home/ellien/JWST/wavelets/out15/'
-    path_plots = '/home/ellien/JWST/plots'
+    path_data = '/home/aellien/JWST/data/'
+    path_wavelets = '/home/aellien/JWST/wavelets/out15/'
+    path_plots = '/home/aellien/JWST/plots'
 
     filterl = [ 'f090w', 'f150w', 'f200w']
     oiml = []
@@ -1068,10 +1077,10 @@ def plot_array_scattered_recim_short():
 def plot_array_icl_maps_all_filters():
 
     # Paths, lists & variables
-    path_data = '/home/ellien/JWST/data/'
-    path_scripts = '/home/ellien/JWST/JWST_scripts'
-    path_wavelets = '/home/ellien/JWST/wavelets/out15/'
-    path_plots = '/home/ellien/JWST/plots'
+    path_data = '/home/aellien/JWST/data/'
+    path_scripts = '/home/aellien/JWST/JWST_scripts'
+    path_wavelets = '/home/aellien/JWST/wavelets/out15/'
+    path_plots = '/home/aellien/JWST/plots'
 
     nfl = [ {'nf':'jw02736001001_f356w_bkg_rot_crop_input.fits', 'filt':'f356w', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999 }, \
             {'nf':'jw02736001001_f444w_bkg_rot_crop_input.fits', 'filt':'f444w', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999 }, \
@@ -1396,10 +1405,10 @@ def plot_rgb_mask_wcs():
 def plot_recim_rgb_icl():
 
     # Paths, lists & variables
-    path_data = '/home/ellien/JWST/data/'
-    path_scripts = '/home/ellien/JWST/JWST_scripts'
-    path_wavelets = '/home/ellien/JWST/wavelets/out15/'
-    path_plots = '/home/ellien/JWST/plots'
+    path_data = '/home/aellien/JWST/data/'
+    path_scripts = '/home/aellien/JWST/JWST_scripts'
+    path_wavelets = '/home/aellien/JWST/wavelets/out15/'
+    path_plots = '/home/aellien/JWST/plots'
 
     filterl = [ 'f277w', 'f356w', 'f444w']
     #filterl = [ 'f090w', 'f150w', 'f200w' ]
@@ -1436,7 +1445,7 @@ def plot_recim_rgb_icl():
         oim_mu = - 2.5 * np.log10( oim / 4.25 * 1E-4 ) + 8.906
         oim_mu[oim_mu > 31.1] = 31.1 # SB limit from Montes 2022
 
-        nf = 'jw02736001001_%s_bkg_rot_crop_input.synth.icl.wavsizesepmask_005_100.fits'%(filt)
+        nf = 'jw02736001001_%s_bkg_rot_crop_input.synth.icl.bcgwavsizesepmask_005_080.fits'%(filt)
         #nf = 'jw02736001001_%s_bkg_rot_crop_warp_nobkg2.synth.icl.bcgwavsizesepmask_005_080.fits'%(filt)
 
         nfp = os.path.join(path_wavelets, nf)
@@ -1447,7 +1456,7 @@ def plot_recim_rgb_icl():
         #iclbcg_mu[iclbcg_mu > 28.] = 28. # SB limit from Montes 2022
         tot_cl_l.append(iclbcg)
 
-        nf = 'jw02736001001_%s_bkg_rot_crop_input.synth.gal.wavsizesepmask_005_200.fits'%(filt)
+        nf = 'jw02736001001_%s_bkg_rot_crop_input.synth.gal.bcgwavsizesepmask_005_080.fits'%(filt)
         #nf = 'jw02736001001_%s_bkg_rot_crop_warp_nobkg2.synth.gal.bcgwavsizesepmask_005_200.fits'%(filt)
 
         nfp = os.path.join(path_wavelets, nf)
@@ -1528,17 +1537,17 @@ def plot_recim_rgb_icl():
 def plot_recim_rgb_all_filters():
 
     # Paths, lists & variables
-    path_data = '/home/ellien/JWST/data/'
-    path_scripts = '/home/ellien/JWST/JWST_scripts'
-    path_wavelets = '/home/ellien/JWST/wavelets/out13/'
-    path_plots = '/home/ellien/JWST/plots'
+    path_data = '/home/aellien/JWST/data/'
+    path_scripts = '/home/aellien/JWST/JWST_scripts'
+    path_wavelets = '/home/aellien/JWST/wavelets/out15/'
+    path_plots = '/home/aellien/JWST/plots'
 
     nfl = [ {'nf':'jw02736001001_f356w_bkg_rot_crop_input.fits', 'filt':'f356w', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999 }, \
             {'nf':'jw02736001001_f444w_bkg_rot_crop_input.fits', 'filt':'f444w', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999 }, \
             {'nf':'jw02736001001_f277w_bkg_rot_crop_input.fits', 'filt':'f277w', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999 }, \
-            {'nf':'jw02736001001_f090w_bkg_rot_crop_warp_nobkg1_det_nosky_input.fits', 'filt':'f090w', 'chan':'short', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':8 }, \
-            {'nf':'jw02736001001_f150w_bkg_rot_crop_warp_nobkg1_det_nosky_input.fits', 'filt':'f150w', 'chan':'short', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':8 }, \
-            {'nf':'jw02736001001_f200w_bkg_rot_crop_warp_nobkg1_det_nosky_input.fits', 'filt':'f200w', 'chan':'short', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':8 } ]
+            {'nf':'jw02736001001_f090w_bkg_rot_crop_warp_nobkg2.fits', 'filt':'f090w', 'chan':'short', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':8 }, \
+            {'nf':'jw02736001001_f150w_bkg_rot_crop_warp_nobkg2.fits', 'filt':'f150w', 'chan':'short', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':8 }, \
+            {'nf':'jw02736001001_f200w_bkg_rot_crop_warp_nobkg2.fits', 'filt':'f200w', 'chan':'short', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':8 } ]
 
     paired_filterl = [ ['f090w', 'f150w'], ['f200w', 'f277w'], ['f356w', 'f444w' ] ] # paired for RGB
     binning_factor = 4151 / 2045 # size short / size long
@@ -1553,23 +1562,23 @@ def plot_recim_rgb_all_filters():
         for nf in nfl:
             if (nf['filt'] == filt1) or (nf['filt'] == filt2):
                 if nf['chan'] == 'long':
-                    nfp = os.path.join(path_wavelets, 'jw02736001001_%s_bkg_rot_crop_input.synth.icl.wavsizesepmask_005_080.fits'%(nf['filt']))
+                    nfp = os.path.join(path_wavelets, 'jw02736001001_%s_bkg_rot_crop_input.synth.icl.bcgwavsizesepmask_005_080.fits'%(nf['filt']))
                     icl = fits.getdata(nfp)
                     icl = gaussian_filter(icl, std)
 
-                    nfp = os.path.join(path_wavelets, 'jw02736001001_%s_bkg_rot_crop_input.synth.gal.wavsizesepmask_005_200.fits'%(nf['filt']))
+                    nfp = os.path.join(path_wavelets, 'jw02736001001_%s_bkg_rot_crop_input.synth.gal.bcgwavsizesepmask_005_080.fits'%(nf['filt']))
                     gal = fits.getdata(nfp)
                     #gal = gaussian_filter(gal, std)
 
                 if nf['chan'] == 'short':
-                    nfp = os.path.join(path_wavelets, 'jw02736001001_%s_bkg_rot_crop_input.synth.icl.wavsizesepmask_006_080.fits'%(nf['filt']))
+                    nfp = os.path.join(path_wavelets, 'jw02736001001_%s_bkg_rot_crop_warp_nobkg2.synth.icl.bcgwavsizesepmask_005_080.fits'%(nf['filt']))
                     icl = fits.getdata(nfp)
-                    icl = zoom( icl, 1 / binning_factor, order = 5 ) # resample to same size as long channel images
+                    #icl = zoom( icl, 1 / binning_factor, order = 5 ) # resample to same size as long channel images
                     icl = gaussian_filter(icl, std)
 
-                    nfp = os.path.join(path_wavelets, 'jw02736001001_%s_bkg_rot_crop_input.synth.gal.wavsizesepmask_006_200.fits'%(nf['filt']))
+                    nfp = os.path.join(path_wavelets, 'jw02736001001_%s_bkg_rot_crop_warp_nobkg2.synth.gal.bcgwavsizesepmask_005_080.fits'%(nf['filt']))
                     gal = fits.getdata(nfp)
-                    gal = zoom( gal, 1 / binning_factor, order = 5 ) # resample to same size as long channel images
+                    #gal = zoom( gal, 1 / binning_factor, order = 5 ) # resample to same size as long channel images
                     #gal = gaussian_filter(gal, std)
 
                 combiml[i] += icl
@@ -1594,9 +1603,9 @@ def plot_recim_rgb_all_filters():
 def plot_scattered_light_maps():
 
     # Paths, lists & variables
-    path_data = '/home/ellien/JWST/data/'
-    path_scripts = '/home/ellien/JWST/JWST_scripts'
-    path_plots = '/home/ellien/JWST/plots'
+    path_data = '/home/aellien/JWST/data/'
+    path_scripts = '/home/aellien/JWST/JWST_scripts'
+    path_plots = '/home/aellien/JWST/plots'
 
     filterl = [ 'f090w', 'f150w', 'f200w' ]
     binning_factor = 4151 / 2045 # size short / size long

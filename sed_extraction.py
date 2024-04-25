@@ -34,51 +34,6 @@ from astropy.wcs import WCS
 from astropy.visualization import *
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-def deblend_region(props, image, lab, labc):
-    '''
-    FINIR DERNIERE ETAPE : une fois le peak principal isolé, rajouter aussi
-    les props des peaks secondaires.
-    '''
-    x_min, y_min, x_max, y_max = props.bbox    
-    image_clip = image[x_min:x_max, y_min:y_max]
-    label_clip = lab[x_min:x_max, y_min:y_max]
-    label_copy = np.zeros(lab.shape)
-    
-    # Find secondary local wavelet maxima
-    local_maxima_coo = peak_local_max( image_clip, 
-                                      min_distance = 5, 
-                                      exclude_border = False, 
-                                      threshold_rel = 0.3)
-    
-    if len(local_maxima_coo) > 1:
-        
-        # Make mask image of maxima
-        local_maxima_clip = np.zeros_like( label_clip )
-        local_maxima_clip[ tuple(local_maxima_coo.T) ] = 1
-
-        # Create new labels for each local maxima, called markers
-        marker_clip = label(local_maxima_clip)
-
-        # Watershed algorithm to segment the interscale maximum into different regions
-        # corresponding to local maxima
-        segmented_label_clip = watershed( - image_clip, markers = marker_clip, \
-                                                           mask = label_clip )
-        
-        segmented_label_clip[np.where(segmented_label_clip) != 0.] += labc # the new regions get label
-        segmented_label_clip[np.where(segmented_label_clip == labc)] = 0
-        
-        lab[x_min:x_max, y_min:y_max] = segmented_label_clip # update labels
-        labc = np.max(segmented_label_clip)
-        
-        label_copy[x_min:x_max, y_min:y_max] = segmented_label_clip # measure new region properties
-        new_props = regionprops(label_copy.astype(int), image)        
-        
-        return new_props, lab, labc
-    
-    else:
-        return [], lab, labc
-
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 def deblend_synth_images(idc):
     '''
     Deblending step

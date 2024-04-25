@@ -5,9 +5,13 @@ import shutil
 import cProfile
 from datetime import datetime
 
-indir = '/n03data/ellien/JWST/data'
-infile = sys.argv[1]
-outdir = '/n03data/ellien/JWST/wavelets/out20/'
+#indir = '/n03data/ellien/JWST/data'
+#infile = sys.argv[1]
+#outdir = '/n03data/ellien/JWST/wavelets/out20/'
+
+indir = '/home/aellien/JWST/data'
+infile = 'jw02736001001_f200w_bkg_rot_crop_warp_nobkg2.fits'
+outdir = '/home/aellien/JWST/wavelets/out20/'
 
 if os.path.isdir( outdir ) == False:
     os.makedirs( outdir, exist_ok = True )
@@ -37,11 +41,11 @@ n_sigmas = 5 # Threshold for detection
 inpaint_res = True # If set to true high negative value residual will be inpainted by noise
 iptd_sigma = 5  # Threshold for noise inpainted values
 
-data_dump = True    # Write data at each iteration /!\ demands lot of space on hardware /!\
+data_dump = False    # Write data at each iteration /!\ demands lot of space on hardware /!\
 gif = True      # Make gifs of the run (need data_dump = True)
 conditions = 'prolongation' # Border conditions for wavelet convolution
 
-n_cpus = 2 # Number of CPUs
+n_cpus = 10 # Number of CPUs
 size_patch = 100 # Number of objects in parallelized patch
 
 resume = True 
