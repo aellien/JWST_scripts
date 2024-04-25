@@ -1462,7 +1462,8 @@ if __name__ == '__main__':
     n_cpus = 48
     print('SLT SLT SLT SLT')
     ray.init()
-
+    print('CC CC CC CC')
+    
     # Read galaxy catalog
     rgal = pyr.open(os.path.join(path_data, 'mahler_noirot_merged_member_gal_ra_dec_pix_long.reg'))
     cat_gal = []
