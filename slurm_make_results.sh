@@ -10,5 +10,6 @@
 source /home/ellien/.bashrc
 conda activate dawis
 ray start --head --port=6379 &
+echo 'BONJOUR BONJOUR BONJOUR BONJOUR'
 python -u -W"ignore" /home/ellien/JWST/JWST_scripts/make_results_jwst.py
 exit 0
