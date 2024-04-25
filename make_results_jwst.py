@@ -1460,6 +1460,7 @@ if __name__ == '__main__':
 
     # ray hyperparameters
     n_cpus = 48
+    print('SLT SLT SLT SLT')
     ray.init()
 
     # Read galaxy catalog
