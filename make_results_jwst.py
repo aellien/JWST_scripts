@@ -13,47 +13,7 @@ from astropy.visualization import *
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from skimage.morphology import binary_dilation
 from scipy.stats import kurtosis
-
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-def read_image_atoms( nfp, filter_it = None, verbose = True ):
-
-    # Object lists
-    if filter_it == None:
-        opath = nfp + '*ol.it*.pkl'
-        itpath = nfp + '*itl.it*.pkl'
-    else:
-        opath = nfp + '*ol.it' + filter_it  + '.pkl'
-        itpath = nfp + '*itl.it' + filter_it + '.pkl'
-
-    opathl = glob.glob(opath)
-    opathl.sort()
-
-    # Interscale tree lists
-
-    itpathl = glob.glob(itpath)
-    itpathl.sort()
-
-    tol = []
-    titl = []
-
-    if verbose:
-        print('Reading %s.'%(opath))
-        print('Reading %s.'%(itpath))
-
-    for i, ( op, itlp ) in enumerate( zip( opathl, itpathl )):
-
-        if verbose :
-            print('Iteration %d' %(i), end ='\r')
-
-        ol = d.read_objects_from_pickle( op )
-        itl = d.read_interscale_trees_from_pickle( itlp )
-
-        for j, o in enumerate(ol):
-
-            tol.append(o)
-            titl.append(itl[j])
-
-    return tol, titl
+import gc
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 def synthesis_fullfield( oim, nfp, gamma, lvl_sep_big, xs, ys, n_levels, rm_gamma_for_big = True, write_fits = True ):
@@ -79,7 +39,7 @@ def synthesis_fullfield( oim, nfp, gamma, lvl_sep_big, xs, ys, n_levels, rm_gamm
     yc = ys / 2.
 
     # Read atoms
-    ol, itl = read_image_atoms( nfp, verbose = False )
+    ol, itl = d.read_image_atoms( nfp, verbose = False )
 
     for j, o in enumerate(ol):
 
@@ -272,7 +232,7 @@ def synthesis_wavsep( nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gam
     yc = ys / 2.
 
     # Read atoms
-    ol, itl = read_image_atoms( nfp, verbose = False )
+    ol, itl = d.read_image_atoms( nfp, verbose = False )
 
     onb = len(ol)
     filtered_onb = 0
@@ -379,7 +339,7 @@ def synthesis_bcgwavsep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_ma
     yc = ys / 2.
 
     # Read atoms
-    ol, itl = read_image_atoms( nfp, verbose = False )
+    ol, itl = d.read_image_atoms( nfp, verbose = False )
 
     # Kurtosis + BCG + ICL
     for j, o in enumerate(ol):
@@ -623,7 +583,7 @@ def synthesis_bcgwavsizesep_with_masks( nfp, chan, gamma, lvl_sep_big, lvl_sep, 
     yc = ys / 2.
 
     # Read atoms
-    ol, itl = read_image_atoms( nfp, verbose = False )
+    ol, itl = d.read_image_atoms( nfp, verbose = False )
 
     # Kurtosis + ICL+BCG
     for j, o in enumerate(ol):
@@ -892,7 +852,7 @@ def synthesis_wavsep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_max, 
     yc = ys / 2.
 
     # Read atoms
-    ol, itl = read_image_atoms( nfp, verbose = False )
+    ol, itl = d.read_image_atoms( nfp, verbose = False )
 
     # Kurtosis + ICL
     for j, o in enumerate(ol):
@@ -1125,7 +1085,7 @@ def synthesis_wavsizesep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_m
     yc = ys / 2.
 
     # Read atoms
-    ol, itl = read_image_atoms( nfp, verbose = False )
+    ol, itl = d.read_image_atoms( nfp, verbose = False )
 
     # Kurtosis + ICL
     for j, o in enumerate(ol):
@@ -1409,11 +1369,17 @@ def make_results_cluster( sch, oim, nfp, chan, filt, gamma, size_sep, size_sep_p
 if __name__ == '__main__':
 
     # Paths, lists & variables
-    path_data = '/n03data/ellien/JWST/data/'
-    path_scripts = '/n03data/ellien/JWST/JWST_scripts'
-    path_wavelets = '/n03data/ellien/JWST/wavelets/out20/'
-    path_plots = '/n03data/ellien/JWST/plots'
-    path_analysis = '/home/ellien/JWST/analysis/'
+    #path_data = '/n03data/ellien/JWST/data/'
+    #path_scripts = '/n03data/ellien/JWST/JWST_scripts'
+    #path_wavelets = '/n03data/ellien/JWST/wavelets/out20/'
+    #path_plots = '/n03data/ellien/JWST/plots'
+    #path_analysis = '/home/ellien/JWST/analysis/'
+    
+    path_data = '/home/aellien/JWST/data/'
+    path_scripts = '/home/aellien/JWST/JWST_scripts'
+    path_wavelets = '/home/aellien/JWST/wavelets/out20/'
+    path_plots = '/home/aellien/JWST/plots'
+    path_analysis = '/home/aellien/JWST/analysis/'
 
     nfl = [ {'nf':'jw02736001001_f090w_bkg_rot_crop_warp_nobkg2.fits', 'chan':'short', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':11, 'lvl_sep_max':8, 'mu_lim':999 }, \
             {'nf':'jw02736001001_f150w_bkg_rot_crop_warp_nobkg2.fits', 'chan':'short', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':11, 'lvl_sep_max':999, 'mu_lim':999 }, \
@@ -1434,7 +1400,7 @@ if __name__ == '__main__':
 
     lvl_sepl = [ 3, 4, 5, 6, 7 ] # wavelet scale separation
     size_sepl = [ 60, 80, 100, 140, 200 ] # size separation [kpc]
-    R_kpcl = [ 128, 200, 400 ] # radius in which quantities are measured [kpc]
+    R_kpcl = [ 400 ] # radius in which quantities are measured [kpc]
     physcale = 5.3 # kpc/"
     gamma = 0.5
     lvl_sep_big = 5
@@ -1449,19 +1415,19 @@ if __name__ == '__main__':
     sed_n_str = 6 # number of tidal stream regions, SED
 
     kurt_filt = True
-    plot_vignet = False
-    write_fits = False
-    measure_PR = True
-    write_dataframe = True
+    plot_vignet = True
+    write_fits = True
+    measure_PR = False
+    write_dataframe = False
 
     results = []
     ray_refs = []
     ray_outputs = []
 
     # ray hyperparameters
-    n_cpus = 48
+    n_cpus = 16
     print('SLT SLT SLT SLT')
-    ray.init()
+    ray.init(num_cpus = n_cpus)
     print('CC CC CC CC')
     
     # Read galaxy catalog
