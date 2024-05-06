@@ -69,7 +69,7 @@ if __name__ == '__main__':
         nfitpl.sort()
         
         for nfop, nfitp in zip( nfopl, nfitpl ):
-            d.pkl_to_hdf5(nfop, nfitp)
+            d.store_objects.pkl_to_hdf5(nfop, nfitp)
         
     for filt in ['f277w', 'f356w', 'f444w' ]:
         
@@ -84,4 +84,4 @@ if __name__ == '__main__':
         nfitpl.sort()
         
         for nfop, nfitp in zip( nfopl, nfitpl ):
-            d.pkl_to_hdf5(nfop, nfitp)
+            d.store_objects.pkl_to_hdf5pkl_to_hdf5(nfop, nfitp)
