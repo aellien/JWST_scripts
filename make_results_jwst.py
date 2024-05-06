@@ -1369,17 +1369,17 @@ def make_results_cluster( sch, oim, nfp, chan, filt, gamma, size_sep, size_sep_p
 if __name__ == '__main__':
 
     # Paths, lists & variables
-    #path_data = '/n03data/ellien/JWST/data/'
-    #path_scripts = '/n03data/ellien/JWST/JWST_scripts'
-    #path_wavelets = '/n03data/ellien/JWST/wavelets/out20/'
-    #path_plots = '/n03data/ellien/JWST/plots'
-    #path_analysis = '/home/ellien/JWST/analysis/'
+    path_data = '/n03data/ellien/JWST/data/'
+    path_scripts = '/n03data/ellien/JWST/JWST_scripts'
+    path_wavelets = '/n03data/ellien/JWST/wavelets/out20/'
+    path_plots = '/n03data/ellien/JWST/plots'
+    path_analysis = '/home/ellien/JWST/analysis/'
     
-    path_data = '/home/aellien/JWST/data/'
-    path_scripts = '/home/aellien/JWST/JWST_scripts'
-    path_wavelets = '/home/aellien/JWST/wavelets/out20/'
-    path_plots = '/home/aellien/JWST/plots'
-    path_analysis = '/home/aellien/JWST/analysis/'
+    #path_data = '/home/aellien/JWST/data/'
+    #path_scripts = '/home/aellien/JWST/JWST_scripts'
+    #path_wavelets = '/home/aellien/JWST/wavelets/out20/'
+    #path_plots = '/home/aellien/JWST/plots'
+    #path_analysis = '/home/aellien/JWST/analysis/'
 
     nfl = [ {'nf':'jw02736001001_f090w_bkg_rot_crop_warp_nobkg2.fits', 'chan':'short', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':11, 'lvl_sep_max':8, 'mu_lim':999 }, \
             {'nf':'jw02736001001_f150w_bkg_rot_crop_warp_nobkg2.fits', 'chan':'short', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':11, 'lvl_sep_max':999, 'mu_lim':999 }, \
