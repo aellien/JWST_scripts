@@ -16,7 +16,7 @@ from scipy.stats import kurtosis
 import gc
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-def synthesis_fullfield( oim, nfp, gamma, lvl_sep_big, xs, ys, n_levels, rm_gamma_for_big = True, write_fits = True ):
+def synthesis_fullfield( oim, ol, itl, nfp, gamma, lvl_sep_big, xs, ys, n_levels, rm_gamma_for_big = True, write_fits = True ):
     '''Synthesis of the full astronomical field (e.g. sum of all atoms)
     --- Args:
     oim         # Original astronomical field
@@ -37,10 +37,6 @@ def synthesis_fullfield( oim, nfp, gamma, lvl_sep_big, xs, ys, n_levels, rm_gamm
     wei = np.zeros( (xs, ys) )
     xc = xs / 2.
     yc = ys / 2.
-
-    # Read atoms
-    ol, itl = d.store_objects.read_image_atoms( nfp, verbose = True )
-    print(len(ol), len(itl), ol[0], itl[0])
 
     for j, o in enumerate(ol):
 
@@ -210,7 +206,7 @@ def PR_with_selection_error(atom_in_list, atom_out_list, M, percent, lvl_sep_big
     return PR_results
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-def synthesis_wavsep( nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gamma_for_big = True, kurt_filt = False, plot_vignet = False, write_fits = True ):
+def synthesis_wavsep( ol, itl, nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gamma_for_big = True, kurt_filt = False, plot_vignet = False, write_fits = True ):
     '''Simple separation based on wavelet scale, given by parameter 'lvl_sep'.
     --- Args:
     nfp         # root path of *.pkl
@@ -231,9 +227,6 @@ def synthesis_wavsep( nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gam
 
     xc = xs / 2.
     yc = ys / 2.
-
-    # Read atoms
-    ol, itl = d.store_objects.read_image_atoms( nfp, verbose = True )
 
     onb = len(ol)
     filtered_onb = 0
@@ -317,7 +310,7 @@ def synthesis_wavsep( nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gam
     return icl, gal
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-def synthesis_bcgwavsep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_max, lvl_sep_bcg, xs, ys, n_levels, mscoim, mscell, mscbcg, mscsedl, R, cat_gal, rc_pix, N_err, per_err, Jy_lim, rm_gamma_for_big = True, kurt_filt = True, plot_vignet = False, write_fits = True, measure_PR = False ):
+def synthesis_bcgwavsep_with_masks( ol, itl, nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_max, lvl_sep_bcg, xs, ys, n_levels, mscoim, mscell, mscbcg, mscsedl, R, cat_gal, rc_pix, N_err, per_err, Jy_lim, rm_gamma_for_big = True, kurt_filt = True, plot_vignet = False, write_fits = True, measure_PR = False ):
     '''Simple separation based on wavelet scale, given by parameter 'lvl_sep'.
     '''
 
@@ -338,9 +331,6 @@ def synthesis_bcgwavsep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_ma
 
     xc = xs / 2.
     yc = ys / 2.
-
-    # Read atoms
-    ol, itl = d.store_objects.read_image_atoms( nfp, verbose = True )
 
     # Kurtosis + BCG + ICL
     for j, o in enumerate(ol):
@@ -556,7 +546,7 @@ def synthesis_bcgwavsep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_ma
         return icl, gal, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, [ np.nan ], [ np.nan ]
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-def synthesis_bcgwavsizesep_with_masks( nfp, chan, gamma, lvl_sep_big, lvl_sep, lvl_sep_max, lvl_sep_bcg, size_sep, size_sep_pix, xs, ys, n_levels, mscoim, mscell, mscbcg, mscsedl, R, cat_gal, rc_pix, N_err, per_err, Jy_lim, rm_gamma_for_big = True, kurt_filt = True, plot_vignet = False, write_fits = True, measure_PR = False ):
+def synthesis_bcgwavsizesep_with_masks( ol, itl, nfp, chan, gamma, lvl_sep_big, lvl_sep, lvl_sep_max, lvl_sep_bcg, size_sep, size_sep_pix, xs, ys, n_levels, mscoim, mscell, mscbcg, mscsedl, R, cat_gal, rc_pix, N_err, per_err, Jy_lim, rm_gamma_for_big = True, kurt_filt = True, plot_vignet = False, write_fits = True, measure_PR = False ):
     '''Wavelet Separation + Spatial filtering.
     ICL --> Atoms with z > lvl_sep, with maximum coordinates within ellipse mask 'mscell' and with size > size_sep_pix.
     Galaxies --> Satellites + BCG, so a bit complicated:
@@ -582,9 +572,6 @@ def synthesis_bcgwavsizesep_with_masks( nfp, chan, gamma, lvl_sep_big, lvl_sep, 
 
     xc = xs / 2.
     yc = ys / 2.
-
-    # Read atoms
-    ol, itl = d.store_objects.read_image_atoms( nfp, verbose = True )
 
     # Kurtosis + ICL+BCG
     for j, o in enumerate(ol):
@@ -825,7 +812,7 @@ def synthesis_bcgwavsizesep_with_masks( nfp, chan, gamma, lvl_sep_big, lvl_sep, 
         return icl, gal, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, [ np.nan ]
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-def synthesis_wavsep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_max, lvl_sep_bcg, xs, ys, n_levels, mscoim, mscell, mscbcg, mscsedl, R, cat_gal, rc_pix, N_err, per_err, Jy_lim, rm_gamma_for_big = True, kurt_filt = True, plot_vignet = False, write_fits = True, measure_PR = False ):
+def synthesis_wavsep_with_masks( ol, itl, nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_max, lvl_sep_bcg, xs, ys, n_levels, mscoim, mscell, mscbcg, mscsedl, R, cat_gal, rc_pix, N_err, per_err, Jy_lim, rm_gamma_for_big = True, kurt_filt = True, plot_vignet = False, write_fits = True, measure_PR = False ):
     '''Wavelet Separation + Spatial filtering.
     ICL --> Atoms with z > lvl_sep and with maximum coordinates within ellipse mask 'mscell'
     Galaxies --> Satellites + BCG, so a bit complicated:
@@ -851,9 +838,6 @@ def synthesis_wavsep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_max, 
 
     xc = xs / 2.
     yc = ys / 2.
-
-    # Read atoms
-    ol, itl = d.store_objects.read_image_atoms( nfp, verbose = True )
 
     # Kurtosis + ICL
     for j, o in enumerate(ol):
@@ -1058,7 +1042,7 @@ def synthesis_wavsep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_max, 
         return icl, gal, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, [ np.nan ]
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-def synthesis_wavsizesep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_max, lvl_sep_bcg, size_sep, size_sep_pix, xs, ys, n_levels, mscoim, mscell, mscbcg, mscsedl, R, cat_gal, rc_pix, N_err, per_err, Jy_lim, rm_gamma_for_big = True, kurt_filt = True, plot_vignet = False, write_fits = True, measure_PR = False ):
+def synthesis_wavsizesep_with_masks( ol, itl, nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_max, lvl_sep_bcg, size_sep, size_sep_pix, xs, ys, n_levels, mscoim, mscell, mscbcg, mscsedl, R, cat_gal, rc_pix, N_err, per_err, Jy_lim, rm_gamma_for_big = True, kurt_filt = True, plot_vignet = False, write_fits = True, measure_PR = False ):
     '''Wavelet Separation + Spatial filtering.
     ICL --> Atoms with z > lvl_sep, with maximum coordinates within ellipse mask 'mscell' and with size > size_sep_pix.
     Galaxies --> Satellites + BCG, so a bit complicated:
@@ -1084,11 +1068,6 @@ def synthesis_wavsizesep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_m
 
     xc = xs / 2.
     yc = ys / 2.
-
-    # Read atoms
-    ol, itl = d.store_objects.read_image_atoms( nfp, verbose = True )
-    print(len(ol), len(itl), ol[0], itl[0])
-
 
     # Kurtosis + ICL
     for j, o in enumerate(ol):
@@ -1291,7 +1270,7 @@ def synthesis_wavsizesep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_m
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @ray.remote
-def make_results_cluster( sch, oim, nfp, chan, filt, gamma, size_sep, size_sep_pix, lvl_sep_big, lvl_sep, lvl_sep_max, lvl_sep_bcg, xs, ys, n_levels, mscoim, mscell, mscbcg, mscsedl, R_kpc, R_pix, cat_gal, rc_pix, N_err, per_err, Jy_lim, rm_gamma_for_big, kurt_filt, plot_vignet, write_fits, measure_PR ):
+def make_results_cluster( sch, oim, ol, itl, nfp, chan, filt, gamma, size_sep, size_sep_pix, lvl_sep_big, lvl_sep, lvl_sep_max, lvl_sep_bcg, xs, ys, n_levels, mscoim, mscell, mscbcg, mscsedl, R_kpc, R_pix, cat_gal, rc_pix, N_err, per_err, Jy_lim, rm_gamma_for_big, kurt_filt, plot_vignet, write_fits, measure_PR ):
     '''
     Runs all classification schemes for a single cluster. Performed by a single ray worker.
     '''
@@ -1299,7 +1278,7 @@ def make_results_cluster( sch, oim, nfp, chan, filt, gamma, size_sep, size_sep_p
 
     # Full field ---------------------------------------------------------------
     if sch == 'fullfield':
-        output = synthesis_fullfield( oim, nfp, gamma, lvl_sep_big, xs, ys, n_levels, rm_gamma_for_big = rm_gamma_for_big, write_fits = write_fits )
+        output = synthesis_fullfield( oim, ol, itl, nfp, gamma, lvl_sep_big, xs, ys, n_levels, rm_gamma_for_big = rm_gamma_for_big, write_fits = write_fits )
         filler_sed = np.empty( 3 * len(mscsedl)) # fill SED data
         filler_sed[:] = np.nan
         out_sed_df = pd.DataFrame([filler_sed], columns = [ 'reg_%d_%s'%(i/3, hkw[i%3]) for i in range(3 * len(mscsedl))])# create df with all SED flux for all regions with correctly numbered column names
@@ -1309,7 +1288,7 @@ def make_results_cluster( sch, oim, nfp, chan, filt, gamma, size_sep, size_sep_p
 
     # ICL -- WS -----------------------------------------------------------------
     if sch == 'WS':
-        output = synthesis_wavsep( nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gamma_for_big, kurt_filt = kurt_filt, plot_vignet = plot_vignet, write_fits = write_fits )
+        output = synthesis_wavsep( ol, itl, nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gamma_for_big, kurt_filt = kurt_filt, plot_vignet = plot_vignet, write_fits = write_fits )
         filler_sed = np.empty( 3 * len(mscsedl)) # fill SED data
         filler_sed[:] = np.nan
         out_sed_df = pd.DataFrame([filler_sed], columns = [ 'reg_%d_%s'%(i/3, hkw[i%3]) for i in range(3 * len(mscsedl))])# create df with all SED flux for all regions with correctly numbered column names
@@ -1319,7 +1298,7 @@ def make_results_cluster( sch, oim, nfp, chan, filt, gamma, size_sep, size_sep_p
 
     # ICL -- WS + SF -----------------------------------------------------------
     if sch == 'WS+SF':
-        output = synthesis_wavsep_with_masks( nfp = nfp, gamma = gamma, \
+        output = synthesis_wavsep_with_masks( ol, itl, nfp = nfp, gamma = gamma, \
                 lvl_sep_big = lvl_sep_big, lvl_sep = lvl_sep, lvl_sep_max = lvl_sep_max, lvl_sep_bcg = lvl_sep_bcg, xs = xs, ys = ys, \
                 n_levels = n_levels, mscoim = mscoim, mscell = mscell, mscbcg = mscbcg, mscsedl = mscsedl, R = R_pix, cat_gal = cat_gal, rc_pix = rc_pix,\
                 N_err = N_err, per_err = per_err, Jy_lim = Jy_lim, rm_gamma_for_big = rm_gamma_for_big, kurt_filt = kurt_filt, plot_vignet = plot_vignet, write_fits = write_fits, measure_PR = measure_PR )
@@ -1331,7 +1310,7 @@ def make_results_cluster( sch, oim, nfp, chan, filt, gamma, size_sep, size_sep_p
 
     # ICL+BCG -- WS + SF -------------------------------------------------------
     if sch == 'WS+BCGSF':
-        output = synthesis_bcgwavsep_with_masks( nfp = nfp, gamma = gamma, \
+        output = synthesis_bcgwavsep_with_masks( ol, itl, nfp = nfp, gamma = gamma, \
                 lvl_sep_big = lvl_sep_big, lvl_sep = lvl_sep, lvl_sep_max = lvl_sep_max, lvl_sep_bcg = lvl_sep_bcg, xs = xs, ys = ys, \
                 n_levels = n_levels, mscoim = mscoim, mscell = mscell, mscbcg = mscbcg, mscsedl = mscsedl, R = R_pix, cat_gal = cat_gal, rc_pix = rc_pix,\
                 N_err = N_err, per_err = per_err, Jy_lim = Jy_lim, rm_gamma_for_big = rm_gamma_for_big, kurt_filt = kurt_filt, plot_vignet = plot_vignet, write_fits = write_fits, measure_PR = measure_PR )
@@ -1344,7 +1323,7 @@ def make_results_cluster( sch, oim, nfp, chan, filt, gamma, size_sep, size_sep_p
 
     # ICL -- WS + SF + SS ------------------------------------------------------
     if sch == 'WS+SF+SS':
-        output = synthesis_wavsizesep_with_masks( nfp = nfp, gamma = gamma, \
+        output = synthesis_wavsizesep_with_masks( ol, itl, nfp = nfp, gamma = gamma, \
                 lvl_sep_big = lvl_sep_big, lvl_sep = lvl_sep, lvl_sep_max = lvl_sep_max, lvl_sep_bcg = lvl_sep_bcg, size_sep = size_sep, size_sep_pix =  size_sep_pix, xs = xs, ys = ys, \
                 n_levels = n_levels, mscoim = mscoim, mscell = mscell, mscbcg = mscbcg, mscsedl = mscsedl, R = R_pix, cat_gal = cat_gal, rc_pix = rc_pix,\
                 N_err = N_err, per_err = per_err, Jy_lim = Jy_lim, rm_gamma_for_big = rm_gamma_for_big, kurt_filt = kurt_filt, plot_vignet = plot_vignet, write_fits = write_fits, measure_PR = measure_PR )
@@ -1356,7 +1335,7 @@ def make_results_cluster( sch, oim, nfp, chan, filt, gamma, size_sep, size_sep_p
 
     # ICL+BCG -- WS + SF + SS --------------------------------------------------
     if sch == 'WS+BCGSF+SS':
-        output = synthesis_bcgwavsizesep_with_masks( nfp = nfp, chan = chan, gamma = gamma, size_sep = size_sep, size_sep_pix = size_sep_pix,\
+        output = synthesis_bcgwavsizesep_with_masks( ol, itl, nfp = nfp, chan = chan, gamma = gamma, size_sep = size_sep, size_sep_pix = size_sep_pix,\
                 lvl_sep_big = lvl_sep_big, lvl_sep = lvl_sep, lvl_sep_max = lvl_sep_max, lvl_sep_bcg = lvl_sep_bcg, xs = xs, ys = ys, \
                 n_levels = n_levels, mscoim = mscoim, mscell = mscell, mscbcg = mscbcg, mscsedl = mscsedl, R = R_pix, cat_gal = cat_gal, rc_pix = rc_pix,\
                 N_err = N_err, per_err = per_err, Jy_lim = Jy_lim, rm_gamma_for_big = rm_gamma_for_big, kurt_filt = kurt_filt, plot_vignet = plot_vignet, write_fits = write_fits, measure_PR = measure_PR )
@@ -1504,6 +1483,12 @@ if __name__ == '__main__':
                     oim = hdu[0].data
                     id_oim = ray.put(oim)
                     xs, ys = oim.shape
+                    
+                    # Read image atoms
+                    ol, itl = d.store_objects.read_image_atoms( nfp, verbose = True )
+                    print(len(ol), len(itl), ol[0], itl[0])
+                    id_ol = ray.put(ol)
+                    id_itl = ray.put(itl)
 
                     # Full field ------------------------------------------------
                     lvl_sep = np.nan
@@ -1512,6 +1497,8 @@ if __name__ == '__main__':
 
                     ray_refs.append( make_results_cluster.remote(sch = 'fullfield', \
                                                  oim = id_oim, \
+                                                 ol = id_ol, \
+                                                 itl = id_itl, \
                                                  nfp = nfp, \
                                                  chan = chan, \
                                                  filt = filt, \
@@ -1547,6 +1534,8 @@ if __name__ == '__main__':
                     for lvl_sep in lvl_sepl:
                         ray_refs.append( make_results_cluster.remote(sch = 'WS', \
                                                         oim = id_oim, \
+                                                        ol = id_ol, \
+                                                        itl = id_itl, \
                                                         nfp = nfp, \
                                                         chan = chan, \
                                                         filt = filt, \
@@ -1581,6 +1570,8 @@ if __name__ == '__main__':
                     for lvl_sep in lvl_sepl:
                         ray_refs.append( make_results_cluster.remote(sch = 'WS+SF', \
                                                         oim = id_oim, \
+                                                        ol = id_ol, \
+                                                        itl = id_itl, \
                                                         nfp = nfp, \
                                                         chan = chan, \
                                                         filt = filt, \
@@ -1615,6 +1606,8 @@ if __name__ == '__main__':
                     for lvl_sep in lvl_sepl:
                         ray_refs.append( make_results_cluster.remote(sch = 'WS+BCGSF', \
                                                         oim = oim, \
+                                                        ol = id_ol, \
+                                                        itl = id_itl, \
                                                         nfp = nfp, \
                                                         chan = chan, \
                                                         filt = filt, \
@@ -1651,6 +1644,8 @@ if __name__ == '__main__':
                             size_sep_pix = size_sep / physcale / pix_scale # pixels
                             ray_refs.append( make_results_cluster.remote(sch = 'WS+SF+SS', \
                                                             oim = oim, \
+                                                            ol = id_ol, \
+                                                            itl = id_itl, \
                                                             nfp = nfp, \
                                                             chan = chan, \
                                                             filt = filt, \
@@ -1689,6 +1684,8 @@ if __name__ == '__main__':
                             size_sep_pix = size_sep / physcale / pix_scale # pixels
                             ray_refs.append( make_results_cluster.remote(sch = 'WS+BCGSF+SS', \
                                                             oim = oim, \
+                                                            ol = id_ol, \
+                                                            itl = id_itl, \
                                                             nfp = nfp, \
                                                             chan = chan, \
                                                             filt = filt, \
