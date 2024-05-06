@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --job-name=synth_jwst
-#SBATCH --nodes=1
+#SBATCH --nodelist=n07
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=48
+#SBATCH --cpus-per-task=16
 #SBATCH --time=48:00:00
 #SBATCH --output /n03data/ellien/JWST/logs/%x.%j.out 
 #SBATCH --error  /n03data/ellien/JWST/logs/%x.%j.err
