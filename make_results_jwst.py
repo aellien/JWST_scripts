@@ -1385,7 +1385,7 @@ if __name__ == '__main__':
         nf = nd['nf']
         nfp = os.path.join( path_wavelets, nf[:-4] )
         ol, itl = d.store_objects.read_image_atoms( nfp, verbose = True )
-        nf['id_ol'] = ray.put(ol)
+        nd['id_ol'] = ray.put(ol)
         nd['id_itl'] = ray.put(itl)
 
     lvl_sepl = [ 3, 4, 5, 6, 7 ] # wavelet scale separation
