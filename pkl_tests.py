@@ -61,12 +61,14 @@ if __name__ == '__main__':
         nf = 'jw02736001001_f090w_bkg_rot_crop_warp_nobkg2'
         nfp = os.path.join(path_wavelets, nf)
         
+        print(nfp)
+        
         nfopl = glob.glob(nfp + '.ol.it???pkl')
         nfopl.sort()
         nfitpl = glob.glob(nfp + '.itl.it???pkl')
         nfitpl.sort()
         
-        for nfop, nfitp zip( nfoptl, nfitpl ):
+        for nfop, nfitp in zip( nfoptl, nfitpl ):
             pkl_to_hdf5(nfop, nfitp)
         
     for filt in ['f277w', 'f356w', 'f444w' ]:
@@ -74,10 +76,12 @@ if __name__ == '__main__':
         nf = 'jw02736001001_f444w_bkg_rot_crop_input'
         nfp = os.path.join(path_wavelets, nf)
         
+        print(nfp)
+        
         nfopl = glob.glob(nfp + '.ol.it???pkl')
         nfopl.sort()
         nfitpl = glob.glob(nfp + '.itl.it???pkl')
         nfitpl.sort()
         
-        for nfop, nfitp zip( nfoptl, nfitpl ):
+        for nfop, nfitp in zip( nfoptl, nfitpl ):
             pkl_to_hdf5(nfop, nfitp)
