@@ -63,9 +63,9 @@ if __name__ == '__main__':
         
         print(nfp)
         
-        nfopl = glob.glob(nfp + '.ol.it???pkl')
+        nfopl = glob.glob(nfp + '.ol.it???.pkl')
         nfopl.sort()
-        nfitpl = glob.glob(nfp + '.itl.it???pkl')
+        nfitpl = glob.glob(nfp + '.itl.it???.pkl')
         nfitpl.sort()
         
         for nfop, nfitp in zip( nfopl, nfitpl ):
@@ -78,9 +78,9 @@ if __name__ == '__main__':
         
         print(nfp)
         
-        nfopl = glob.glob(nfp + '.ol.it???pkl')
+        nfopl = glob.glob(nfp + '.ol.it???.pkl')
         nfopl.sort()
-        nfitpl = glob.glob(nfp + '.itl.it???pkl')
+        nfitpl = glob.glob(nfp + '.itl.it???.pkl')
         nfitpl.sort()
         
         for nfop, nfitp in zip( nfopl, nfitpl ):
