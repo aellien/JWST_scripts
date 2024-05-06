@@ -87,4 +87,4 @@ if __name__ == '__main__':
         for nfop, nfitp in zip( nfopl, nfitpl ):
             print(nfop)
             print(nfitp)
-            d.store_objects.pkl_to_hdf5pkl_to_hdf5(nfop, nfitp)
+            d.store_objects.pkl_to_hdf(nfop, nfitp)
