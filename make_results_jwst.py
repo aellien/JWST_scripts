@@ -39,7 +39,8 @@ def synthesis_fullfield( oim, nfp, gamma, lvl_sep_big, xs, ys, n_levels, rm_gamm
     yc = ys / 2.
 
     # Read atoms
-    ol, itl = d.store_objects.read_image_atoms( nfp, verbose = False )
+    ol, itl = d.store_objects.read_image_atoms( nfp, verbose = True )
+    print(len(ol), len(itl), ol[0], itl[0])
 
     for j, o in enumerate(ol):
 
@@ -232,7 +233,7 @@ def synthesis_wavsep( nfp, gamma, lvl_sep_big, lvl_sep, xs, ys, n_levels, rm_gam
     yc = ys / 2.
 
     # Read atoms
-    ol, itl = d.store_objects.read_image_atoms( nfp, verbose = False )
+    ol, itl = d.store_objects.read_image_atoms( nfp, verbose = True )
 
     onb = len(ol)
     filtered_onb = 0
@@ -339,7 +340,7 @@ def synthesis_bcgwavsep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_ma
     yc = ys / 2.
 
     # Read atoms
-    ol, itl = d.store_objects.read_image_atoms( nfp, verbose = False )
+    ol, itl = d.store_objects.read_image_atoms( nfp, verbose = True )
 
     # Kurtosis + BCG + ICL
     for j, o in enumerate(ol):
@@ -583,7 +584,7 @@ def synthesis_bcgwavsizesep_with_masks( nfp, chan, gamma, lvl_sep_big, lvl_sep, 
     yc = ys / 2.
 
     # Read atoms
-    ol, itl = d.store_objects.read_image_atoms( nfp, verbose = False )
+    ol, itl = d.store_objects.read_image_atoms( nfp, verbose = True )
 
     # Kurtosis + ICL+BCG
     for j, o in enumerate(ol):
@@ -852,7 +853,7 @@ def synthesis_wavsep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_max, 
     yc = ys / 2.
 
     # Read atoms
-    ol, itl = d.store_objects.read_image_atoms( nfp, verbose = False )
+    ol, itl = d.store_objects.read_image_atoms( nfp, verbose = True )
 
     # Kurtosis + ICL
     for j, o in enumerate(ol):
@@ -1085,7 +1086,9 @@ def synthesis_wavsizesep_with_masks( nfp, gamma, lvl_sep_big, lvl_sep, lvl_sep_m
     yc = ys / 2.
 
     # Read atoms
-    ol, itl = d.store_objects.read_image_atoms( nfp, verbose = False )
+    ol, itl = d.store_objects.read_image_atoms( nfp, verbose = True )
+    print(len(ol), len(itl), ol[0], itl[0])
+
 
     # Kurtosis + ICL
     for j, o in enumerate(ol):
