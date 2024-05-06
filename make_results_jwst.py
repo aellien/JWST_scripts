@@ -1380,6 +1380,14 @@ if __name__ == '__main__':
             #{'nf':'jw02736001001_f150w_bkg_rot_crop_input.fits', 'chan':'short', 'pix_scale':0.031, 'n_levels':11, 'lvl_sep_max':8 }, \
             #{'nf':'jw02736001001_f200w_bkg_rot_crop_input.fits', 'chan':'short', 'pix_scale':0.031, 'n_levels':11, 'lvl_sep_max':8 }
 
+    # Read image atoms
+    for nd in nfl:
+        nf = nd['nf']
+        nfp = os.path.join( path_wavelets, nf[:-4] )
+        ol, itl = d.store_objects.read_image_atoms( nfp, verbose = True )
+        nf['id_ol'] = ray.put(ol)
+        nd['id_itl'] = ray.put(itl)
+
     lvl_sepl = [ 3, 4, 5, 6, 7 ] # wavelet scale separation
     size_sepl = [ 60, 80, 100, 140, 200 ] # size separation [kpc]
     R_kpcl = [ 400 ] # radius in which quantities are measured [kpc]
@@ -1408,9 +1416,8 @@ if __name__ == '__main__':
 
     # ray hyperparameters
     n_cpus = 16
-    print('SLT SLT SLT SLT')
     ray.init()
-    print('CC CC CC CC')
+    print('Ray OK.')
     
     # Read galaxy catalog
     rgal = pyr.open(os.path.join(path_data, 'mahler_noirot_merged_member_gal_ra_dec_pix_long.reg'))
@@ -1467,6 +1474,8 @@ if __name__ == '__main__':
                     lvl_sep_max = nfd['lvl_sep_max']
                     pixar_sr = nfd['pixar_sr']
                     mu_lim = nfd['mu_lim']
+                    id_ol = nf['id_ol']
+                    id_itl = nf['id_itl']
                     rc_pix = rc / physcale / pix_scale # pixels
                     R_pix = R_kpc / physcale / pix_scale # pixels
                     id_R_pix = ray.put(R_pix)
@@ -1483,12 +1492,6 @@ if __name__ == '__main__':
                     oim = hdu[0].data
                     id_oim = ray.put(oim)
                     xs, ys = oim.shape
-                    
-                    # Read image atoms
-                    ol, itl = d.store_objects.read_image_atoms( nfp, verbose = True )
-                    print(len(ol), len(itl), ol[0], itl[0])
-                    id_ol = ray.put(ol)
-                    id_itl = ray.put(itl)
 
                     # Full field ------------------------------------------------
                     lvl_sep = np.nan
