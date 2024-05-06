@@ -68,7 +68,7 @@ if __name__ == '__main__':
         nfitpl = glob.glob(nfp + '.itl.it???pkl')
         nfitpl.sort()
         
-        for nfop, nfitp in zip( nfoptl, nfitpl ):
+        for nfop, nfitp in zip( nfopl, nfitpl ):
             pkl_to_hdf5(nfop, nfitp)
         
     for filt in ['f277w', 'f356w', 'f444w' ]:
@@ -83,5 +83,5 @@ if __name__ == '__main__':
         nfitpl = glob.glob(nfp + '.itl.it???pkl')
         nfitpl.sort()
         
-        for nfop, nfitp in zip( nfoptl, nfitpl ):
+        for nfop, nfitp in zip( nfopl, nfitpl ):
             pkl_to_hdf5(nfop, nfitp)
