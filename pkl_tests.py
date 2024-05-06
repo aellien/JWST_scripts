@@ -58,7 +58,7 @@ if __name__ == '__main__':
     
     for filt in [ 'f090w', 'f150w', 'f200w' ]:
         
-        nf = 'jw02736001001_f090w_bkg_rot_crop_warp_nobkg2'
+        nf = 'jw02736001001_%s_bkg_rot_crop_warp_nobkg2'%filt
         nfp = os.path.join(path_wavelets, nf)
         
         print(nfp)
@@ -73,7 +73,7 @@ if __name__ == '__main__':
         
     for filt in ['f277w', 'f356w', 'f444w' ]:
         
-        nf = 'jw02736001001_f444w_bkg_rot_crop_input'
+        nf = 'jw02736001001_%s_bkg_rot_crop_input'%filt
         nfp = os.path.join(path_wavelets, nf)
         
         print(nfp)
