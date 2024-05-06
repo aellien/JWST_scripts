@@ -28,7 +28,7 @@ import gc
 
 if __name__ == '__main__':
 
-    path_wavelets = '/home/aellien/JWST/wavelets/out20/'
+    path_wavelets = '/n03data/ellien/JWST/wavelets/out20/'
     
     #for pickle_file in *ol*.pkl; do python /home/aellien/JWST/JWST_scripts/pkl_tests.py  "$pickle_file";done
     '''nfp = sys.argv[1]
