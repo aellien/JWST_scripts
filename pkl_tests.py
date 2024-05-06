@@ -55,8 +55,8 @@ if __name__ == '__main__':
     ol2 = read_ol_from_hdf5('test_ol.hdf5')
     print(pickle.dumps(ol1) == pickle.dumps(ol2))
     '''
-    
-    for filt in [ 'f090w', 'f150w', 'f200w' ]:
+    filt = sys.argv[1]
+    if filt in [ 'f150w', 'f200w' ]:
         
         nf = 'jw02736001001_%s_bkg_rot_crop_warp_nobkg2'%filt
         nfp = os.path.join(path_wavelets, nf)
@@ -71,7 +71,7 @@ if __name__ == '__main__':
             print(nfitp)
             d.store_objects.pkl_to_hdf5(nfop, nfitp)
         
-    for filt in ['f277w', 'f356w', 'f444w' ]:
+    if filt in ['f277w', 'f356w', 'f444w' ]:
         
         nf = 'jw02736001001_%s_bkg_rot_crop_input'%filt
         nfp = os.path.join(path_wavelets, nf)
