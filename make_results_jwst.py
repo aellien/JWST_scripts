@@ -1390,7 +1390,7 @@ if __name__ == '__main__':
     ray_outputs = []
 
     # ray hyperparameters
-    n_cpus = 11
+    n_cpus = 8
     ray.init(num_cpus = n_cpus)
     print('Ray OK.')
     
@@ -1416,24 +1416,6 @@ if __name__ == '__main__':
 
     for chan in [ 'short', 'long' ]:
 
-        # Masks
-        if chan == 'long':
-            hdu = fits.open(os.path.join(path_data, 'jw02736001001_f277w_bkg_rot_crop_input.fits')) # Arbitrary
-        else:
-            hdu = fits.open(os.path.join(path_data, 'jw02736001001_f200w_bkg_rot_crop_warp_nobkg2.fits')) # Arbitrary
-
-        mscell = rell.get_mask(hdu = hdu[0]) # not python convention
-        mscstar = rstar.get_mask(hdu = hdu[0]) # not python convention
-        mscbcg = rbcg.get_mask(hdu = hdu[0]) # not python convention
-        mscsedl = [] # SED
-        for rsed in rsedl:
-            msc = rsed.get_mask(hdu = hdu[0])
-            mscsedl.append(msc)
-        id_mscsedl = ray.put(mscsedl)
-        id_mscell = ray.put(mscell)
-        id_mscstar = ray.put(mscstar)
-        id_mscbcg = ray.put(mscbcg)
-
         for R_kpc in R_kpcl:
 
             # Iterate over dictionary list
@@ -1451,6 +1433,24 @@ if __name__ == '__main__':
                 R_pix = R_kpc / physcale / pix_scale # pixels
                 id_R_pix = ray.put(R_pix)
                 print(nf)
+                
+                # Masks
+                if nfd['chan'] == 'long':
+                    hdu = fits.open(os.path.join(path_data, 'jw02736001001_f277w_bkg_rot_crop_input.fits')) # Arbitrary
+                elif nfd['chan'] == 'short':
+                    hdu = fits.open(os.path.join(path_data, 'jw02736001001_f200w_bkg_rot_crop_warp_nobkg2.fits')) # Arbitrary
+
+                mscell = rell.get_mask(hdu = hdu[0]) # not python convention
+                mscstar = rstar.get_mask(hdu = hdu[0]) # not python convention
+                mscbcg = rbcg.get_mask(hdu = hdu[0]) # not python convention
+                mscsedl = [] # SED
+                for rsed in rsedl:
+                    msc = rsed.get_mask(hdu = hdu[0])
+                    mscsedl.append(msc)
+                id_mscsedl = ray.put(mscsedl)
+                id_mscell = ray.put(mscell)
+                id_mscstar = ray.put(mscstar)
+                id_mscbcg = ray.put(mscbcg)
 
                 # Photometry for limiting depth
                 ZP_AB = -6.10 - 2.5 * np.log10(pixar_sr)
