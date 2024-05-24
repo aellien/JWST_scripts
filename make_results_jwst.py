@@ -1414,153 +1414,204 @@ if __name__ == '__main__':
         rsedl.append(pyr.open(os.path.join(path_data, 'streams_flags_pix_long_%d.reg'%i)))
     rsedl.append(rell)
 
-    for chan in [ 'short', 'long' ]:
+    # Masks LONG
+    hdu = fits.open(os.path.join(path_data, 'jw02736001001_f277w_bkg_rot_crop_input.fits')) # Arbitrary
+    mscell = rell.get_mask(hdu = hdu[0]) # not python convention
+    mscstar = rstar.get_mask(hdu = hdu[0]) # not python convention
+    mscbcg = rbcg.get_mask(hdu = hdu[0]) # not python convention
+    mscsedl = [] # SED
+    for rsed in rsedl:
+        msc = rsed.get_mask(hdu = hdu[0])
+        mscsedl.append(msc)
+    id_mscsedl_long = ray.put(mscsedl)
+    id_mscell_long = ray.put(mscell)
+    id_mscstar_long = ray.put(mscstar)
+    id_mscbcg_long = ray.put(mscbcg)
+    
+    # Masks SHORT
+    hdu = fits.open(os.path.join(path_data, 'jw02736001001_f200w_bkg_rot_crop_warp_nobkg2.fits')) # Arbitrary
+    mscell = rell.get_mask(hdu = hdu[0]) # not python convention
+    mscstar = rstar.get_mask(hdu = hdu[0]) # not python convention
+    mscbcg = rbcg.get_mask(hdu = hdu[0]) # not python convention
+    mscsedl = [] # SED
+    for rsed in rsedl:
+        msc = rsed.get_mask(hdu = hdu[0])
+        mscsedl.append(msc)
+    id_mscsedl_short = ray.put(mscsedl)
+    id_mscell_short = ray.put(mscell)
+    id_mscstar_short = ray.put(mscstar)
+    id_mscbcg_short = ray.put(mscbcg)
 
-        for R_kpc in R_kpcl:
+    for R_kpc in R_kpcl:
 
-            # Iterate over dictionary list
-            for nfd in nfl:
+        # Iterate over dictionary list
+        for nfd in nfl:
 
-                # Read image data from dic
-                nf = nfd['nf']
-                filt = nf.split('_')[1]
-                n_levels = nfd['n_levels']
-                pix_scale = nfd['pix_scale']
-                lvl_sep_max = nfd['lvl_sep_max']
-                pixar_sr = nfd['pixar_sr']
-                mu_lim = nfd['mu_lim']
-                rc_pix = rc / physcale / pix_scale # pixels
-                R_pix = R_kpc / physcale / pix_scale # pixels
-                id_R_pix = ray.put(R_pix)
-                print(nf)
-                
-                # Masks
-                if nfd['chan'] == 'long':
-                    hdu = fits.open(os.path.join(path_data, 'jw02736001001_f277w_bkg_rot_crop_input.fits')) # Arbitrary
-                elif nfd['chan'] == 'short':
-                    hdu = fits.open(os.path.join(path_data, 'jw02736001001_f200w_bkg_rot_crop_warp_nobkg2.fits')) # Arbitrary
+            # Read image data from dic
+            nf = nfd['nf']
+            filt = nf.split('_')[1]
+            n_levels = nfd['n_levels']
+            pix_scale = nfd['pix_scale']
+            lvl_sep_max = nfd['lvl_sep_max']
+            pixar_sr = nfd['pixar_sr']
+            mu_lim = nfd['mu_lim']
+            rc_pix = rc / physcale / pix_scale # pixels
+            R_pix = R_kpc / physcale / pix_scale # pixels
+            id_R_pix = ray.put(R_pix)
+            print(nf)
+            
+            if nfd['chan'] == 'long':
+                id_mscsedl = id_mscsedl_long
+                id_mscell = id_mscell_long
+                id_mscstar = id_mscstar_long
+                id_mscbcg = id_mscbcg_long
+            elif nfd['chan'] == 'short':
+                id_mscsedl = id_mscsedl_short
+                id_mscell = id_mscell_short
+                id_mscstar = id_mscstar_short
+                id_mscbcg = id_mscbcg_short
 
-                mscell = rell.get_mask(hdu = hdu[0]) # not python convention
-                mscstar = rstar.get_mask(hdu = hdu[0]) # not python convention
-                mscbcg = rbcg.get_mask(hdu = hdu[0]) # not python convention
-                mscsedl = [] # SED
-                for rsed in rsedl:
-                    msc = rsed.get_mask(hdu = hdu[0])
-                    mscsedl.append(msc)
-                id_mscsedl = ray.put(mscsedl)
-                id_mscell = ray.put(mscell)
-                id_mscstar = ray.put(mscstar)
-                id_mscbcg = ray.put(mscbcg)
+            # Photometry for limiting depth
+            ZP_AB = -6.10 - 2.5 * np.log10(pixar_sr)
+            flux_lim = 10**( (ZP_AB - mu_lim) / 2.5 )
 
-                # Photometry for limiting depth
-                ZP_AB = -6.10 - 2.5 * np.log10(pixar_sr)
-                flux_lim = 10**( (ZP_AB - mu_lim) / 2.5 )
+            # Read image file
+            nfp = os.path.join( path_wavelets, nf[:-4] )
+            oim_file = os.path.join( path_data, nf )
+            hdu = fits.open(oim_file)
+            oim = hdu[0].data
+            id_oim = ray.put(oim)
+            xs, ys = oim.shape
 
-                # Read image file
-                nfp = os.path.join( path_wavelets, nf[:-4] )
-                oim_file = os.path.join( path_data, nf )
-                hdu = fits.open(oim_file)
-                oim = hdu[0].data
-                id_oim = ray.put(oim)
-                xs, ys = oim.shape
+            # Full field ------------------------------------------------
+            lvl_sep = np.nan
+            size_sep = np.nan
+            size_sep_pix = np.nan
+            
+            ray_refs.append( make_results_cluster.remote(sch = 'fullfield', \
+                                                 oim = id_oim, \
+                                                 nfp = nfp, \
+                                                 filt = filt, \
+                                                 lvl_sep = lvl_sep, \
+                                                 lvl_sep_max = lvl_sep_max, \
+                                                 lvl_sep_bcg = lvl_sep_bcg, \
+                                                 size_sep = size_sep, \
+                                                 size_sep_pix = size_sep_pix, \
+                                                 xs = xs, \
+                                                 ys = ys, \
+                                                 n_levels = n_levels, \
+                                                 mscstar = id_mscstar, \
+                                                 mscell = id_mscell, \
+                                                 mscbcg = id_mscbcg, \
+                                                 mscsedl = id_mscsedl, \
+                                                 R_pix = id_R_pix, \
+                                                 R_kpc = R_kpc,\
+                                                 cat_gal = cat_gal, \
+                                                 rc_pix = rc_pix,\
+                                                 N_err = N_err, \
+                                                 per_err = per_err, \
+                                                 flux_lim = flux_lim, \
+                                                 kurt_filt = kurt_filt, \
+                                                 plot_vignet = plot_vignet, \
+                                                 write_fits = write_fits, \
+                                                 measure_PR = measure_PR ))
+                        
+            
+            # ICL -- WS ------------------------------------------------
+            for lvl_sep in lvl_sepl:
+                ray_refs.append( make_results_cluster.remote(sch = 'WS', \
+                                                oim = id_oim, \
+                                                nfp = nfp, \
+                                                filt = filt, \
+                                                lvl_sep = lvl_sep, \
+                                                lvl_sep_max = lvl_sep_max, \
+                                                lvl_sep_bcg = lvl_sep_bcg, \
+                                                size_sep = size_sep, \
+                                                size_sep_pix = size_sep_pix, \
+                                                xs = xs, \
+                                                ys = ys, \
+                                                n_levels = n_levels, \
+                                                mscstar = id_mscstar, \
+                                                mscell = id_mscell, \
+                                                mscbcg = id_mscbcg, \
+                                                mscsedl = id_mscsedl, \
+                                                R_pix = id_R_pix, \
+                                                R_kpc = R_kpc,\
+                                                cat_gal = cat_gal, \
+                                                rc_pix = rc_pix,\
+                                                N_err = N_err, \
+                                                per_err = per_err, \
+                                                flux_lim = flux_lim, \
+                                                kurt_filt = kurt_filt, \
+                                                plot_vignet = plot_vignet, \
+                                                write_fits = write_fits, \
+                                                measure_PR = measure_PR ))
 
-                # Full field ------------------------------------------------
-                lvl_sep = np.nan
-                size_sep = np.nan
-                size_sep_pix = np.nan
-                
-                ray_refs.append( make_results_cluster.remote(sch = 'fullfield', \
-                                                     oim = id_oim, \
-                                                     nfp = nfp, \
-                                                     filt = filt, \
-                                                     lvl_sep = lvl_sep, \
-                                                     lvl_sep_max = lvl_sep_max, \
-                                                     lvl_sep_bcg = lvl_sep_bcg, \
-                                                     size_sep = size_sep, \
-                                                     size_sep_pix = size_sep_pix, \
-                                                     xs = xs, \
-                                                     ys = ys, \
-                                                     n_levels = n_levels, \
-                                                     mscstar = id_mscstar, \
-                                                     mscell = id_mscell, \
-                                                     mscbcg = id_mscbcg, \
-                                                     mscsedl = id_mscsedl, \
-                                                     R_pix = id_R_pix, \
-                                                     R_kpc = R_kpc,\
-                                                     cat_gal = cat_gal, \
-                                                     rc_pix = rc_pix,\
-                                                     N_err = N_err, \
-                                                     per_err = per_err, \
-                                                     flux_lim = flux_lim, \
-                                                     kurt_filt = kurt_filt, \
-                                                     plot_vignet = plot_vignet, \
-                                                     write_fits = write_fits, \
-                                                     measure_PR = measure_PR ))
-                            
-                
-                # ICL -- WS ------------------------------------------------
-                for lvl_sep in lvl_sepl:
-                    ray_refs.append( make_results_cluster.remote(sch = 'WS', \
-                                                    oim = id_oim, \
-                                                    nfp = nfp, \
-                                                    filt = filt, \
-                                                    lvl_sep = lvl_sep, \
-                                                    lvl_sep_max = lvl_sep_max, \
-                                                    lvl_sep_bcg = lvl_sep_bcg, \
-                                                    size_sep = size_sep, \
-                                                    size_sep_pix = size_sep_pix, \
-                                                    xs = xs, \
-                                                    ys = ys, \
-                                                    n_levels = n_levels, \
-                                                    mscstar = id_mscstar, \
-                                                    mscell = id_mscell, \
-                                                    mscbcg = id_mscbcg, \
-                                                    mscsedl = id_mscsedl, \
-                                                    R_pix = id_R_pix, \
-                                                    R_kpc = R_kpc,\
-                                                    cat_gal = cat_gal, \
-                                                    rc_pix = rc_pix,\
-                                                    N_err = N_err, \
-                                                    per_err = per_err, \
-                                                    flux_lim = flux_lim, \
-                                                    kurt_filt = kurt_filt, \
-                                                    plot_vignet = plot_vignet, \
-                                                    write_fits = write_fits, \
-                                                    measure_PR = measure_PR ))
-
-                # ICL -- WS + SF -------------------------------------------
-                for lvl_sep in lvl_sepl:
-                    ray_refs.append( make_results_cluster.remote(sch = 'WS+SF', \
-                                                    oim = id_oim, \
-                                                    nfp = nfp, \
-                                                    filt = filt, \
-                                                    lvl_sep = lvl_sep, \
-                                                    lvl_sep_max = lvl_sep_max, \
-                                                    lvl_sep_bcg = lvl_sep_bcg, \
-                                                    size_sep = size_sep, \
-                                                    size_sep_pix = size_sep_pix, \
-                                                    xs = xs, \
-                                                    ys = ys, \
-                                                    n_levels = n_levels, \
-                                                    mscstar = id_mscstar, \
-                                                    mscell = id_mscell, \
-                                                    mscbcg = id_mscbcg, \
-                                                    mscsedl = id_mscsedl, \
-                                                    R_kpc = R_kpc,\
-                                                    R_pix = id_R_pix, \
-                                                    cat_gal = cat_gal, \
-                                                    rc_pix = rc_pix,\
-                                                    N_err = N_err, \
-                                                    per_err = per_err, \
-                                                    flux_lim = flux_lim, \
-                                                    kurt_filt = kurt_filt, \
-                                                    plot_vignet = plot_vignet, \
-                                                    write_fits = write_fits, \
-                                                    measure_PR = measure_PR ))
-                
-                # ICL+BCG -- WS + SF ---------------------------------------
-                for lvl_sep in lvl_sepl:
-                    ray_refs.append( make_results_cluster.options(memory = 8 * 1024 * 1024 * 1024).remote(sch = 'WS+BCGSF', \
+            # ICL -- WS + SF -------------------------------------------
+            for lvl_sep in lvl_sepl:
+                ray_refs.append( make_results_cluster.remote(sch = 'WS+SF', \
+                                                oim = id_oim, \
+                                                nfp = nfp, \
+                                                filt = filt, \
+                                                lvl_sep = lvl_sep, \
+                                                lvl_sep_max = lvl_sep_max, \
+                                                lvl_sep_bcg = lvl_sep_bcg, \
+                                                size_sep = size_sep, \
+                                                size_sep_pix = size_sep_pix, \
+                                                xs = xs, \
+                                                ys = ys, \
+                                                n_levels = n_levels, \
+                                                mscstar = id_mscstar, \
+                                                mscell = id_mscell, \
+                                                mscbcg = id_mscbcg, \
+                                                mscsedl = id_mscsedl, \
+                                                R_kpc = R_kpc,\
+                                                R_pix = id_R_pix, \
+                                                cat_gal = cat_gal, \
+                                                rc_pix = rc_pix,\
+                                                N_err = N_err, \
+                                                per_err = per_err, \
+                                                flux_lim = flux_lim, \
+                                                kurt_filt = kurt_filt, \
+                                                plot_vignet = plot_vignet, \
+                                                write_fits = write_fits, \
+                                                measure_PR = measure_PR ))
+            
+            # ICL+BCG -- WS + SF ---------------------------------------
+            for lvl_sep in lvl_sepl:
+                ray_refs.append( make_results_cluster.options(memory = 8 * 1024 * 1024 * 1024).remote(sch = 'WS+BCGSF', \
+                                                oim = oim, \
+                                                nfp = nfp, \
+                                                filt = filt, \
+                                                lvl_sep = lvl_sep, \
+                                                lvl_sep_max = lvl_sep_max, \
+                                                lvl_sep_bcg = lvl_sep_bcg, \
+                                                size_sep = size_sep, \
+                                                size_sep_pix = size_sep_pix, \
+                                                xs = xs, \
+                                                ys = ys, \
+                                                n_levels = n_levels, \
+                                                mscstar = id_mscstar, \
+                                                mscell = id_mscell, \
+                                                mscbcg = id_mscbcg, \
+                                                mscsedl = id_mscsedl, \
+                                                R_kpc = R_kpc,\
+                                                R_pix = id_R_pix, \
+                                                cat_gal = cat_gal, \
+                                                rc_pix = rc_pix,\
+                                                N_err = N_err, \
+                                                per_err = per_err, \
+                                                flux_lim = flux_lim, \
+                                                kurt_filt = kurt_filt, \
+                                                plot_vignet = plot_vignet, \
+                                                write_fits = write_fits, \
+                                                measure_PR = measure_PR ))
+            
+            # ICL -- WS + SF + SS --------------------------------------
+            for lvl_sep in lvl_sepl:
+                for size_sep in size_sepl:
+                    size_sep_pix = size_sep / physcale / pix_scale # pixels
+                    ray_refs.append( make_results_cluster.remote(sch = 'WS+SF+SS', \
                                                     oim = oim, \
                                                     nfp = nfp, \
                                                     filt = filt, \
@@ -1587,72 +1638,40 @@ if __name__ == '__main__':
                                                     plot_vignet = plot_vignet, \
                                                     write_fits = write_fits, \
                                                     measure_PR = measure_PR ))
-                
-                # ICL -- WS + SF + SS --------------------------------------
-                for lvl_sep in lvl_sepl:
-                    for size_sep in size_sepl:
-                        size_sep_pix = size_sep / physcale / pix_scale # pixels
-                        ray_refs.append( make_results_cluster.remote(sch = 'WS+SF+SS', \
-                                                        oim = oim, \
-                                                        nfp = nfp, \
-                                                        filt = filt, \
-                                                        lvl_sep = lvl_sep, \
-                                                        lvl_sep_max = lvl_sep_max, \
-                                                        lvl_sep_bcg = lvl_sep_bcg, \
-                                                        size_sep = size_sep, \
-                                                        size_sep_pix = size_sep_pix, \
-                                                        xs = xs, \
-                                                        ys = ys, \
-                                                        n_levels = n_levels, \
-                                                        mscstar = id_mscstar, \
-                                                        mscell = id_mscell, \
-                                                        mscbcg = id_mscbcg, \
-                                                        mscsedl = id_mscsedl, \
-                                                        R_kpc = R_kpc,\
-                                                        R_pix = id_R_pix, \
-                                                        cat_gal = cat_gal, \
-                                                        rc_pix = rc_pix,\
-                                                        N_err = N_err, \
-                                                        per_err = per_err, \
-                                                        flux_lim = flux_lim, \
-                                                        kurt_filt = kurt_filt, \
-                                                        plot_vignet = plot_vignet, \
-                                                        write_fits = write_fits, \
-                                                        measure_PR = measure_PR ))
-                
-                # ICL+BCG -- WS + SF + SS ----------------------------------
-                for lvl_sep in lvl_sepl:
+            
+            # ICL+BCG -- WS + SF + SS ----------------------------------
+            for lvl_sep in lvl_sepl:
 
-                    for size_sep in size_sepl:
+                for size_sep in size_sepl:
 
-                        size_sep_pix = size_sep / physcale / pix_scale # pixels
-                        ray_refs.append( make_results_cluster.options(memory = 8 * 1024 * 1024 * 1024).remote(sch = 'WS+BCGSF+SS', \
-                                                        oim = oim, \
-                                                        nfp = nfp, \
-                                                        filt = filt, \
-                                                        lvl_sep = lvl_sep, \
-                                                        lvl_sep_max = lvl_sep_max, \
-                                                        lvl_sep_bcg = lvl_sep_bcg, \
-                                                        size_sep = size_sep, \
-                                                        size_sep_pix = size_sep_pix, \
-                                                        xs = xs, \
-                                                        ys = ys, \
-                                                        n_levels = n_levels, \
-                                                        mscstar = id_mscstar, \
-                                                        mscell = id_mscell, \
-                                                        mscbcg = id_mscbcg, \
-                                                        mscsedl = id_mscsedl, \
-                                                        R_kpc = R_kpc, \
-                                                        R_pix = id_R_pix, \
-                                                        cat_gal = cat_gal, \
-                                                        rc_pix = rc_pix,\
-                                                        N_err = N_err, \
-                                                        per_err = per_err, \
-                                                        flux_lim = flux_lim, \
-                                                        kurt_filt = kurt_filt, \
-                                                        plot_vignet = plot_vignet, \
-                                                        write_fits = write_fits, \
-                                                        measure_PR = measure_PR ))
+                    size_sep_pix = size_sep / physcale / pix_scale # pixels
+                    ray_refs.append( make_results_cluster.options(memory = 8 * 1024 * 1024 * 1024).remote(sch = 'WS+BCGSF+SS', \
+                                                    oim = oim, \
+                                                    nfp = nfp, \
+                                                    filt = filt, \
+                                                    lvl_sep = lvl_sep, \
+                                                    lvl_sep_max = lvl_sep_max, \
+                                                    lvl_sep_bcg = lvl_sep_bcg, \
+                                                    size_sep = size_sep, \
+                                                    size_sep_pix = size_sep_pix, \
+                                                    xs = xs, \
+                                                    ys = ys, \
+                                                    n_levels = n_levels, \
+                                                    mscstar = id_mscstar, \
+                                                    mscell = id_mscell, \
+                                                    mscbcg = id_mscbcg, \
+                                                    mscsedl = id_mscsedl, \
+                                                    R_kpc = R_kpc, \
+                                                    R_pix = id_R_pix, \
+                                                    cat_gal = cat_gal, \
+                                                    rc_pix = rc_pix,\
+                                                    N_err = N_err, \
+                                                    per_err = per_err, \
+                                                    flux_lim = flux_lim, \
+                                                    kurt_filt = kurt_filt, \
+                                                    plot_vignet = plot_vignet, \
+                                                    write_fits = write_fits, \
+                                                    measure_PR = measure_PR ))
     # Collect ray outputs
     for ref in ray_refs:
         ray_outputs.append(ray.get(ref))
