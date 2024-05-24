@@ -1384,6 +1384,7 @@ if __name__ == '__main__':
     write_fits = True
     measure_PR = True
     write_dataframe = True
+    resume = True # set to true to start from where it stoped
 
     results = []
     ray_refs = []
@@ -1488,7 +1489,8 @@ if __name__ == '__main__':
             size_sep = np.nan
             size_sep_pix = np.nan
             
-            ray_refs.append( make_results_cluster.remote(sch = 'fullfield', \
+            if (resume == False) or (os.path.isfile(nfp + 'synth.full_field.fits') == False):
+                ray_refs.append( make_results_cluster.remote(sch = 'fullfield', \
                                                  oim = id_oim, \
                                                  nfp = nfp, \
                                                  filt = filt, \
@@ -1519,7 +1521,8 @@ if __name__ == '__main__':
             
             # ICL -- WS ------------------------------------------------
             for lvl_sep in lvl_sepl:
-                ray_refs.append( make_results_cluster.remote(sch = 'WS', \
+                if (resume == False) or (os.path.isfile(nfp + 'synth.wavsep_%03d.fits'%lvl_sep) == False):
+                    ray_refs.append( make_results_cluster.remote(sch = 'WS', \
                                                 oim = id_oim, \
                                                 nfp = nfp, \
                                                 filt = filt, \
@@ -1549,7 +1552,8 @@ if __name__ == '__main__':
 
             # ICL -- WS + SF -------------------------------------------
             for lvl_sep in lvl_sepl:
-                ray_refs.append( make_results_cluster.remote(sch = 'WS+SF', \
+                if (resume == False) or (os.path.isfile(nfp + 'synth.wavsepmask_%03d.fits'%(lvl_sep)) == False):
+                    ray_refs.append( make_results_cluster.remote(sch = 'WS+SF', \
                                                 oim = id_oim, \
                                                 nfp = nfp, \
                                                 filt = filt, \
@@ -1579,7 +1583,8 @@ if __name__ == '__main__':
             
             # ICL+BCG -- WS + SF ---------------------------------------
             for lvl_sep in lvl_sepl:
-                ray_refs.append( make_results_cluster.options(memory = 8 * 1024 * 1024 * 1024).remote(sch = 'WS+BCGSF', \
+                if (resume == False) or (os.path.isfile(nfp + 'synth.bcgavsepmask_%03d.fits'%(lvl_sep)) == False):
+                    ray_refs.append( make_results_cluster.options(memory = 8 * 1024 * 1024 * 1024).remote(sch = 'WS+BCGSF', \
                                                 oim = oim, \
                                                 nfp = nfp, \
                                                 filt = filt, \
@@ -1611,7 +1616,8 @@ if __name__ == '__main__':
             for lvl_sep in lvl_sepl:
                 for size_sep in size_sepl:
                     size_sep_pix = size_sep / physcale / pix_scale # pixels
-                    ray_refs.append( make_results_cluster.remote(sch = 'WS+SF+SS', \
+                    if (resume == False) or (os.path.isfile(nfp + 'synth.wavsizesepmask_%03d_%03d.fits'%(lvl_sep, size_sep)) == False):
+                        ray_refs.append( make_results_cluster.remote(sch = 'WS+SF+SS', \
                                                     oim = oim, \
                                                     nfp = nfp, \
                                                     filt = filt, \
@@ -1641,11 +1647,10 @@ if __name__ == '__main__':
             
             # ICL+BCG -- WS + SF + SS ----------------------------------
             for lvl_sep in lvl_sepl:
-
                 for size_sep in size_sepl:
-
                     size_sep_pix = size_sep / physcale / pix_scale # pixels
-                    ray_refs.append( make_results_cluster.options(memory = 8 * 1024 * 1024 * 1024).remote(sch = 'WS+BCGSF+SS', \
+                    if (resume == False) or (os.path.isfile(nfp + 'synth.bcgwavsizesepmask_%03d_%03d.fits'%(lvl_sep, size_sep)) == False):
+                        ray_refs.append( make_results_cluster.options(memory = 8 * 1024 * 1024 * 1024).remote(sch = 'WS+BCGSF+SS', \
                                                     oim = oim, \
                                                     nfp = nfp, \
                                                     filt = filt, \
