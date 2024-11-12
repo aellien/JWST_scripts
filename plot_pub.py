@@ -927,7 +927,7 @@ def plot_array_scattered_recim_short():
 
     # Paths, lists & variables
     path_data = '/home/aellien/JWST/data/'
-    path_wavelets = '/home/aellien/JWST/wavelets/out15/'
+    path_wavelets = '/home/aellien/JWST/wavelets/out20/'
     path_plots = '/home/aellien/JWST/plots'
 
     filterl = [ 'f090w', 'f150w', 'f200w']
@@ -1079,7 +1079,7 @@ def plot_array_icl_maps_all_filters():
     # Paths, lists & variables
     path_data = '/home/aellien/JWST/data/'
     path_scripts = '/home/aellien/JWST/JWST_scripts'
-    path_wavelets = '/home/aellien/JWST/wavelets/out15/'
+    path_wavelets = '/home/aellien/JWST/wavelets/out20/'
     path_plots = '/home/aellien/JWST/plots'
 
     nfl = [ {'nf':'jw02736001001_f356w_bkg_rot_crop_input.fits', 'filt':'f356w', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999 }, \
@@ -1123,14 +1123,16 @@ def plot_array_icl_maps_all_filters():
 
                     n = nf['nf'][:-4] + 'synth.icl.wavsepmask_%03d.fits' %(lvl_sep)
                     nfp = os.path.join(path_wavelets, n)
-                    im_MJy = fits.getdata(nfp)
+                    hdu = fits.open(nfp)
+                    im_MJy = hdu[1].data
                     #im_MJy = rebin(im_MJy, 2, 2)
                     im_mu = MJy_to_mu(im_MJy, arcsecar_sr, mu_lim)
                     recml.append(im_mu)
 
                     n = nf['nf'][:-4] + 'synth.icl.wavsep_%03d.fits'%(lvl_sep)
                     nfp = os.path.join(path_wavelets, n)
-                    im_MJy = fits.getdata(nfp)
+                    hdu = fits.open(nfp)
+                    im_MJy = hdu[1].data
                     #im_MJy = rebin(im_MJy, 2, 2)
                     im_mu = MJy_to_mu(im_MJy, arcsecar_sr, mu_lim)
                     recl.append(im_mu)
@@ -1139,7 +1141,8 @@ def plot_array_icl_maps_all_filters():
                     for size_sep in size_sepl:
                         n = nf['nf'][:-4] + 'synth.icl.wavsizesepmask_%03d_%03d.fits'%(lvl_sep, size_sep)
                         nfp = os.path.join(path_wavelets, n)
-                        im_MJy = fits.getdata(nfp)
+                        hdu = fits.open(nfp)
+                        im_MJy = hdu[1].data
                         #im_MJy = rebin(im_MJy, 2, 2)
                         im_mu = MJy_to_mu(im_MJy, arcsecar_sr, mu_lim)
                         l.append(im_mu)
@@ -1196,7 +1199,7 @@ def plot_array_icl_maps_all_filters():
 
         plt.tight_layout()
         #plt.subplots_adjust( left=0.1, bottom=0.05, right=0.9, top=0.9, wspace=0.05, hspace=0.05)
-        plt.savefig(os.path.join(path_plots, 'plot_array_icl_maps_%s_mulim_%2d.pdf'%(filt, mu_lim)), format = 'pdf', dpi = 500)
+        plt.savefig(os.path.join(path_plots, 'plot_array_icl_maps_%s_mulim_%2d_out20.pdf'%(filt, mu_lim)), format = 'pdf', dpi = 500)
         # Clear the current axes.
         plt.cla()
         # Clear the current figure.
@@ -1407,12 +1410,12 @@ def plot_recim_rgb_icl():
     # Paths, lists & variables
     path_data = '/home/aellien/JWST/data/'
     path_scripts = '/home/aellien/JWST/JWST_scripts'
-    path_wavelets = '/home/aellien/JWST/wavelets/out15/'
+    path_wavelets = '/home/aellien/JWST/wavelets/out20/'
     path_plots = '/home/aellien/JWST/plots'
 
     filterl = [ 'f277w', 'f356w', 'f444w']
     #filterl = [ 'f090w', 'f150w', 'f200w' ]
-    schl = ['WS+SF', 'WS+SF+SS']
+    schl = ['WS+SF+SS']
     size_sepl = [100, 200, 300]
     lvl_sepl = [ 5, 6 ]
     colorl = [ 'dodgerblue', 'mediumaquamarine', 'paleturquoise' , 'white' ]
@@ -1421,7 +1424,7 @@ def plot_recim_rgb_icl():
     n_grid = 10
     n_cols = 3
     n_rows = 5
-    std = 5
+    std = 5'WS+SF', 
     n_bin = 1
     fig = plt.figure(1, figsize = (5., 8.3))
     grid = GridSpec(nrows = n_rows * n_grid, ncols = n_cols * n_grid + 1, figure = 1, left = 0.1, bottom = 0.01, right = 0.99, top = 0.9, wspace = 0.1, hspace = 0.1, width_ratios = None, height_ratios = None)
@@ -1445,22 +1448,25 @@ def plot_recim_rgb_icl():
         oim_mu = - 2.5 * np.log10( oim / 4.25 * 1E-4 ) + 8.906
         oim_mu[oim_mu > 31.1] = 31.1 # SB limit from Montes 2022
 
-        nf = 'jw02736001001_%s_bkg_rot_crop_input.synth.icl.bcgwavsizesepmask_005_080.fits'%(filt)
+        nf = 'jw02736001001_%s_bkg_rot_crop_input.synth.bcgwavsizesepmask_005_080.fits'%(filt)
         #nf = 'jw02736001001_%s_bkg_rot_crop_warp_nobkg2.synth.icl.bcgwavsizesepmask_005_080.fits'%(filt)
 
         nfp = os.path.join(path_wavelets, nf)
-        iclbcg = fits.getdata(nfp)
+        hdu = fits.open(nfp)
+        iclbcg = hdu[1].data
+        #iclbcg = gaussian_filter(iclbcg, std)
         #iclbcg = rebin(iclbcg, n_bin, n_bin)
         iclbcg[ np.where(iclbcg == 0.) ] = 1E-10
         iclbcg_mu = - 2.5 * np.log10( iclbcg / 4.25 * 1E-4 ) + 8.906
         #iclbcg_mu[iclbcg_mu > 28.] = 28. # SB limit from Montes 2022
         tot_cl_l.append(iclbcg)
 
-        nf = 'jw02736001001_%s_bkg_rot_crop_input.synth.gal.bcgwavsizesepmask_005_080.fits'%(filt)
+        nf = 'jw02736001001_%s_bkg_rot_crop_input.synth.bcgwavsizesepmask_005_080.fits'%(filt)
         #nf = 'jw02736001001_%s_bkg_rot_crop_warp_nobkg2.synth.gal.bcgwavsizesepmask_005_200.fits'%(filt)
 
         nfp = os.path.join(path_wavelets, nf)
-        sat = fits.getdata(nfp)
+        hdu = fits.open(nfp)
+        sat = hdu[2].data
         #sat = rebin(sat, n_bin, n_bin)
         sat[ np.where(iclbcg == 0.) ] = 1E-10
         sat_mu = - 2.5 * np.log10( sat / 4.25 * 1E-4 ) + 8.906
@@ -1524,7 +1530,7 @@ def plot_recim_rgb_icl():
     plt.tight_layout()
     plt.subplots_adjust( left = 0.01, right = 0.99, hspace = 0.1, wspace = 0.1 )
 
-    plt.savefig(os.path.join(path_plots, 'RGB_iclbcg.pdf'), format = 'pdf')
+    plt.savefig(os.path.join(path_plots, 'RGB_iclbcg_out20.pdf'), format = 'pdf')
 
 
     plt.figure()
@@ -1705,10 +1711,10 @@ def plot_scattered_light_maps():
 def plot_oim_rgb_all_filters():
 
     # Paths, lists & variables
-    path_data = '/home/ellien/JWST/data/'
-    path_scripts = '/home/ellien/JWST/JWST_scripts'
-    path_wavelets = '/home/ellien/JWST/wavelets/out13/'
-    path_plots = '/home/ellien/JWST/plots'
+    path_data = '/home/aellien/JWST/data/'
+    path_scripts = '/home/aellien/JWST/JWST_scripts'
+    path_wavelets = '/home/aellien/JWST/wavelets/out13/'
+    path_plots = '/home/aellien/JWST/plots'
 
     nfdl = [ {'nf':'jw02736001001_f356w_bkg_rot_crop_input.fits', 'filt':'f356w', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999 }, \
             {'nf':'jw02736001001_f444w_bkg_rot_crop_input.fits', 'filt':'f444w', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'n_levels':10, 'lvl_sep_max':999 }, \
@@ -1757,10 +1763,10 @@ def plot_oim_rgb_all_filters():
 def plot_example_recim_all_filter_maps():
 
     # Paths, lists & variables
-    path_data = '/home/ellien/JWST/data/'
-    path_scripts = '/home/ellien/JWST/JWST_scripts'
-    path_plots = '/home/ellien/JWST/plots'
-    path_wavelets = '/home/ellien/JWST/wavelets/out15'
+    path_data = '/home/aellien/JWST/data/'
+    path_scripts = '/home/aellien/JWST/JWST_scripts'
+    path_plots = '/home/aellien/JWST/plots'
+    path_wavelets = '/home/aellien/JWST/wavelets/out20'
 
     nfdl = [ {'nf':'jw02736001001_f356w_bkg_rot_crop_input.fits', 'filt':'f356w', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'phot_corr':0.163, 'n_levels':10 }, \
             {'nf':'jw02736001001_f444w_bkg_rot_crop_input.fits', 'filt':'f444w', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'phot_corr':0.162, 'n_levels':10 }, \
@@ -1787,14 +1793,15 @@ def plot_example_recim_all_filter_maps():
                 oim = hdu[0].data
                 oiml.append(oim)
 
-                nfp = os.path.join(path_wavelets, nfd['nf'][:-4] + 'synth.icl.bcgwavsizesepmask_005_080.fits')
+                nfp = os.path.join(path_wavelets, nfd['nf'][:-4] + 'synth.bcgwavsizesepmask_005_080.fits')
                 print(nfp)
-                recim = fits.getdata(nfp)[:2046, :2046]
+                hdu = fits.open(nfp)
+                recim = hdu[1].data[:2046, :2046]
                 reciml.append(recim)
 
     fig, ax = plt.subplots(2, 3, figsize = (12,8))
     cmap = 'gray_r'
-    print(np.shape(reciml))
+    #print(np.shape(reciml))
     k = 0
     l = -1
     for i, filt in enumerate(filterl):
@@ -1827,7 +1834,7 @@ def plot_example_recim_all_filter_maps():
 
     plt.tight_layout()
     #plt.subplots_adjust( left=0.05, bottom=0.05, right=0.98, top=0.98, wspace=0.03, hspace=0.1)
-    plt.savefig(os.path.join(path_plots, 'plot_example_recim_all_filter_maps.pdf'), format = 'pdf', dpi = 500)
+    plt.savefig(os.path.join(path_plots, 'plot_example_recim_all_filter_maps_out20.pdf'), format = 'pdf', dpi = 500)
     plt.show()
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1903,7 +1910,7 @@ if __name__ == '__main__':
     #plot_array_icl_maps_all_filters()
     #plot_array_bcgicl_maps_all_filters()
     #plot_rgb_mask_wcs()
-    #plot_recim_rgb_icl()
+    plot_recim_rgb_icl()
     #plot_array_scattered_recim_short()
     #plot_array_recim_long()
     #fICL_vs_filters()
@@ -1915,5 +1922,5 @@ if __name__ == '__main__':
     #plot_scattered_light_maps()
     #SED_tidal_streams()
     #plot_example_recim_all_filter_maps()
-    plot_and_make_sed()
+    #plot_and_make_sed()
     #plot_test()
