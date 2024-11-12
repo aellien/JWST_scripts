@@ -5,13 +5,9 @@ import shutil
 import cProfile
 from datetime import datetime
 
-#indir = '/n03data/ellien/JWST/data'
-#infile = sys.argv[1]
-#outdir = '/n03data/ellien/JWST/wavelets/out20/'
-
-indir = '/home/aellien/JWST/data'
-infile = 'jw02736001001_f200w_bkg_rot_crop_warp_nobkg2.fits'
-outdir = '/home/aellien/JWST/wavelets/out20/'
+indir = '/n03data/ellien/JWST/data'
+infile = sys.argv[1]
+outdir = '/n03data/ellien/JWST/wavelets/out21/'
 
 if os.path.isdir( outdir ) == False:
     os.makedirs( outdir, exist_ok = True )
