@@ -736,9 +736,6 @@ if __name__ == '__main__':
     lvl_sep_max = 1000
     n_levels = 10
     
-    # photometry
-    flux_lim = 10**( (ZP_AB - mu_lim) / 2.5 )
-    
     # bootstrap
     N_err = 100
     per_err = 0.1
@@ -784,7 +781,7 @@ if __name__ == '__main__':
         mu_lim = float(split[6])
 
         # Photometry for limiting depth
-        ZP_AB = -6.10 - 2.5 * np.log10(pixar_sr)
+        ZP_AB = -6.10 - 2.5 * np.log10(pixar)
         flux_lim = 10**( (ZP_AB - mu_lim) / 2.5 )
             
         # Read original file
