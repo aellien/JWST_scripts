@@ -520,8 +520,6 @@ def synthesis_bcgwavsizesep_with_masks( cln, oim, header, nfwp, lvl_sep, lvl_sep
 
     # clear some memory
     gc.collect()
-    noticl_al.clear()
-    unclass_al.clear()
 
     # Write synthesized models to disk
     if write_fits == True:
