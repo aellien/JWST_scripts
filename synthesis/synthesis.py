@@ -817,7 +817,7 @@ if __name__ == '__main__':
                                              mbcg = mbcg, 
                                              mstar = mstar,
                                              msat = msat,
-                                             ml = [r128, r200, r400], 
+                                             ml = [m128, m200, m400], 
                                              R = None, 
                                              N_err = N_err, 
                                              per_err = per_err, 
