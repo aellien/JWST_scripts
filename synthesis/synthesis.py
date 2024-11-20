@@ -324,7 +324,7 @@ def PR_selection_error(atom_in_list, atom_out_list, M, percent, R_pix, xs, ys, f
     return PR_results
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-def synthesis_bcgwavsizesep_with_masks( cln, oim, header, nfwp, lvl_sep, lvl_sep_max, lvl_sep_bcg, size_sep, size_sep_pix, xs, ys, micl, mbcg, mstar, msat, ml = [], R = np.inf, N_err = 50, per_err = 0.1, kurt_filt = True, plot_vignet = False, write_fits = True, measure_flux = False, measure_PR = False, plot_boot = False ):
+def synthesis_bcgwavsizesep_with_masks( cln, oim, header, nfwp, lvl_sep, lvl_sep_max, lvl_sep_bcg, size_sep, size_sep_pix, xs, ys, micl, mbcg, mstar, msat, ml = [], mln = None, R = np.inf, N_err = 50, per_err = 0.1, kurt_filt = True, plot_vignet = False, write_fits = True, measure_flux = False, measure_PR = False, plot_boot = False ):
     '''
     Synthesizes an image model using wavelet decompositions to separate BCG (Brightest Cluster Galaxy) and ICL (Intracluster Light) components, applying user-defined priors.
 
@@ -647,8 +647,12 @@ def synthesis_bcgwavsizesep_with_masks( cln, oim, header, nfwp, lvl_sep, lvl_sep
     icl_boot_al.clear()
 
     # Compact dataframe
-    df = pd.DataFrame( [[ cln, R_pix, lvl_sep, size_sep, F_ICLBCG_m, F_ICLBCG_low, F_ICLBCG_up, F_gal_m, F_gal_low, F_gal_up, f_ICLBCG_m, f_ICLBCG_low, f_ICLBCG_up, PR_1_m, PR_1_up, PR_1_low, PR_2_m, PR_2_up, PR_2_low, PR_3_m, PR_3_up, PR_3_low, PR_4_m, PR_4_up, PR_4_low ]], \
-                        columns = [ 'name', 'R_pix', 'lvl_sep', 'size_sep', 'F_ICLBCG_m', 'F_ICLBCG_low', 'F_ICLBCG_up', 'F_gal_m', 'F_gal_low', 'F_gal_up', 'f_ICLBCG_m', 'f_ICLBCG_low', 'f_ICLBCG_up', 'PR_1_m', 'PR_1_up', 'PR_1_low', 'PR_2_m', 'PR_2_up', 'PR_2_low', 'PR_3_m', 'PR_3_up', 'PR_3_low', 'PR_4_m', 'PR_4_up', 'PR_4_low'  ])
+    hkw = ['m', 'low', 'up']
+    ml_icl_df = pd.DataFrame( [msc_out_icl], columns = [ '%s_icl_%s'%(i/3, hkw[i%3]) for i in range(msc_out_icl)])
+    ml_gal_df = pd.DataFrame( [msc_out_icl], columns = [ '%s_gal_%s'%(mln[i//3], hkw[i%3]) for i in range(msc_out_gal)])
+    df = pd.DataFrame( [[ cln, R_pix, lvl_sep, size_sep, F_ICLBCG_m, F_ICLBCG_low, F_ICLBCG_up, F_gal_m, F_gal_low, F_gal_up, f_ICLBCG_m, f_ICLBCG_low, f_ICLBCG_up ]], \
+                        columns = [ 'name', 'R_pix', 'lvl_sep', 'size_sep', 'F_ICLBCG_m', 'F_ICLBCG_low', 'F_ICLBCG_up', 'F_gal_m', 'F_gal_low', 'F_gal_up', 'f_ICLBCG_m', 'f_ICLBCG_low', 'f_ICLBCG_up' ])
+    df = pd.concat( [df, ml_icl_df, ml_icl_df], axis = 1)
     return df
     
 
@@ -817,7 +821,8 @@ if __name__ == '__main__':
                                              mbcg = mbcg, 
                                              mstar = mstar,
                                              msat = msat,
-                                             ml = [m128, m200, m400], 
+                                             ml = [m128, m200, m400],
+                                             mln = ['F_128kpc', 'F_200kpc', 'F_400kpc'],
                                              R = None, 
                                              N_err = N_err, 
                                              per_err = per_err, 
