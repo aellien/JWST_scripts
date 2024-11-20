@@ -1,7 +1,8 @@
-#name chan pixscale pixar n_levels lvl_sep_max mu_lim
+# name chan pixscale pixar n_levels lvl_sep_max mu_lim
 jw02736001001_f090w_bkg_rot_crop_warp_nobkg2.fits short 0.063 9.31E-14 11 8 999
 jw02736001001_f150w_bkg_rot_crop_warp_nobkg2.fits short 0.063 9.31E-14 11 999 999
 jw02736001001_f200w_bkg_rot_crop_warp_nobkg2.fits short 0.063 9.31E-14 11 999 999
 jw02736001001_f356w_bkg_rot_crop_input.fits long 0.063 9.31E-14 11 999 999
 jw02736001001_f444w_bkg_rot_crop_input.fits' long 0.063 9.31E-14 11 999 999
 jw02736001001_f277w_bkg_rot_crop_input.fits' long 0.063 9.31E-14 11 999 999
+
