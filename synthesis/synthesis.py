@@ -650,8 +650,8 @@ def synthesis_bcgwavsizesep_with_masks( cln, oim, header, nfwp, lvl_sep, lvl_sep
     hkw = ['m', 'low', 'up']
     ml_icl_df = pd.DataFrame( [msc_out_icl], columns = [ '%s_icl_%s'%(i/3, hkw[i%3]) for i in range(len(msc_out_icl))])
     ml_gal_df = pd.DataFrame( [msc_out_gal], columns = [ '%s_gal_%s'%(mln[i//3], hkw[i%3]) for i in range(len(msc_out_gal))])
-    df = pd.DataFrame( [[ cln, R_pix, lvl_sep, size_sep, F_ICLBCG_m, F_ICLBCG_low, F_ICLBCG_up, F_gal_m, F_gal_low, F_gal_up, f_ICLBCG_m, f_ICLBCG_low, f_ICLBCG_up ]], \
-                        columns = [ 'name', 'R_pix', 'lvl_sep', 'size_sep', 'F_ICLBCG_m', 'F_ICLBCG_low', 'F_ICLBCG_up', 'F_gal_m', 'F_gal_low', 'F_gal_up', 'f_ICLBCG_m', 'f_ICLBCG_low', 'f_ICLBCG_up' ])
+    df = pd.DataFrame( [[ cln, lvl_sep, size_sep, F_ICLBCG_m, F_ICLBCG_low, F_ICLBCG_up, F_gal_m, F_gal_low, F_gal_up, f_ICLBCG_m, f_ICLBCG_low, f_ICLBCG_up ]], \
+                        columns = [ 'name', 'lvl_sep', 'size_sep', 'F_ICLBCG_m', 'F_ICLBCG_low', 'F_ICLBCG_up', 'F_gal_m', 'F_gal_low', 'F_gal_up', 'f_ICLBCG_m', 'f_ICLBCG_low', 'f_ICLBCG_up' ])
     df = pd.concat( [df, ml_icl_df, ml_gal_df], axis = 1)
     return df
     
