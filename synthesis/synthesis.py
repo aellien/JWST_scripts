@@ -689,8 +689,9 @@ def create_sat_mask(oim, header, cat):
     w = WCS(header)
     satlabl = []
     for gal in cat:
-        sky = SkyCoord(gal[0], gal[1], unit = 'deg')
-        y, x = w.world_to_pixel(sky)
+        #sky = SkyCoord(gal['RAdeg'], gal['DEdeg'], unit = 'deg')
+        #y, x = w.world_to_pixel(sky)
+        y, x = gal[0], gal[1]
         try:
             satlabl.append( segment_map.data[int(x), int(y)])
         except:
