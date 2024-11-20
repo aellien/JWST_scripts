@@ -836,4 +836,4 @@ if __name__ == '__main__':
         
         if write_dataframe == True:
             print('Write dataframe to %s' %os.path.join(path_analysis, cln[:-5] + '_fICL_PR.txt'))
-            df.to_csv(os.path.join(path_analysis, cln[:-5] + '_fICL_PR.txt'), sep=' ')
+            df.to_csv(os.path.join(path_wavelets, cln[:-5] + '_fICL_PR.txt'), sep=' ')
