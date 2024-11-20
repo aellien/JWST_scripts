@@ -773,7 +773,7 @@ if __name__ == '__main__':
         if ID != cln:
             print('%s not matching %s --> ignored!'%(ID, cln))
             continue
-        chan = float(split[1])
+        chan = split[1]
         pixscale = float(split[2])
         pixar = float(split[3])
         n_levels = float(split[4])
