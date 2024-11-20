@@ -23,7 +23,7 @@ do
 
             #�| ..launch patch..
             echo "Launch ${patch[@]}"
-            sbatch start_synthesis_slurm_job_new.sh ${patch[@]}
+            sbatch start_synthesis_slurm_job.sh ${patch[@]}
 
             # ..and reset the patch
             patch=()
