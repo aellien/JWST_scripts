@@ -806,10 +806,11 @@ if __name__ == '__main__':
         msat = create_sat_mask(oim, head, cat_gal)
         
         # synthesis
+        nfwp = os.path.join(path_wavelets, cln[:-5])
         df = synthesis_bcgwavsizesep_with_masks( cln = cln, 
                                              oim = oim, 
                                              header = head, 
-                                             nfwp = path_wavelets, 
+                                             nfwp = nfwp, 
                                              lvl_sep = lvl_sep, 
                                              lvl_sep_max = lvl_sep_max, 
                                              lvl_sep_bcg = lvl_sep_bcg, 
@@ -834,5 +835,5 @@ if __name__ == '__main__':
                                              plot_boot = plot_boot)
         
         if write_dataframe == True:
-            print('Write dataframe to %s' %os.path.join(path_analysis, cln + '_fICL_PR.txt'))
-            df.to_csv(os.path.join(path_analysis, cln + '_fICL_PR.txt'), sep=' ')
+            print('Write dataframe to %s' %os.path.join(path_analysis, cln[:-5] + '_fICL_PR.txt'))
+            df.to_csv(os.path.join(path_analysis, cln[:-5] + '_fICL_PR.txt'), sep=' ')
