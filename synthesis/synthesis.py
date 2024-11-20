@@ -27,8 +27,8 @@ from scipy.stats import kurtosis
 from datetime import datetime
 from photutils.segmentation import SourceFinder, SourceCatalog, detect_sources, make_2dgaussian_kernel
 from photutils.background import Background2D, MedianBackground
-from cosmo_calc import cosmo_calc
-from power_ratio import *
+#from cosmo_calc import cosmo_calc
+#from power_ratio import *
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 def flux_selection_error(atom_in_list, atom_out_list, M, percent, xs, ys, flux_lim, ml = [], write_plots = False, path_plots = None, nfp = None, name = None):
