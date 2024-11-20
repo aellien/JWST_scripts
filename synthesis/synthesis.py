@@ -543,7 +543,7 @@ def synthesis_bcgwavsizesep_with_masks( cln, oim, header, nfwp, lvl_sep, lvl_sep
         hdu_unclass = fits.ImageHDU(im_unclass, name = 'UNCLASSIFIED', header = header)
         hdu_unclass_dei = fits.ImageHDU(im_unclass, name = 'UNCLASSIFIED DET. ERR.', header = header)
         hdul = fits.HDUList([ hdu, hdu_icl, hdu_gal, hdu_tot, hdu_unclass, hdu_icl_dei, hdu_gal_dei, hdu_tot_dei, hdu_unclass_dei ])
-        hdul.writeto( os.path.join(nfwp, 'synth.bcgwavsizesepmask_%03d_%03d.fits'%(lvl_sep, size_sep)), overwrite = True )
+        hdul.writeto( os.path.join(nfwp + '_synth.bcgwavsizesepmask_%03d_%03d.fits'%(lvl_sep, size_sep)), overwrite = True )
         
         # FULL FIELD
         hdu = fits.PrimaryHDU()
@@ -551,7 +551,7 @@ def synthesis_bcgwavsizesep_with_masks( cln, oim, header, nfwp, lvl_sep, lvl_sep
         hdu_recim = fits.ImageHDU(recim, name = 'REC.', header = header)
         hdu_res = fits.ImageHDU(oim - recim, name = 'RESIDUALS', header = header)
         hdul = fits.HDUList([ hdu, hdu_oim, hdu_recim, hdu_res ])
-        hdul.writeto( os.path.join(nfwp, 'synth.full_field.fits'), overwrite = True )
+        hdul.writeto( os.path.join(nfwp + '_synth.full_field.fits'), overwrite = True )
         
     # Measure integrated quantities
     if measure_flux == True:
