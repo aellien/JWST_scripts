@@ -44,12 +44,13 @@ conditions = 'prolongation' # Border conditions for wavelet convolution
 n_cpus = 1 # Number of CPUs
 size_patch = 100 # Number of objects in parallelized patch
 
+outfile_format = 'hdf5'
 resume = True 
 deconv = True
 
 shutil.copyfile( os.path.abspath(__file__), os.path.join( outdir, infile[:-4] + 'input.dawis.py' ) )
 
-dawis.synthesis_by_analysis( indir = indir, infile = infile, outdir = outdir, n_cpus = n_cpus, starting_level = starting_level, tau = tau, n_levels = n_levels, n_sigmas = n_sigmas,\
+dawis.synthesis_by_analysis( indir = indir, infile = infile, outdir = outdir, n_cpus = n_cpus, starting_level = starting_level, tau = tau, n_levels = n_levels, n_sigmas = n_sigmas, outfile_format = outfile_format,\
                                 gamma = gamma, min_span = min_span, max_span = max_span, lvl_sep_big = lvl_sep_big, rm_gamma_for_big = rm_gamma_for_big, lvl_deblend = lvl_deblend, deblend_contrast = deblend_contrast, \
                                 extent_sep = extent_sep, ecc_sep = ecc_sep, lvl_sep_lin = lvl_sep_lin, ceps = ceps, scale_lvl_eps = scale_lvl_eps, conditions = conditions, deconv = deconv, \
                                 max_iter = max_iter, size_patch = size_patch, inpaint_res = inpaint_res, data_dump = data_dump, gif = gif, iptd_sigma = iptd_sigma, resume = resume )

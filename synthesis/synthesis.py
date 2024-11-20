@@ -402,7 +402,7 @@ def synthesis_bcgwavsizesep_with_masks( cln, oim, header, nfwp, lvl_sep, lvl_sep
     yc = ys / 2.
 
     # List of files to read
-    opath = os.path.join(nfwp, '*ol.it*.hdf5')
+    opath = nfwp + '*ol.it*.hdf5'
     opathl = glob.glob(opath)
     opathl.sort()
     print(opath)
