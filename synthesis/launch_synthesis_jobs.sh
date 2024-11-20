@@ -7,7 +7,7 @@ Npatch=1 # Number of cluster per slurm job
 
 i=0
 patch=()
-while IFS=' ' read name chan pixscale pixar n_levels lvl_sep_max mu_lim
+while IFS=' ' read ID chan pixscale pixar n_levels lvl_sep_max mu_lim
 do
     # ignore header
     if [[  $ID == "#" ]];then
