@@ -10,6 +10,6 @@
 
 source /home/ellien/.bashrc
 conda activate dawis
-python -W"ignore" /home/ellien/JWST_scripts/synthesis/synthesis.py $@
+python -W"ignore" /home/ellien/JWST/JWST_scripts/synthesis/synthesis.py $@
 
 exit 0
