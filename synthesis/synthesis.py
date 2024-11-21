@@ -824,7 +824,7 @@ if __name__ == '__main__':
                                              msat = msat,
                                              ml = [m128, m200, m400],
                                              mln = ['F_128kpc', 'F_200kpc', 'F_400kpc'],
-                                             R = None, 
+                                             R = np.inf, 
                                              N_err = N_err, 
                                              per_err = per_err, 
                                              kurt_filt = kurt_filt, 
