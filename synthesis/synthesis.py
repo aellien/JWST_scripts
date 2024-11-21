@@ -33,6 +33,9 @@ from photutils.background import Background2D, MedianBackground
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 def update_atom_weights(wei, w, x_min, x_max, y_min, y_max):
     w[w > 0.] = 1.
+    print('update:')
+    print(x_min, x_max, y_min, y_max)
+    print(np.shape(wei), np.shape(wei[ x_min : x_max, y_min : y_max ]), np.shape(w))
     wei[ x_min : x_max, y_min : y_max ] += w
     return wei
 
