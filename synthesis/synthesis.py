@@ -499,7 +499,7 @@ def synthesis_bcgwavsizesep_with_masks( cln, oim, header, nfwp, lvl_sep, lvl_sep
 
                     gal[ x_min : x_max, y_min : y_max ] += image
                     gal_dei[ x_min : x_max, y_min : y_max ] += det_err_image
-                    wei = update_atom_weights(wei, w, x_min, x_max, y_min, y_max)
+                    wei = update_atom_weights(wei, np.copy(image), x_min, x_max, y_min, y_max)
                     tot_gal_al.append([image, det_err_image, x_min, y_min, x_max, y_max, xco, yco, lvlo, wr])
 
                     # Add 'tendencious' galaxy atoms to list for bootstrap
