@@ -31,6 +31,13 @@ from photutils.background import Background2D, MedianBackground
 #from power_ratio import *
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+def update_atom_weights(wei, w_to_add):
+    w = np.copy(f[o]['image'][()])
+    w[w > 0.] = 1.
+    wei[ x_min : x_max, y_min : y_max ] += w
+    return wei
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 def flux_selection_error(atom_in_list, atom_out_list, M, percent, xs, ys, flux_lim, ml = [], write_plots = False, path_plots = None, nfp = None, name = None):
     '''Update - 08/10/2024
 
@@ -386,6 +393,7 @@ def synthesis_bcgwavsizesep_with_masks( cln, oim, header, nfwp, lvl_sep, lvl_sep
     # Empty arrays for models
     icl = np.zeros( (xs, ys) )
     icl_dei = np.zeros( (xs, ys) )
+    wei = np.zeros( (xs, ys) )
     gal = np.zeros( (xs, ys) )
     gal_dei = np.zeros( (xs, ys) )
     im_art = np.zeros( (xs, ys) )
@@ -467,6 +475,7 @@ def synthesis_bcgwavsizesep_with_masks( cln, oim, header, nfwp, lvl_sep, lvl_sep
                     if mbcg[xco, yco] > 0:
                         icl[ x_min : x_max, y_min : y_max ] += image
                         icl_dei[ x_min : x_max, y_min : y_max ] += det_err_image
+                        wei = update_atom_weights(wei, o)
                         tot_icl_al.append([image, det_err_image, x_min, y_min, x_max, y_max, xco, yco, lvlo, wr])
                         continue
     
@@ -474,6 +483,7 @@ def synthesis_bcgwavsizesep_with_masks( cln, oim, header, nfwp, lvl_sep, lvl_sep
                     if (lvlo >= lvl_sep) & (sx >= size_sep_pix) & (sy >= size_sep_pix):
                         icl[ x_min : x_max, y_min : y_max ] += image
                         icl_dei[ x_min : x_max, y_min : y_max ] += det_err_image
+                        wei = update_atom_weights(wei, o)
                         tot_icl_al.append([image, det_err_image, x_min, y_min, x_max, y_max, xco, yco, lvlo, wr])
                         
                     else:
@@ -489,6 +499,7 @@ def synthesis_bcgwavsizesep_with_masks( cln, oim, header, nfwp, lvl_sep, lvl_sep
 
                     gal[ x_min : x_max, y_min : y_max ] += image
                     gal_dei[ x_min : x_max, y_min : y_max ] += det_err_image
+                    wei = update_atom_weights(wei, o)
                     tot_gal_al.append([image, det_err_image, x_min, y_min, x_max, y_max, xco, yco, lvlo, wr])
 
                     # Add 'tendencious' galaxy atoms to list for bootstrap
@@ -507,6 +518,7 @@ def synthesis_bcgwavsizesep_with_masks( cln, oim, header, nfwp, lvl_sep, lvl_sep
                 if (lvl_sep > lvl_sep_bcg) & (lvlo >= lvl_sep_bcg) & (np.sqrt( (xc - xco)**2 + (yc - yco)**2 ) < size_sep_pix) :
                     icl[ x_min : x_max, y_min : y_max ] += image
                     icl_dei[ x_min : x_max, y_min : y_max ] += det_err_image
+                    wei = update_atom_weights(wei, o)
                     tot_icl_al.append([image, det_err_image, x_min, y_min, x_max, y_max, xco, yco, lvlo, wr])
                     
                 # If not --> unclassified 
@@ -524,7 +536,7 @@ def synthesis_bcgwavsizesep_with_masks( cln, oim, header, nfwp, lvl_sep, lvl_sep
     # Write synthesized models to disk
     if write_fits == True:
 
-        kernel = make_2dgaussian_kernel(5.0, size = 5)  # FWHM = 3.0
+        kernel = make_2dgaussian_kernel(5.0, size = 5)
         icl = convolve(icl, kernel)
         gal = convolve(gal, kernel)
         recim = convolve(recim, kernel)
@@ -542,7 +554,8 @@ def synthesis_bcgwavsizesep_with_masks( cln, oim, header, nfwp, lvl_sep, lvl_sep
         hdu_tot_dei = fits.ImageHDU(tot_dei, name = 'ICL+BCG+SAT DET. ERR.', header = header)
         hdu_unclass = fits.ImageHDU(im_unclass, name = 'UNCLASSIFIED', header = header)
         hdu_unclass_dei = fits.ImageHDU(im_unclass, name = 'UNCLASSIFIED DET. ERR.', header = header)
-        hdul = fits.HDUList([ hdu, hdu_icl, hdu_gal, hdu_tot, hdu_unclass, hdu_icl_dei, hdu_gal_dei, hdu_tot_dei, hdu_unclass_dei ])
+        hdu_wei = fits.ImageHDU(wei, name = 'WEIGHTS', header = header)
+        hdul = fits.HDUList([ hdu, hdu_icl, hdu_gal, hdu_tot, hdu_unclass, hdu_icl_dei, hdu_gal_dei, hdu_tot_dei, hdu_unclass_dei, hdu_wei ])
         hdul.writeto( os.path.join(nfwp + '_synth.bcgwavsizesepmask_%03d_%03d.fits'%(lvl_sep, size_sep)), overwrite = True )
         
         # FULL FIELD
@@ -728,7 +741,7 @@ if __name__ == '__main__':
     physcale = 5.3 # [kpc/"]
     
     # spatial scales related
-    pix_scale = 0.187 # pixel scale [arcsec/pix]
+    pix_scale = 0.063 # pixel scale [arcsec/pix]
     size_sep = 80 # size separation [kpc]
     size_sep_pix = size_sep / physcale / pix_scale # [pix]
     rc = 10 # distance to center to be classified as gal [kpc]
@@ -741,7 +754,7 @@ if __name__ == '__main__':
     
     # bootstrap
     N_err = 100
-    per_err = 0.1
+    per_err = 0.05
 
     # Read galaxy catalog
     rgal = pyr.open(os.path.join(path_data, 'mahler_noirot_merged_member_gal_ra_dec_pix_long.reg'))
@@ -804,6 +817,7 @@ if __name__ == '__main__':
         m200 = r200.get_mask(hdu = hdu[0])
         m400 = r400.get_mask(hdu = hdu[0])
         msat = create_sat_mask(oim, head, cat_gal)
+        m50_150 = make_annuli_mask(50 / physcale / pix_scale, 150 / physcale / pix_scale, xs, ys, xc, yc)
         
         # synthesis
         nfwp = os.path.join(path_wavelets, cln[:-5])
@@ -822,8 +836,8 @@ if __name__ == '__main__':
                                              mbcg = mbcg, 
                                              mstar = mstar,
                                              msat = msat,
-                                             ml = [m128, m200, m400],
-                                             mln = ['F_128kpc', 'F_200kpc', 'F_400kpc'],
+                                             ml = [m128, m200, m400, m50_150],
+                                             mln = ['F_128kpc', 'F_200kpc', 'F_400kpc', 'F_50_150kpc'],
                                              R = np.inf, 
                                              N_err = N_err, 
                                              per_err = per_err, 
@@ -835,5 +849,5 @@ if __name__ == '__main__':
                                              plot_boot = plot_boot)
         
         if write_dataframe == True:
-            print('Write dataframe to %s' %os.path.join(path_analysis, cln[:-5] + '_fICL_PR.txt'))
-            df.to_csv(os.path.join(path_wavelets, cln[:-5] + '_fICL_PR.txt'), sep=' ')
+            print('Write dataframe to %s' %os.path.join(path_analysis, cln[:-5] + '_fICL.txt'))
+            df.to_csv(os.path.join(path_wavelets, cln[:-5] + '_fICL.txt'), sep=' ')
