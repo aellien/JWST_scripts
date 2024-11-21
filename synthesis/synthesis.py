@@ -33,9 +33,6 @@ from photutils.background import Background2D, MedianBackground
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 def update_atom_weights(wei, w, x_min, x_max, y_min, y_max):
     w[w > 0.] = 1.
-    print('update:')
-    print(x_min, x_max, y_min, y_max)
-    print(np.shape(wei), np.shape(wei[ x_min : x_max, y_min : y_max ]), np.shape(w))
     wei[ x_min : x_max, y_min : y_max ] += w
     return wei
 
@@ -521,7 +518,7 @@ def synthesis_bcgwavsizesep_with_masks( cln, oim, header, nfwp, lvl_sep, lvl_sep
                 if (lvl_sep > lvl_sep_bcg) & (lvlo >= lvl_sep_bcg) & (np.sqrt( (xc - xco)**2 + (yc - yco)**2 ) < size_sep_pix) :
                     icl[ x_min : x_max, y_min : y_max ] += image
                     icl_dei[ x_min : x_max, y_min : y_max ] += det_err_image
-                    wei = update_atom_weights(wei, w, x_min, x_max, y_min, y_max)
+                    wei = update_atom_weights(wei, np.copy(image), x_min, x_max, y_min, y_max)
                     tot_icl_al.append([image, det_err_image, x_min, y_min, x_max, y_max, xco, yco, lvlo, wr])
                     
                 # If not --> unclassified 
