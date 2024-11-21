@@ -436,6 +436,7 @@ def synthesis_bcgwavsizesep_with_masks( cln, oim, header, nfwp, lvl_sep, lvl_sep
                 det_err_image = np.copy(f1[o]['det_err_image'][()])
                 lvlo = np.copy(f1[o]['level'][()])
                 wr = np.copy(f1[o]['norm_wr'][()])
+                w = np.copy(f1[o]['image'][()])
 
                 # Compute a few quantities
                 sx = x_max - x_min
@@ -474,7 +475,7 @@ def synthesis_bcgwavsizesep_with_masks( cln, oim, header, nfwp, lvl_sep, lvl_sep
                     if mbcg[xco, yco] > 0:
                         icl[ x_min : x_max, y_min : y_max ] += image
                         icl_dei[ x_min : x_max, y_min : y_max ] += det_err_image
-                        wei = update_atom_weights(wei, np.copy(f1[o]['image'][()]), x_min, x_max, y_min, y_max)
+                        wei = update_atom_weights(wei, w, x_min, x_max, y_min, y_max)
                         tot_icl_al.append([image, det_err_image, x_min, y_min, x_max, y_max, xco, yco, lvlo, wr])
                         continue
     
@@ -482,7 +483,7 @@ def synthesis_bcgwavsizesep_with_masks( cln, oim, header, nfwp, lvl_sep, lvl_sep
                     if (lvlo >= lvl_sep) & (sx >= size_sep_pix) & (sy >= size_sep_pix):
                         icl[ x_min : x_max, y_min : y_max ] += image
                         icl_dei[ x_min : x_max, y_min : y_max ] += det_err_image
-                        wei = update_atom_weights(wei, np.copy(f1[o]['image'][()]), x_min, x_max, y_min, y_max)
+                        wei = update_atom_weights(wei, w, x_min, x_max, y_min, y_max)
                         tot_icl_al.append([image, det_err_image, x_min, y_min, x_max, y_max, xco, yco, lvlo, wr])
                         
                     else:
@@ -498,7 +499,7 @@ def synthesis_bcgwavsizesep_with_masks( cln, oim, header, nfwp, lvl_sep, lvl_sep
 
                     gal[ x_min : x_max, y_min : y_max ] += image
                     gal_dei[ x_min : x_max, y_min : y_max ] += det_err_image
-                    wei = update_atom_weights(wei, np.copy(f1[o]['image'][()]), x_min, x_max, y_min, y_max)
+                    wei = update_atom_weights(wei, w, x_min, x_max, y_min, y_max)
                     tot_gal_al.append([image, det_err_image, x_min, y_min, x_max, y_max, xco, yco, lvlo, wr])
 
                     # Add 'tendencious' galaxy atoms to list for bootstrap
@@ -517,7 +518,7 @@ def synthesis_bcgwavsizesep_with_masks( cln, oim, header, nfwp, lvl_sep, lvl_sep
                 if (lvl_sep > lvl_sep_bcg) & (lvlo >= lvl_sep_bcg) & (np.sqrt( (xc - xco)**2 + (yc - yco)**2 ) < size_sep_pix) :
                     icl[ x_min : x_max, y_min : y_max ] += image
                     icl_dei[ x_min : x_max, y_min : y_max ] += det_err_image
-                    wei = update_atom_weights(wei, np.copy(f1[o]['image'][()]), x_min, x_max, y_min, y_max)
+                    wei = update_atom_weights(wei, w, x_min, x_max, y_min, y_max)
                     tot_icl_al.append([image, det_err_image, x_min, y_min, x_max, y_max, xco, yco, lvlo, wr])
                     
                 # If not --> unclassified 
