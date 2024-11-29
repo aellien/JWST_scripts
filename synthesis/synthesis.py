@@ -764,7 +764,8 @@ if __name__ == '__main__':
     cat_gal = np.array(cat_gal)
 
     # Read star region files
-    rstar = pyr.open(os.path.join(path_data, 'star_flags_polygon_pix_long.reg'))
+    #rstar = pyr.open(os.path.join(path_data, 'star_flags_polygon_pix_long.reg'))
+    rstar = pyr.open(os.path.join(path_data, 'icl_flags_ellipse_pix_long_test.reg')) # bad name but flemme
     rell = pyr.open(os.path.join(path_data, 'icl_flags_ellipse_pix_long.reg'))
     rbcg = pyr.open(os.path.join(path_data, 'bcg_flags_ellipse_pix_long.reg'))
     r128 = pyr.open(os.path.join(path_data, 'circle_128kpc_pix.reg'))

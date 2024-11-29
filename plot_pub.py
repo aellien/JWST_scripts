@@ -1424,7 +1424,7 @@ def plot_recim_rgb_icl():
     n_grid = 10
     n_cols = 3
     n_rows = 5
-    std = 5'WS+SF', 
+    std = 'WS+SF', 
     n_bin = 1
     fig = plt.figure(1, figsize = (5., 8.3))
     grid = GridSpec(nrows = n_rows * n_grid, ncols = n_cols * n_grid + 1, figure = 1, left = 0.1, bottom = 0.01, right = 0.99, top = 0.9, wspace = 0.1, hspace = 0.1, width_ratios = None, height_ratios = None)
@@ -1766,7 +1766,7 @@ def plot_example_recim_all_filter_maps():
     path_data = '/home/aellien/JWST/data/'
     path_scripts = '/home/aellien/JWST/JWST_scripts'
     path_plots = '/home/aellien/JWST/plots'
-    path_wavelets = '/home/aellien/JWST/wavelets/out20'
+    path_wavelets = '/home/aellien/JWST/wavelets/out21'
 
     nfdl = [ {'nf':'jw02736001001_f356w_bkg_rot_crop_input.fits', 'filt':'f356w', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'phot_corr':0.163, 'n_levels':10 }, \
             {'nf':'jw02736001001_f444w_bkg_rot_crop_input.fits', 'filt':'f444w', 'chan':'long', 'pix_scale':0.063, 'pixar_sr':9.31E-14, 'phot_corr':0.162, 'n_levels':10 }, \
@@ -1787,16 +1787,24 @@ def plot_example_recim_all_filter_maps():
     for i, filt in enumerate(filterl):
         for nfd in nfdl:
             if nfd['filt'] == filt:
-
+                
                 nfp = os.path.join(path_data, nfd['nf'])
                 hdu = fits.open(nfp)
                 oim = hdu[0].data
                 oiml.append(oim)
-
-                nfp = os.path.join(path_wavelets, nfd['nf'][:-4] + 'synth.bcgwavsizesepmask_005_080.fits')
+                
+                nfp = os.path.join(path_wavelets, nfd['nf'][:-5] + '_synth.bcgwavsizesepmask_005_080.fits')
                 print(nfp)
                 hdu = fits.open(nfp)
                 recim = hdu[1].data[:2046, :2046]
+
+                r = pyr.open(os.path.join(path_data, "mask_display_bad_atoms_out21.reg")).as_imagecoord(hdu[1].header)
+                m = r.get_mask(hdu = hdu[1])[:2046, :2046]
+
+                recim[m] = np.min(recim)
+                recim = rebin(recim, 8, 8)
+                recim = gaussian_filter(recim, sigma = 2)
+                
                 reciml.append(recim)
 
     fig, ax = plt.subplots(2, 3, figsize = (12,8))
@@ -1811,7 +1819,7 @@ def plot_example_recim_all_filter_maps():
             l = 0
             k += 1
 
-        norm = ImageNormalize( oiml[i], vmin = 0, interval = ZScaleInterval(), stretch = LinearStretch())
+        norm = ImageNormalize( rebin(oiml[i], 8, 8), vmin = 0, interval = ZScaleInterval(), stretch = LinearStretch())
         poim = ax[k][l].imshow( reciml[i], norm = norm, cmap = cmap, origin = 'lower')
         ax[k][l].get_xaxis().set_ticks([])
         ax[k][l].get_yaxis().set_ticks([])
@@ -1834,7 +1842,7 @@ def plot_example_recim_all_filter_maps():
 
     plt.tight_layout()
     #plt.subplots_adjust( left=0.05, bottom=0.05, right=0.98, top=0.98, wspace=0.03, hspace=0.1)
-    plt.savefig(os.path.join(path_plots, 'plot_example_recim_all_filter_maps_out20.pdf'), format = 'pdf', dpi = 500)
+    plt.savefig(os.path.join(path_plots, 'plot_example_recim_all_filter_maps_out21.pdf'), format = 'pdf', dpi = 500)
     plt.show()
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1910,7 +1918,7 @@ if __name__ == '__main__':
     #plot_array_icl_maps_all_filters()
     #plot_array_bcgicl_maps_all_filters()
     #plot_rgb_mask_wcs()
-    plot_recim_rgb_icl()
+    #plot_recim_rgb_icl()
     #plot_array_scattered_recim_short()
     #plot_array_recim_long()
     #fICL_vs_filters()
@@ -1921,6 +1929,6 @@ if __name__ == '__main__':
     #plot_oim_rgb_all_filters()
     #plot_scattered_light_maps()
     #SED_tidal_streams()
-    #plot_example_recim_all_filter_maps()
+    plot_example_recim_all_filter_maps()
     #plot_and_make_sed()
     #plot_test()
