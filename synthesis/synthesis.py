@@ -747,7 +747,7 @@ if __name__ == '__main__':
     rc = 10 # distance to center to be classified as gal [kpc]
                 
     # wavelet scales related
-    lvl_sep = 6 # wavelet scale separation
+    lvl_sep = 5 # wavelet scale separation
     lvl_sep_bcg = 4
     lvl_sep_max = 1000
     n_levels = 10
@@ -796,6 +796,7 @@ if __name__ == '__main__':
         n_levels = float(split[4])
         lvl_sep_max = float(split[5])
         mu_lim = float(split[6])
+        if cln.split('_'][1] == 'f200w':lvl_sep_bcg = 4 # /!\ fine tuning for display
 
         # Photometry for limiting depth
         ZP_AB = -6.10 - 2.5 * np.log10(pixar)
@@ -822,6 +823,7 @@ if __name__ == '__main__':
         
         # synthesis
         nfwp = os.path.join(path_wavelets, cln[:-5])
+        
         df = synthesis_bcgwavsizesep_with_masks( cln = cln, 
                                              oim = oim, 
                                              header = head, 
