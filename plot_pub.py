@@ -1798,12 +1798,12 @@ def plot_example_recim_all_filter_maps():
                 hdu = fits.open(nfp)
                 recim = hdu[1].data[:2046, :2046]
 
-                r = pyr.open(os.path.join(path_data, "mask_display_bad_atoms_out21.reg")).as_imagecoord(hdu[1].header)
-                m = r.get_mask(hdu = hdu[1])[:2046, :2046]
+                #r = pyr.open(os.path.join(path_data, "mask_display_bad_atoms_out21.reg")).as_imagecoord(hdu[1].header)
+                #m = r.get_mask(hdu = hdu[1])[:2046, :2046]
 
-                recim[m] = np.min(recim)
+                #recim[m] = np.min(recim)
                 recim = rebin(recim, 8, 8)
-                recim = gaussian_filter(recim, sigma = 2)
+                #recim = gaussian_filter(recim, sigma = 2)
                 
                 reciml.append(recim)
 
