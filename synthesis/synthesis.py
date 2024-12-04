@@ -747,7 +747,7 @@ if __name__ == '__main__':
     rc = 10 # distance to center to be classified as gal [kpc]
                 
     # wavelet scales related
-    lvl_sep = 5 # wavelet scale separation
+    lvl_sep = 6 # wavelet scale separation
     lvl_sep_bcg = 4
     lvl_sep_max = 1000
     n_levels = 10
