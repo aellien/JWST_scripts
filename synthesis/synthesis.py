@@ -796,7 +796,7 @@ if __name__ == '__main__':
         n_levels = float(split[4])
         lvl_sep_max = float(split[5])
         mu_lim = float(split[6])
-        if cln.split('_')[1] == 'f200w':lvl_sep_bcg = 4 # /!\ fine tuning for display
+        if cln.split('_')[1] == 'f200w':lvl_sep_bcg = 6 # /!\ fine tuning for display
 
         # Photometry for limiting depth
         ZP_AB = -6.10 - 2.5 * np.log10(pixar)
